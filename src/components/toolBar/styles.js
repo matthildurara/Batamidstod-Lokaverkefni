@@ -7,6 +7,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 70,
+    backgroundColor:'blue',
+    width:100,
     // width:1000,
     // backgroundColor:'#b0c4de',
     // top:0,

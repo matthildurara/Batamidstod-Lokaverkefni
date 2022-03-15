@@ -6,7 +6,9 @@ import Toolbar from '../../components/toolBar';
 
 const Home = () => (
     <View style={styles.container}> 
-        {/* <Toolbar/> */}
+    <TouchableHighlight  style={styles.toolbarAction}>
+        <Toolbar/>
+        </TouchableHighlight>
         <Text>Home</Text>
     </View>
 );

@@ -6,7 +6,6 @@ const Toolbar = () => {
 return(
     <View styleName= "horizontal" style={styles.toolbar}>
       <Text>Menu</Text>
-            <Text>Batamiðstöðin</Text>
     </View>
 );}
 export default Toolbar;
