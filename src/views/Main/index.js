@@ -4,7 +4,7 @@ import {View, Text,TouchableHighlight,TextInput} from 'react-native';
 import styles from './styles';
 
 
-const Main = () => (
+const Main = ({navigation: {navigate}}) => (
     <View style={styles.container}> 
         <Text>Batamiðstöðin</Text>
         <TextInput style={styles.textInput}
@@ -12,7 +12,9 @@ const Main = () => (
         <TextInput style={styles.textInput}
         secureTextEntry
         placeholder='Password'/>
-        <TouchableHighlight style={styles.signButton}>
+        <TouchableHighlight 
+        onPress={()=> navigate('Home')}
+        style={styles.signButton}>
             <Text style={styles.sign}>Sign in</Text>
         </TouchableHighlight>
     </View>
