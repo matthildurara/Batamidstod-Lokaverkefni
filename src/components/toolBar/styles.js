@@ -1,25 +1,36 @@
 import {StyleSheet} from 'react-native';
-import {gray} from '../../styles/colors'
+import {gray} from '../../styles/colors';
 
 export default StyleSheet.create({
   toolbar: {
+    // display:grid,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     height: 70,
-    backgroundColor:'blue',
-    width:100,
-    // width:1000,
     // backgroundColor:'#b0c4de',
-    // top:0,
-    // paddingLeft:10,
-    // paddingRight:10,
-    // shadowColor: '#000',
-    //     shadowOffset: { width: 1, height: 1 },
-    //     shadowOpacity:  0.4,
-    //     shadowRadius: 3,
-    //     elevation: 5,
-    // marginBottom: 10
+    borderBottomColor:'#b4b5b8',
+    borderBottomWidth:1,
+    top:0,
+    paddingLeft:10,
+    paddingRight:10,
+    marginBottom: 10,
+
   },
+  toolbarActionMenu: {
+    alignItems: 'center',
+    left:0,
+  },
+  toolbarActionName: {
+    flex:1,
+    alignItems: 'center',
+
+  },
+  toolbarText:{
+    fontSize:18,
+    fontWeight:'bold',
+    
+  }
+
 
 });

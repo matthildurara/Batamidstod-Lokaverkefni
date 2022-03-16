@@ -4,6 +4,7 @@ import {View, Text,TouchableHighlight,TextInput} from 'react-native';
 import styles from './styles';
 
 
+
 const Main = ({navigation: {navigate}}) => (
     <View style={styles.container}> 
         <Text>Batamiðstöðin</Text>
