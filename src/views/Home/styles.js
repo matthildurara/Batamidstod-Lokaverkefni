@@ -5,10 +5,35 @@ import { grey, greyBrown } from "../../styles/colors";
 
 export default StyleSheet.create({
     container:{
-        flex:1,
-        padding:20,
+        flexDirection:'column',
+         flex:1,
+        // padding:20,
         alignItems:'center',
-        justifyContent:'space-around',
+        justifyContent:'space-between',
     },
+    toolbarAction:{
+        // width:100,
+        textAlign:'center',
+        color: 'black',
+        backgroundColor: '#b0c4de'
+      },
+      calander:{
+        //  height:400,
+          paddingTop:10,
+      
+      },
+    footer:{
+        flex:1,
+        alignSelf:'flex-end',
+        // position:'absolute',
+        // bottom:0,
+    },
+    toolbar:{
+        flex:1,
+        alignSelf:'flex-start',
+        // flex:2,
+        marginTop:'auto',
+    }
 
 });
+

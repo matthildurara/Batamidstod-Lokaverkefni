@@ -10,9 +10,8 @@ import Home from '../views/Home';
 const Routes = () => (
     <NavigationContainer>
         <Stack.Navigator initialRouteName='Main'>
-            <Stack.Screen name ='Main' component={Main} />
-            <Stack.Screen name ='Home' component={Home} />
-
+            <Stack.Screen name='Main' component={Main}/>
+            <Stack.Screen name='Home' component={Home}/>
         </Stack.Navigator>
     </NavigationContainer>
 

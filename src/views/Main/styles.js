@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import { withOrientation } from "react-navigation";
 import { grey, greyBrown } from "../../styles/colors";
 
 
@@ -8,7 +9,8 @@ export default StyleSheet.create({
         flex:1,
         padding:20,
         alignItems:'center',
-        justifyContent:'space-around'
+        justifyContent:'space-around',
+        backgroundColor:'white',
     },
     sign:{
         color:'white',
@@ -19,7 +21,7 @@ export default StyleSheet.create({
         borderRadius:7,
         width:185,
         height:45,
-        backgroundColor:greyBrown,
+        backgroundColor:'#635d5c',
         justifyContent:"center",
         // justifyItems:'center',
         alignItems:'center'
@@ -30,6 +32,10 @@ export default StyleSheet.create({
         height:45,
         borderRadius:3,
         justifyContent:'space-around',
-        backgroundColor:grey,
+        backgroundColor:'#B4B5B8',
+    },
+    image:{
+        width:140,
+        height:70,
     }
 });
