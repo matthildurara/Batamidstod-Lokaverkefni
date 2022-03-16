@@ -1,13 +1,14 @@
 import React from 'react';
-import {View, Text,TouchableHighlight,TextInput} from 'react-native';
+import {View, Text,TouchableHighlight,TextInput,Image} from 'react-native';
 // import { TextInput } from 'react-native-web';
 import styles from './styles';
+import bata from '../../resources/Bata.png';
 
 
 
 const Main = ({navigation: {navigate}}) => (
     <View style={styles.container}> 
-        <Text>Batamiðstöðin</Text>
+        <Image source={ bata } style={ styles.image} />
         <TextInput style={styles.textInput}
         placeholder='Username'/>
         <TextInput style={styles.textInput}
