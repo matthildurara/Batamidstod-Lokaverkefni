@@ -10,6 +10,7 @@ export default StyleSheet.create({
         // padding:20,
         alignItems:'center',
         justifyContent:'space-between',
+        backgroundColor:'white',
     },
     toolbarAction:{
         // width:100,
