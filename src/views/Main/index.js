@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   KeyboardAvoidingView,
@@ -10,37 +10,52 @@ import {
 // import { TextInput } from 'react-native-web';
 import styles from "./styles";
 import bata from "../../resources/Bata.png";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase-config";
+
 //import { getAuth } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 //import { getAuth } from "firebase";
 //import * as firebase from "firebase";
 //import firebase from "firebase/compat/app";
 //import "firebase/auth";
+import { useAuthValue } from "../../../authContext";
+// import { useEffect } from "react/cjs/react.production.min";
 
 // import { auth } from "../../../firebase";
 // import { KeyboardAvoidingView } from "react-native-web";
 
 const Main = ({ navigation: { navigate } }) => {
+  // const { currentUser } = useAuthValue();
+  // const [currentUser, setCurrentUser] = useState(null);
+
   //const auth = firebase.auth();
+  //const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   //   const auth = getAuth();
   //   const [user, setUser] = useState({});
-  onAuthStateChanged(auth, (user) => {
-    // console.log(currUser);
-    console.log(user);
-    //const currUser = JSON.stringify(user);
-    const userEmail = user?.email;
-    console.log(userEmail);
+  //   onAuthStateChanged(auth, (user) => {
+  //     setCurrentUser(user);
+  //   });
+  //   useEffect(() => {
+  //     onAuthStateChanged(auth, (user) => {
+  //       setCurrentUser(user);
+  //       // console.log(currUser);
+  //       // console.log(user);
+  //       // //const currUser = JSON.stringify(user);
+  //       // const userEmail = user?.email;
+  //       // console.log(userEmail);
 
-    //const jsonValue = JSON.stringify(user);
-    // AsyncStorage.setItem("user", jsonValue);
+  //       //const jsonValue = JSON.stringify(user);
+  //       // AsyncStorage.setItem("user", jsonValue);
 
-    // setUser(currentUser);
-  });
+  //       // setUser(currentUser);
+  //     });
+  //   }, []);
   //   const handleSignup = () => {
   //     auth
   //       .createUserWithEmailAndPasswor(email, password)
@@ -61,6 +76,7 @@ const Main = ({ navigation: { navigate } }) => {
     }
     navigate("Home");
   };
+  //console.log(currentUser);
 
   return (
     <>
