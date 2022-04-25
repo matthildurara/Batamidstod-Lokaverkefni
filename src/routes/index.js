@@ -6,13 +6,15 @@ const Stack = createStackNavigator();
 
 import Main from "../views/Main";
 import HomeView from "../views/HomeView";
+import NotificationView from "../views/notifications";
 
 const Routes = () => (
-  <NavigationContainer>
-    <Stack.Navigator initialRouteName="Main">
-      <Stack.Screen name="Main" component={Main} />
-      <Stack.Screen name="Home" component={HomeView} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  //   <NavigationContainer>
+  <Stack.Navigator initialRouteName="Main">
+    <Stack.Screen name="Main" component={Main} />
+    <Stack.Screen name="Home" component={HomeView} />
+    <Stack.Screen name="Notifications" component={NotificationView} />
+  </Stack.Navigator>
+  // {/* </NavigationContainer> */}
 );
 export default Routes;

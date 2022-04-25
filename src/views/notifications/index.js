@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  TextInput,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, TouchableHighlight, TextInput } from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
@@ -15,11 +9,10 @@ import Footer from "../../components/footer";
 //import { auth } from "../../../firebase-config";
 import { getAuth } from "firebase/auth";
 import { useAuthValue } from "../../../authContext";
-import { Agenda } from "react-native-calendars";
 
 //const Drawer = createDrawerNavigator();
 
-const HomeView = ({ navigation: { navigate } }) => {
+const NotificationView = ({ navigation: { navigate } }) => {
   // const [user, setUser] = useState({});
   // useEffect(() => {
   //   async () => {
@@ -30,9 +23,6 @@ const HomeView = ({ navigation: { navigate } }) => {
   // const user = await AsyncStorage.getItem("user");
   // const auth = getAuth();
   // const us = auth.currentUser();
-  const [items, setItems] = useState({
-    "2022-04-22": [{ name: "test 1" }],
-  });
   const { currentUser } = useAuthValue();
   console.log("halló");
   const user = currentUser?.providerData[0].email;
@@ -42,22 +32,16 @@ const HomeView = ({ navigation: { navigate } }) => {
   console.log(user);
 
   console.log("halló 3 ");
-  const renderItem = (items) => {
-    return (
-      <View>
-        <Text>{items.name}</Text>
-      </View>
-    );
-  };
+
   return (
     <View style={styles.container}>
       <Toolbar style={styles.toolbar} />
-      <SafeAreaView style={styles.calander}>
-        <Agenda items={items} renderItem={renderItem} />
-      </SafeAreaView>
+      <View style={styles.calander}>
+        <Text>Notifications</Text>
+      </View>
 
       <Footer style={styles.footer} />
     </View>
   );
 };
-export default HomeView;
+export default NotificationView;

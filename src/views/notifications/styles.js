@@ -20,12 +20,11 @@ export default StyleSheet.create({
   calander: {
     //  height:400,
     paddingTop: 10,
-    flex: 1,
-    width: 400,
   },
   footer: {
     flex: 1,
     alignSelf: "flex-end",
+    bottom: 0,
     // position:'absolute',
     // bottom:0,
   },
