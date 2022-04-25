@@ -97,7 +97,10 @@ const Main = ({ navigation: { navigate } }) => {
           setPassword={setPassword}
           onChangeText={setPassword}
         />
-        <TouchableHighlight onPress={handleLogin} style={styles.signButton}>
+        <TouchableHighlight
+          onPress={() => handleLogin()}
+          style={styles.signButton}
+        >
           <Text style={styles.sign}>Sign in</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>

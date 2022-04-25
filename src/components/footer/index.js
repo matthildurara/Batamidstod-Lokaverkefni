@@ -16,9 +16,11 @@ const Footer = () => {
         </Text>
       </View>
       <View style={styles.footerAction}>
-        <Text>
-          <AntDesign name="calendar" size={24} color="black" />
-        </Text>
+        <TouchableHighlight onPress={() => navigate("Home")}>
+          <Text>
+            <AntDesign name="calendar" size={24} color="black" />
+          </Text>
+        </TouchableHighlight>
       </View>
 
       <View style={styles.footerAction}>
