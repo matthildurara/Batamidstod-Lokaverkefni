@@ -44,6 +44,7 @@ const HomeView = ({ navigation: { navigate } }) => {
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
+        console.log("child key");
         console.log(childKey);
         setListEvents((prevState) => ({ ...prevState, childKey }));
         childSnapshot.forEach((childChild) => {
