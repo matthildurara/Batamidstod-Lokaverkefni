@@ -29,12 +29,18 @@ import { FirebaseError } from "firebase/app";
 
 const HomeView = ({ navigation: { navigate } }) => {
   const [allEvents, setAllEvent] = useState([]);
-  const [listOfEvents, setListEvents] = useState({
-    "": {
-      event: "",
-      attendees: "",
-    },
-  });
+  // const [listOfEvents, setListEvents] = useState({
+  //   "": {
+  //     event: "",
+  //     attendees: "",
+  //   },
+  // });
+  const [listOfEvents, setListEvents] = useState({});
+
+  const [newEvents, setNewEvents] = useState([]);
+
+  console.log();
+
   const listE = [];
 
   const db = g();
@@ -43,31 +49,37 @@ const HomeView = ({ navigation: { navigate } }) => {
   useEffect(() => {
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
+        console.log("childSnapshot", childSnapshot);
         const childKey = childSnapshot.key;
         console.log("child key");
-        console.log(childKey);
+        // console.log(childKey);
         setListEvents((prevState) => ({ ...prevState, childKey }));
+        listOfEvents[childKey] = [];
+        //listOfEvents[childKey].push({childs})
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
-          setListEvents((prevState) => ({
-            ...prevState,
-            event: childchildKey,
-          }));
-          const newObj = {
-            childKey: {
-              name: childchildKey,
-            },
-          };
-          listE.push(newObj);
+          // setListEvents((prevState) => ({
+          //   ...prevState,
+          //   event: childchildKey,
+          // }));
+          listOfEvents[childKey].push({
+            name: childchildKey,
+          });
+          // const newObj = {
+          //   childKey: {
+          //     name: childchildKey,
+          //   },
+          // };
+          // listE.push(newObj);
         });
         //const newList = listOfEvents.concat
         //console.log(childKey.valueOf());
         //listE.push(childKey);
         // setListEvents(childKey);
         console.log("blabla");
-        console.log(listE);
+        //console.log(listE);
         console.log(listOfEvents);
-        setAllEvent(allEvents, listOfEvents);
+        // setAllEvent(allEvents, listOfEvents);
       });
     });
   }, []);
@@ -132,18 +144,52 @@ const HomeView = ({ navigation: { navigate } }) => {
   console.log(user);
 
   console.log("halló 3 ");
-  const renderItem = (items) => {
+  const renderItem = (item) => {
+    console.log(item);
     return (
       <View>
-        <Text>{items.name}</Text>
+        <Text>{item.name}</Text>
+        {/* <Text>{items.dateTime}</Text> */}
+
+        {/* <Text>{DateTime.fromISO(items.dateTime).toFormat('HH:mm')}</Text> */}
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       <Toolbar style={styles.toolbar} />
       <SafeAreaView style={styles.calander}>
-        <Agenda items={items} renderItem={renderItem} />
+        <Agenda
+          items={listOfEvents}
+          renderItem={renderItem}
+          // renderDay={(day, item) => {
+          //   return (
+          //     <View>
+          //       <Text>Test</Text>
+          //     </View>
+          //   );
+          // }}
+          renderEmptyDate={() => {
+            return (
+              <View>
+                <Text>No events</Text>
+              </View>
+            );
+          }}
+          renderEmptyData={() => {
+            return (
+              <View>
+                <Text>No events</Text>
+              </View>
+            );
+          }}
+          onDayPress={(day) => {
+            // console.log("selected day", day);
+            const date = day.dateString;
+            console.log(date);
+          }}
+        />
       </SafeAreaView>
 
       <Footer style={styles.footer} />
