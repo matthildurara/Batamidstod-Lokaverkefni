@@ -42,14 +42,27 @@ const Main = ({ navigation: { navigate } }) => {
 
   //const auth = firebase.auth();
   //const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorm, setErrorm] = useState("");
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/User");
 
   let allUsers = [];
+
+  const getUsers = async () => {
+    //let allUsers = [];
+    onValue(dbRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        //console.log("childSnapshot", childSnapshot);
+        const childKey = childSnapshot.key;
+        //console.log(childKey);
+        childSnapshot.forEach((childvalue) => {
+          //console.log(childvalue);
+          allUsers.push(childvalue);
+        });
+      });
+    });
+    return;
+  };
 
   useEffect(() => {
     async function setUsers() {
@@ -62,52 +75,58 @@ const Main = ({ navigation: { navigate } }) => {
             //console.log(childvalue);
             allUsers.push(childvalue);
           });
-
-          //console.log("child key");
-          // console.log(childKey);
-          //setListEvents((prevState) => ({ ...prevState, childKey }));
-          //listOfEvents[childKey] = [];
-          //console.log("FYRIRRRRR");
-          // console.log(listOfEvents);
-          //listOfEvents[childKey].push({ childSnapshot });
-          // childSnapshot.forEach((childChild) => {
-          //   const childchildKey = childChild.key;
-          //   const childValue = childChild.val();
-          //   console.log(child)
-          //   // setListEvents((prevState) => ({
-          //   //   ...prevState,
-          //   //   event: childchildKey,
-          //   // }));
-          //   // let childVal = {};
-          //   // childVal = {
-          //   //   name: childchildKey,
-          //   //   childValue,
-          //   // };
-          //   // childChild.forEach((childvalue) => {
-          //   //   listOfEvents[childKey].push({
-          //   //     startTime: childvalue,
-          //   //   });
-          //   // });
-          //   // const newObj = {
-          //   //   childKey: {
-          //   //     name: childchildKey,
-          //   //   },
-          //   // };
-          //   // listE.push(newObj);
-          // });
-          //const newList = listOfEvents.concat
-          //console.log(childKey.valueOf());
-          //listE.push(childKey);
-          // setListEvents(childKey);
-          //console.log("blabla");
-          //console.log(listE);
-          // console.log(listOfEvents);
-          // setAllEvent(allEvents, listOfEvents);
         });
       });
+      //const yes = await setUsers();
     }
     setUsers();
   }, []);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorm, setErrorm] = useState("");
+  //       //console.log("child key");
+  //       // console.log(childKey);
+  //       //setListEvents((prevState) => ({ ...prevState, childKey }));
+  //       //listOfEvents[childKey] = [];
+  //       //console.log("FYRIRRRRR");
+  //       // console.log(listOfEvents);
+  //       //listOfEvents[childKey].push({ childSnapshot });
+  //       // childSnapshot.forEach((childChild) => {
+  //       //   const childchildKey = childChild.key;
+  //       //   const childValue = childChild.val();
+  //       //   console.log(child)
+  //       //   // setListEvents((prevState) => ({
+  //       //   //   ...prevState,
+  //       //   //   event: childchildKey,
+  //       //   // }));
+  //       //   // let childVal = {};
+  //       //   // childVal = {
+  //       //   //   name: childchildKey,
+  //       //   //   childValue,
+  //       //   // };
+  //       //   // childChild.forEach((childvalue) => {
+  //       //   //   listOfEvents[childKey].push({
+  //       //   //     startTime: childvalue,
+  //       //   //   });
+  //       //   // });
+  //       //   // const newObj = {
+  //       //   //   childKey: {
+  //       //   //     name: childchildKey,
+  //       //   //   },
+  //       //   // };
+  //       //   // listE.push(newObj);
+  //       // });
+  //       //const newList = listOfEvents.concat
+  //       //console.log(childKey.valueOf());
+  //       //listE.push(childKey);
+  //       // setListEvents(childKey);
+  //       //console.log("blabla");
+  //       //console.log(listE);
+  //       // console.log(listOfEvents);
+  //       // setAllEvent(allEvents, listOfEvents);
+
+  // }
+  //setUsers();
 
   //   const auth = getAuth();
   //   const [user, setUser] = useState({});
@@ -149,31 +168,41 @@ const Main = ({ navigation: { navigate } }) => {
   //   }
   //   navigate("Home");
   // };
-  const handlesaveUser = async () => {
+  // const handlesaveUser = async () => {
+  //   try {
+  //     AsyncStorage.setItem("User", email);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const handleLogin = async () => {
     try {
       AsyncStorage.setItem("User", email);
+      navigate("Home");
     } catch (error) {
       console.log(error);
     }
-  };
-  const handleLogin = async () => {
-    const isinclude = allUsers.includes(email);
-    console.log(isinclude);
-    for (var i = 0; i < allUsers.length; i++) {
-      console.log(allUsers[i]);
-      console.log(email.toLowerCase().toString());
 
-      if (allUsers[i] === email.toLowerCase()) {
-        try {
-          AsyncStorage.setItem("User", email);
-        } catch (error) {
-          console.log(error);
-        }
-        navigate("Home");
-      } else {
-        setErrorm("This email is invalid");
-      }
-    }
+    //   } else {
+    //   setErrorm("This email is invalid");
+    // }
+    const isUser = await getUsers();
+    // const isinclude = allUsers.includes(email);
+    //console.log(isinclude);
+    console.log(email.toLowerCase().toString());
+    // for (var i = 0; i < allUsers?.length; i++) {
+    //   console.log(allUsers[i]);
+    //   if (allUsers[i] === email.toLowerCase().toString()) {
+    //     try {
+    //       AsyncStorage.setItem("User", email);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //     navigate("Home");
+    //   } else {
+    //     setErrorm("This email is invalid");
+    //   }
+    // }
     // allUsers.forEach((user) => {
     //   //console.log(user);
     //   console.log(user);

@@ -29,17 +29,7 @@ import { FirebaseError } from "firebase/app";
 //const Drawer = createDrawerNavigator();
 
 const HomeView = ({ navigation: { navigate } }) => {
-  // getUser = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem("User");
-  //     if (value !== null) {
-  //       // We have data!!
-  //       console.log(value);
-  //     }
-  //   } catch (error) {
-  //     // Error retrieving data
-  //   }
-  // };
+  const [thisuser, setUser] = useState("");
   useEffect(() => {
     async function isUser() {
       try {
@@ -47,6 +37,7 @@ const HomeView = ({ navigation: { navigate } }) => {
         if (value !== null) {
           // We have data!!
           console.log(value);
+          setUser(value);
         }
       } catch (error) {
         // Error retrieving data
@@ -102,6 +93,7 @@ const HomeView = ({ navigation: { navigate } }) => {
             name: childchildKey,
             startTime: childValue.startTime,
             endTime: childValue.endTime,
+            date: childKey,
             attendees: childValue.Attendees,
           });
           // childChild.forEach((childvalue) => {
@@ -176,6 +168,25 @@ const HomeView = ({ navigation: { navigate } }) => {
   //   // console.log("data");
   //   // console.log("data" + data);
   // });
+
+  const handleOnEvent = (item) => {
+    const db = getDatabase();
+    const starCountRef = ref(
+      db,
+      "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
+    );
+    //console.log("email here " + newEmail);
+    set(
+      ref(
+        db,
+        "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
+      ),
+      {
+        name: thisuser,
+      }
+    );
+    alert("þú hefur verið skráður á viðburð");
+  };
   const [items, setItems] = useState({
     "2022-04-26": [{ name: "test #2" }],
     "2022-04-25": [{ name: "test #3" }],
@@ -183,12 +194,16 @@ const HomeView = ({ navigation: { navigate } }) => {
   const { currentUser } = useAuthValue();
   //console.log("halló");
   const user = currentUser?.providerData[0].email;
-  //console.log("halló 2 ");
+  const isUserOnEvent = (item) => {
+    for (var i = 0; i < item.attendees?.length; i++) {
+      console.log(item.attendees[i].name);
+      if (item.attendees[i].name === thisuser) {
+        return false;
+      }
+    }
+    return true;
+  };
 
-  // console.log(currentUser);
-  //console.log(user);
-
-  //console.log("halló 3 ");
   const renderItem = (item) => {
     // console.log(item);
     return (
@@ -196,9 +211,22 @@ const HomeView = ({ navigation: { navigate } }) => {
         <Text>{item.name}</Text>
         <Text>{item.startTime}</Text>
         <Text>{item.endTime}</Text>
-        <TouchableOpacity style={styles.eventbutton}>
-          <Text>Skrá</Text>
-        </TouchableOpacity>
+        <Text>{item.date}</Text>
+        {isUserOnEvent(item) ? (
+          <TouchableOpacity
+            onPress={() => handleOnEvent(item)}
+            style={styles.eventbutton}
+          >
+            <Text>Skrá</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            //onPress={() => handleOnEvent(item)}
+            style={styles.eventbutton}
+          >
+            <Text>Af Skrá</Text>
+          </TouchableOpacity>
+        )}
         {/* <TouchableHighlight>skrá</TouchableHighlight> */}
         {/* <TouchableHighlight>skrá</TouchableHighlight> */}
         {/* <Text>{items.dateTime}</Text> */}
