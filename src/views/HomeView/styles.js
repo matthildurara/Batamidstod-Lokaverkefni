@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
+import { buildUnavailableHoursBlocks } from "react-native-calendars/src/timeline/Packer";
 import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import { AuthProvider } from "../../../authContext";
 import { grey, greyBrown } from "../../styles/colors";
 
 export default StyleSheet.create({
@@ -34,5 +36,16 @@ export default StyleSheet.create({
     alignSelf: "flex-start",
     // flex:2,
     marginTop: "auto",
+  },
+  event: {
+    borderColor: "black",
+    borderWidth: 2,
+    width: 300,
+  },
+  eventbutton: {
+    borderColor: "black",
+    borderWidth: 2,
+    width: 50,
+    borderRadius: 4,
   },
 });

@@ -3,6 +3,7 @@ import {
   View,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   TextInput,
   SafeAreaView,
 } from "react-native";
@@ -11,7 +12,7 @@ import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 //import { NavigationContainer } from "@react-navigation/native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //import { auth } from "../../../firebase-config";
 import { getAuth } from "firebase/auth";
 import { useAuthValue } from "../../../authContext";
@@ -28,6 +29,33 @@ import { FirebaseError } from "firebase/app";
 //const Drawer = createDrawerNavigator();
 
 const HomeView = ({ navigation: { navigate } }) => {
+  // getUser = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem("User");
+  //     if (value !== null) {
+  //       // We have data!!
+  //       console.log(value);
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  // };
+  useEffect(() => {
+    async function isUser() {
+      try {
+        const value = await AsyncStorage.getItem("User");
+        if (value !== null) {
+          // We have data!!
+          console.log(value);
+        }
+      } catch (error) {
+        // Error retrieving data
+      }
+    }
+    isUser();
+  }, []);
+  //const thisuser = AsyncStorage.getItem("User");
+  //console.log("this user is : ", thisuser);
   const [allEvents, setAllEvent] = useState([]);
   // const [listOfEvents, setListEvents] = useState({
   //   "": {
@@ -49,22 +77,38 @@ const HomeView = ({ navigation: { navigate } }) => {
   useEffect(() => {
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        console.log("childSnapshot", childSnapshot);
+        //console.log("childSnapshot", childSnapshot);
         const childKey = childSnapshot.key;
-        console.log("child key");
+        //console.log("child key");
         // console.log(childKey);
-        setListEvents((prevState) => ({ ...prevState, childKey }));
+        //setListEvents((prevState) => ({ ...prevState, childKey }));
         listOfEvents[childKey] = [];
-        //listOfEvents[childKey].push({childs})
+        console.log("FYRIRRRRR");
+        console.log(listOfEvents);
+        //listOfEvents[childKey].push({ childSnapshot });
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
+          const childValue = childChild.val();
           // setListEvents((prevState) => ({
           //   ...prevState,
           //   event: childchildKey,
           // }));
+          let childVal = {};
+          childVal = {
+            name: childchildKey,
+            childValue,
+          };
           listOfEvents[childKey].push({
             name: childchildKey,
+            startTime: childValue.startTime,
+            endTime: childValue.endTime,
+            attendees: childValue.Attendees,
           });
+          // childChild.forEach((childvalue) => {
+          //   listOfEvents[childKey].push({
+          //     startTime: childvalue,
+          //   });
+          // });
           // const newObj = {
           //   childKey: {
           //     name: childchildKey,
@@ -76,9 +120,9 @@ const HomeView = ({ navigation: { navigate } }) => {
         //console.log(childKey.valueOf());
         //listE.push(childKey);
         // setListEvents(childKey);
-        console.log("blabla");
+        //console.log("blabla");
         //console.log(listE);
-        console.log(listOfEvents);
+        // console.log(listOfEvents);
         // setAllEvent(allEvents, listOfEvents);
       });
     });
@@ -86,8 +130,9 @@ const HomeView = ({ navigation: { navigate } }) => {
   //console.log(listOfEvents);
   // console.log(listOfEvents);
   console.log("HALLOOO");
+  console.log(listOfEvents);
   // console.log(listE);
-  console.log(allEvents);
+  //console.log(allEvents);
   // const [user, setUser] = useState({});
   // useEffect(() => {
   //   async () => {
@@ -136,19 +181,26 @@ const HomeView = ({ navigation: { navigate } }) => {
     "2022-04-25": [{ name: "test #3" }],
   });
   const { currentUser } = useAuthValue();
-  console.log("halló");
+  //console.log("halló");
   const user = currentUser?.providerData[0].email;
-  console.log("halló 2 ");
+  //console.log("halló 2 ");
 
   // console.log(currentUser);
-  console.log(user);
+  //console.log(user);
 
-  console.log("halló 3 ");
+  //console.log("halló 3 ");
   const renderItem = (item) => {
-    console.log(item);
+    // console.log(item);
     return (
-      <View>
+      <View style={styles.event}>
         <Text>{item.name}</Text>
+        <Text>{item.startTime}</Text>
+        <Text>{item.endTime}</Text>
+        <TouchableOpacity style={styles.eventbutton}>
+          <Text>Skrá</Text>
+        </TouchableOpacity>
+        {/* <TouchableHighlight>skrá</TouchableHighlight> */}
+        {/* <TouchableHighlight>skrá</TouchableHighlight> */}
         {/* <Text>{items.dateTime}</Text> */}
 
         {/* <Text>{DateTime.fromISO(items.dateTime).toFormat('HH:mm')}</Text> */}
