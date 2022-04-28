@@ -37,7 +37,7 @@ const HomeView = ({ navigation: { navigate } }) => {
   });
   const listE = [];
 
-  const db = getDatabase();
+  const db = g();
   const dbRef = ref(db, "Users/Event");
 
   useEffect(() => {
