@@ -35,7 +35,7 @@ const Event = ({ navigation: { navigate } }) => {
         const value = await AsyncStorage.getItem("Event");
         if (value !== null) {
           // We have data!!
-          //console.log("PArsed EVENT: ", JSON.parse(value));
+          console.log("PArsed EVENT: ", JSON.parse(value));
           setEvent(JSON.parse(value));
         }
       } catch (error) {
@@ -56,6 +56,8 @@ const Event = ({ navigation: { navigate } }) => {
       console.log("inside if");
       console.log(Object.values(item.attendees).length);
       if (Object.values(item.attendees).length > 1) {
+        console.log("NAAAAAMMMMEE");
+        console.log(Object.values(item.attendees).name);
         return true;
       }
     }
@@ -70,16 +72,17 @@ const Event = ({ navigation: { navigate } }) => {
         <Text style={styles.eventText}> {thisEvent.endTime}</Text>
         <Text style={styles.eventText}> {thisEvent.description}</Text>
         <Text>Skráðir á viðburðinn: </Text>
-        {checkAttendees(thisEvent) ? (
+        {/* {checkAttendees(thisEvent) ? (
           Object.values(thisEvent.attendees).map((item, index) => (
             <View key={index} item={item}>
+               
               <Text>{item.name}</Text>
             </View>
           ))
         ) : (
           //<Text>Hello </Text>
           <></>
-        )}
+        )} */}
       </View>
     </>
   );
