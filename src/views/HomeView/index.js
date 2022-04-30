@@ -315,23 +315,23 @@ const HomeView = ({ navigation: { navigate } }) => {
       item.attendees == undefined ||
       item.attendees == ""
     ) {
-      console.log("not in if");
+      // console.log("not in if");
       return false;
       //return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
         // console.log("objectvalue: ", Object.values(item.attendees));
         for (var j = 0; j < Object.values(item.attendees).length; j++) {
-          console.log(
-            "this is the value: ",
-            Object.values(item.attendees)[i].name
-          );
-          console.log("THIS IS THE USER: ", thisuser.name);
+          // console.log(
+          //   "this is the value: ",
+          //   Object.values(item.attendees)[i].name
+          // );
+          // console.log("THIS IS THE USER: ", thisuser.name);
           if (
             Object.values(item.attendees)[i].name.toLowerCase() ===
             thisuser.name?.toLowerCase()
           ) {
-            console.log("KOMST INN Í");
+            // console.log("KOMST INN Í");
             // console.log(Object.values(item.attendees)[i]);
 
             const obj = Object.values(item.attendees)[i].name.toLowerCase();
@@ -343,7 +343,7 @@ const HomeView = ({ navigation: { navigate } }) => {
           }
         }
       }
-      console.log("not in for");
+      // console.log("not in for");
       return false;
     }
   };
@@ -359,8 +359,8 @@ const HomeView = ({ navigation: { navigate } }) => {
       description: item.description,
       attendees: item.attendees,
     };
-    console.log("ATTENDES BEFORE ASYNC ");
-    console.log(item.attendees);
+    // console.log("ATTENDES BEFORE ASYNC ");
+    // console.log(item.attendees);
     AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
