@@ -262,41 +262,88 @@ const HomeView = ({ navigation: { navigate } }) => {
     "2022-04-26": [{ name: "test #2" }],
     "2022-04-25": [{ name: "test #3" }],
   });
-  const isUserOnEvent = async (item) => {
+  // const isUserOnEvent = async (item) => {
+  //   // console.log("IS THIS USER EVENT : ");
+  //   // // const us = await isUser();
+  //   // console.log(item);
+  //   // console.log("THIS IS THE USERRRRRRR: ", thisuser);
+  //   if (
+  //     !item.attendees ||
+  //     item.attendees == undefined ||
+  //     item.attendees == ""
+  //   ) {
+  //     console.log("not in if");
+  //     return false;
+  //     //return false;
+  //   } else {
+  //     for (var i = 0; i < Object.keys(item.attendees).length; i++) {
+  //       // console.log("objectvalue: ", Object.values(item.attendees));
+  //       for (var j = 0; j < Object.values(item.attendees).length; j++) {
+  //         console.log(
+  //           "this is the value: ",
+  //           Object.values(item.attendees)[i].name
+  //         );
+  //         console.log("THIS IS THE USER: ", thisuser.name);
+  //         if (
+  //           Object.values(item.attendees)[i].name.toLowerCase() ===
+  //           thisuser.name?.toLowerCase()
+  //         ) {
+  //           console.log("KOMST INN Í");
+  //           // console.log(Object.values(item.attendees)[i]);
+
+  //           const obj = Object.values(item.attendees)[i].name.toLowerCase();
+  //           const us = thisuser.name?.toLowerCase();
+  //           // console.log(obj);
+  //           // console.log(us);
+  //           return true;
+  //           // }
+  //         }
+  //       }
+  //     }
+  //     console.log("not in for");
+  //     return false;
+  //   }
+  // };
+
+  const isUserOnEvent = (item) => {
     // console.log("IS THIS USER EVENT : ");
     // // const us = await isUser();
     // console.log(item);
     // console.log("THIS IS THE USERRRRRRR: ", thisuser);
-    if (item.attendees == undefined || !item.attendees) {
-      //console.log("not in if");
+    if (
+      !item.attendees ||
+      item.attendees == undefined ||
+      item.attendees == ""
+    ) {
+      console.log("not in if");
       return false;
       //return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
         // console.log("objectvalue: ", Object.values(item.attendees));
-        //for (var j = 0; j < Object.values(item.attendees).length; j++) {
-        // console.log(
-        //   "this is the value: ",
-        //   Object.values(item.attendees)[j].name
-        // );
-        // console.log("THIS IS THE USER: ", typeof thisuser);
-        if (
-          Object.values(item.attendees)[i].name.toLowerCase() ===
-          thisuser.name?.toLowerCase()
-        ) {
-          // console.log("KOMST INN Í");
-          // console.log(Object.values(item.attendees)[i]);
+        for (var j = 0; j < Object.values(item.attendees).length; j++) {
+          console.log(
+            "this is the value: ",
+            Object.values(item.attendees)[i].name
+          );
+          console.log("THIS IS THE USER: ", thisuser.name);
+          if (
+            Object.values(item.attendees)[i].name.toLowerCase() ===
+            thisuser.name?.toLowerCase()
+          ) {
+            console.log("KOMST INN Í");
+            // console.log(Object.values(item.attendees)[i]);
 
-          const obj = Object.values(item.attendees)[i].name.toLowerCase();
-          const us = thisuser.name?.toLowerCase();
-          // console.log(obj);
-          // console.log(us);
-          return true;
-          // }
+            const obj = Object.values(item.attendees)[i].name.toLowerCase();
+            const us = thisuser.name?.toLowerCase();
+            // console.log(obj);
+            // console.log(us);
+            return true;
+            // }
+          }
         }
-        // }
       }
-      //console.log("not in for");
+      console.log("not in for");
       return false;
     }
   };
@@ -317,6 +364,7 @@ const HomeView = ({ navigation: { navigate } }) => {
     AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
+
   const renderItem = (item) => {
     //console.log(item);
     //console.log(dayValue);
@@ -331,20 +379,24 @@ const HomeView = ({ navigation: { navigate } }) => {
             <Text>{item.date}</Text>
           </TouchableOpacity>
         </View>
-        {!isUserOnEvent(item) ? (
-          <TouchableOpacity
-            onPress={() => handleOnEvent(item)}
-            style={styles.eventbutton}
-          >
-            <Text>Skrá</Text>
-          </TouchableOpacity>
+        {isUserOnEvent(item) == false ? (
+          <View>
+            <TouchableOpacity
+              //onPress={() => handleOnEvent(item)}
+              style={styles.eventbutton}
+            >
+              <Text>Skrá</Text>
+            </TouchableOpacity>
+          </View>
         ) : (
-          <TouchableOpacity
-            onPress={() => handleOnRemove(item)}
-            style={styles.eventbutton}
-          >
-            <Text>AfSkrá</Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              onPress={() => handleOnRemove(item)}
+              style={styles.eventbutton}
+            >
+              <Text>AfSkrá</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </>
     );
