@@ -7,6 +7,7 @@ const Stack = createStackNavigator();
 import Main from "../views/Main";
 import HomeView from "../views/HomeView";
 import NotificationView from "../views/notifications";
+import Event from "../views/EventView";
 
 const Routes = () => (
   //   <NavigationContainer>
@@ -14,6 +15,7 @@ const Routes = () => (
     <Stack.Screen name="Main" component={Main} />
     <Stack.Screen name="Home" component={HomeView} />
     <Stack.Screen name="Notifications" component={NotificationView} />
+    <Stack.Screen name="Event" component={Event} />
   </Stack.Navigator>
   // {/* </NavigationContainer> */}
 );

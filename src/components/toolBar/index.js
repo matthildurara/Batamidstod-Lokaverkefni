@@ -30,7 +30,7 @@ const Toolbar = () => {
       </View>
       <View style={styles.toolbarActionName}>
         <Text style={styles.toolbarText}>Batamiðstöðin</Text>
-        <Text>{user}</Text>
+        <Text>{user.name}</Text>
       </View>
     </View>
   );

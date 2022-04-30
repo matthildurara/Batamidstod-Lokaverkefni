@@ -13,7 +13,7 @@ import bata from "../../resources/Bata.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../firebase-config";
+import { auth, dbFirestore } from "../../../firebase-config";
 
 //import { getAuth } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -46,18 +46,21 @@ const Main = ({ navigation: { navigate } }) => {
   const db = getDatabase();
   const dbRef = ref(db, "Users/User");
 
-  let allUsers = [];
+  //let allUsers = [];
+  const [allUsers, setAllUsers] = useState({});
 
   const getUsers = async () => {
     //let allUsers = [];
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        //console.log("childSnapshot", childSnapshot);
+        console.log(childSnapshot);
         const childKey = childSnapshot.key;
-        //console.log(childKey);
-        childSnapshot.forEach((childvalue) => {
-          //console.log(childvalue);
-          allUsers.push(childvalue);
+        const childVal = childSnapshot.val();
+        allUsers[childKey] = [];
+
+        allUsers[childKey].push({
+          name: childKey,
+          email: childVal.email,
         });
       });
     });
@@ -68,157 +71,77 @@ const Main = ({ navigation: { navigate } }) => {
     async function setUsers() {
       onValue(dbRef, (snapshot) => {
         snapshot.forEach((childSnapshot) => {
-          //console.log("childSnapshot", childSnapshot);
           const childKey = childSnapshot.key;
-          //console.log(childKey);
-          childSnapshot.forEach((childvalue) => {
-            //console.log(childvalue);
-            allUsers.push(childvalue);
+          const childVal = childSnapshot.val();
+          allUsers[childKey] = [];
+
+          allUsers[childKey].push({
+            name: childKey,
+            email: childVal.email,
           });
         });
       });
-      //const yes = await setUsers();
     }
     setUsers();
   }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorm, setErrorm] = useState("");
-  //       //console.log("child key");
-  //       // console.log(childKey);
-  //       //setListEvents((prevState) => ({ ...prevState, childKey }));
-  //       //listOfEvents[childKey] = [];
-  //       //console.log("FYRIRRRRR");
-  //       // console.log(listOfEvents);
-  //       //listOfEvents[childKey].push({ childSnapshot });
-  //       // childSnapshot.forEach((childChild) => {
-  //       //   const childchildKey = childChild.key;
-  //       //   const childValue = childChild.val();
-  //       //   console.log(child)
-  //       //   // setListEvents((prevState) => ({
-  //       //   //   ...prevState,
-  //       //   //   event: childchildKey,
-  //       //   // }));
-  //       //   // let childVal = {};
-  //       //   // childVal = {
-  //       //   //   name: childchildKey,
-  //       //   //   childValue,
-  //       //   // };
-  //       //   // childChild.forEach((childvalue) => {
-  //       //   //   listOfEvents[childKey].push({
-  //       //   //     startTime: childvalue,
-  //       //   //   });
-  //       //   // });
-  //       //   // const newObj = {
-  //       //   //   childKey: {
-  //       //   //     name: childchildKey,
-  //       //   //   },
-  //       //   // };
-  //       //   // listE.push(newObj);
-  //       // });
-  //       //const newList = listOfEvents.concat
-  //       //console.log(childKey.valueOf());
-  //       //listE.push(childKey);
-  //       // setListEvents(childKey);
-  //       //console.log("blabla");
-  //       //console.log(listE);
-  //       // console.log(listOfEvents);
-  //       // setAllEvent(allEvents, listOfEvents);
 
-  // }
-  //setUsers();
-
-  //   const auth = getAuth();
-  //   const [user, setUser] = useState({});
-  //   onAuthStateChanged(auth, (user) => {
-  //     setCurrentUser(user);
-  //   });
-  //   useEffect(() => {
-  //     onAuthStateChanged(auth, (user) => {
-  //       setCurrentUser(user);
-  //       // console.log(currUser);
-  //       // console.log(user);
-  //       // //const currUser = JSON.stringify(user);
-  //       // const userEmail = user?.email;
-  //       // console.log(userEmail);
-
-  //       //const jsonValue = JSON.stringify(user);
-  //       // AsyncStorage.setItem("user", jsonValue);
-
-  //       // setUser(currentUser);
-  //     });
-  //   }, []);
-  //   const handleSignup = () => {
-  //     auth
-  //       .createUserWithEmailAndPasswor(email, password)
-  //       .then((userCredentials) => {
-  //         const user = userCredentials.user;
-  //         console.log(user.email);
-  //       })
-  //       .catch((error) => alert.apply(error.message));
-  //   };
-
-  // const handleLogin = async () => {
-  //   try {
-  //     const user = await signInWithEmailAndPassword(auth, email, password);
-  //     //   console.log(user.user.email);
-  //     // setUser(user);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  //   navigate("Home");
-  // };
-  // const handlesaveUser = async () => {
-  //   try {
-  //     AsyncStorage.setItem("User", email);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  const handleLogin = async () => {
-    try {
-      AsyncStorage.setItem("User", email);
-      navigate("Home");
-    } catch (error) {
-      console.log(error);
+  const findName = async (email) => {
+    for (var i = 0; i < Object.values(allUsers).length; i++) {
+      const user = Object.values(allUsers)[i];
+      const tempUserString = JSON.stringify(user[0].email);
+      console.log("TEMPUSERSTRING: ", tempUserString);
+      if (tempUserString === email) {
+        return user[0].name;
+      }
     }
+  };
+  const handleLogin = async () => {
+    await getUsers();
+    // console.log("ALLLL USERS: ");
+    // console.log(allUsers);
+    // console.log(JSON.stringify(email.toLowerCase()));
 
-    //   } else {
-    //   setErrorm("This email is invalid");
-    // }
-    const isUser = await getUsers();
-    // const isinclude = allUsers.includes(email);
-    //console.log(isinclude);
-    console.log(email.toLowerCase().toString());
-    // for (var i = 0; i < allUsers?.length; i++) {
-    //   console.log(allUsers[i]);
-    //   if (allUsers[i] === email.toLowerCase().toString()) {
-    //     try {
-    //       AsyncStorage.setItem("User", email);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //     navigate("Home");
-    //   } else {
-    //     setErrorm("This email is invalid");
-    //   }
-    // }
-    // allUsers.forEach((user) => {
-    //   //console.log(user);
-    //   console.log(user);
-    //   console.log(email);
-    //   const newEmail = email.toLowerCase.toString();
-    //   if (user === newEmail) {
-    //     try {
-    //       AsyncStorage.setItem("User", email);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //     navigate("Home");
-    //   } else {
-    //     setErrorm("This email is invalid");
-    //   }
-    // });
+    for (var i = 0; i < Object.values(allUsers).length; i++) {
+      //console.log(user);
+      console.log(i);
+      const user = Object.values(allUsers)[i];
+      console.log("USER: ", user);
+      //console.log("USER IN DATABASE: ", user.email);
+      const newEmail = JSON.stringify(email.toLowerCase());
+
+      const tempUserString = JSON.stringify(user[0].email);
+
+      console.log("user: ", tempUserString);
+      console.log("LOG IN USER: ", newEmail);
+
+      //console.log(user, newEmail);
+
+      //console.log(tempUserString, newEmail);
+      if (tempUserString === newEmail) {
+        console.log(true);
+        const thisName = await findName(newEmail);
+        console.log("BLABLABLALBALBALBALBLA");
+        console.log(newEmail, thisName);
+        console.log("TEMP: ", tempUserString);
+        const userLogin = {
+          name: thisName,
+          email: user[0].email,
+        };
+        console.log("USERLOGIN OBJECT: ", userLogin);
+        try {
+          AsyncStorage.setItem("User", JSON.stringify(userLogin));
+        } catch (error) {
+          console.log(error);
+        }
+        navigate("Home");
+      } else {
+        console.log(false);
+        setErrorm("This email is invalid");
+      }
+    }
   };
 
   //console.log(currentUser);

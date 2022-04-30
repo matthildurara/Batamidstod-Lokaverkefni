@@ -13,7 +13,7 @@ import Footer from "../../components/footer";
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 //import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//import { auth } from "../../../firebase-config";
+import { dbFirestore } from "../../../firebase-config";
 import { getAuth } from "firebase/auth";
 import { useAuthValue } from "../../../authContext";
 import { Agenda } from "react-native-calendars";
@@ -23,21 +23,46 @@ import {
   set,
   onValue,
   DataSnapshot,
+  remove,
 } from "firebase/database";
 import { FirebaseError } from "firebase/app";
 
 //const Drawer = createDrawerNavigator();
 
 const HomeView = ({ navigation: { navigate } }) => {
+  const [reload, setReload] = useState(0);
   const [thisuser, setUser] = useState("");
+
+  // const isUser = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem("User");
+  //     ///console.log("WHAT IS THIS VALUE: ", value);
+  //     if (value !== null) {
+  //       // We have data!!
+
+  //       console.log("THIS IS THE USER: ", JSON.parse(value));
+  //       const val = JSON.parse(value);
+  //       console.log(val.name);
+  //       setUser(JSON.parse(value));
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  //   return;
+  // };
+
   useEffect(() => {
     async function isUser() {
       try {
         const value = await AsyncStorage.getItem("User");
+        // console.log("WHAT IS THIS VALUE: ", value);
         if (value !== null) {
           // We have data!!
-          console.log(value);
-          setUser(value);
+
+          console.log("THIS IS THE USER: ", JSON.parse(value));
+          const val = JSON.parse(value);
+          //console.log(val.name);
+          setUser(JSON.parse(value));
         }
       } catch (error) {
         // Error retrieving data
@@ -56,26 +81,16 @@ const HomeView = ({ navigation: { navigate } }) => {
   // });
   const [listOfEvents, setListEvents] = useState({});
 
-  const [newEvents, setNewEvents] = useState([]);
-
-  console.log();
-
-  const listE = [];
-
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
 
   useEffect(() => {
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        //console.log("childSnapshot", childSnapshot);
         const childKey = childSnapshot.key;
-        //console.log("child key");
-        // console.log(childKey);
-        //setListEvents((prevState) => ({ ...prevState, childKey }));
         listOfEvents[childKey] = [];
-        console.log("FYRIRRRRR");
-        console.log(listOfEvents);
+        //console.log("FYRIRRRRR");
+        //console.log(listOfEvents);
         //listOfEvents[childKey].push({ childSnapshot });
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
@@ -89,12 +104,15 @@ const HomeView = ({ navigation: { navigate } }) => {
             name: childchildKey,
             childValue,
           };
+
           listOfEvents[childKey].push({
             name: childchildKey,
             startTime: childValue.startTime,
             endTime: childValue.endTime,
             date: childKey,
-            attendees: childValue.Attendees,
+            maxNumber: childValue.maxNumber,
+            attendees: childValue.attendees,
+            description: childValue.description,
           });
           // childChild.forEach((childvalue) => {
           //   listOfEvents[childKey].push({
@@ -121,8 +139,8 @@ const HomeView = ({ navigation: { navigate } }) => {
   }, []);
   //console.log(listOfEvents);
   // console.log(listOfEvents);
-  console.log("HALLOOO");
-  console.log(listOfEvents);
+  //console.log("HALLOOO");
+  //console.log(listOfEvents);
   // console.log(listE);
   //console.log(allEvents);
   // const [user, setUser] = useState({});
@@ -164,77 +182,147 @@ const HomeView = ({ navigation: { navigate } }) => {
   //   console.log("data");
   //   console.log(data);
   //   const data = snapshot.val();
+
   //   //updateStarCount(postElement, data);
   //   // console.log("data");
   //   // console.log("data" + data);
   // });
 
-  const handleOnEvent = (item) => {
+  const handleOnEvent = async (item) => {
     const db = getDatabase();
-    const starCountRef = ref(
-      db,
-      "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
-    );
-    //console.log("email here " + newEmail);
-    set(
-      ref(
-        db,
-        "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
-      ),
-      {
-        name: thisuser,
+    if (item.attendees) {
+      const urlr = `Users/Event/${item.date}/${item.name}/attendees/${
+        Object.keys(item.attendees).length + 1
+      }`;
+
+      set(ref(db, urlr), {
+        name: thisuser.name,
+      });
+
+      alert("þú hefur verið skráður á viðburð");
+    } else {
+      const urll = `Users/Event/${item.date}/${item.name}/attendees/1`;
+
+      set(ref(db, urll), {
+        name: thisuser.name,
+      });
+
+      alert("þú hefur verið skráður á viðburð");
+    }
+
+    // const starCountRef = ref(
+    //   db,
+    //   "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
+    // );
+    // //console.log("email here " + newEmail);
+
+    //setReload(1);
+  };
+
+  const findId = (item) => {
+    if (item.attendees) {
+      for (var i = 0; i < Object.keys(item.attendees).length; i++) {
+        if (Object.values(item.attendees)[i].name === thisuser.name) {
+          // console.log("USER AND OVJECT");
+          // console.log("USER: ", thisuser);
+          // console.log("OBJECT: ", Object.values(item.attendees)[i].name);
+          return Object.keys(item.attendees)[i];
+        }
       }
-    );
-    alert("þú hefur verið skráður á viðburð");
+    }
+    return 0;
+  };
+  const handleOnRemove = (item) => {
+    const db = getDatabase();
+    const id = findId(item);
+    console.log("HE ID IS: ", id);
+    const urls = `Users/Event/${item.date}/${item.name}/attendees/${id}/name`;
+    remove(ref(db, urls));
+    //setReload(0);
   };
   const [items, setItems] = useState({
     "2022-04-26": [{ name: "test #2" }],
     "2022-04-25": [{ name: "test #3" }],
   });
-  const { currentUser } = useAuthValue();
-  //console.log("halló");
-  const user = currentUser?.providerData[0].email;
-  const isUserOnEvent = (item) => {
-    for (var i = 0; i < item.attendees?.length; i++) {
-      console.log(item.attendees[i].name);
-      if (item.attendees[i].name === thisuser) {
-        return false;
+  const isUserOnEvent = async (item) => {
+    // const us = await isUser();
+    // console.log("THIS IS THE USERRRRRRR: ", thisuser);
+    if (item.attendees) {
+      for (var i = 0; i < Object.keys(item.attendees).length; i++) {
+        // console.log("objectvalue: ", Object.values(item.attendees));
+        //for (var j = 0; j < Object.values(item.attendees).length; j++) {
+        // console.log(
+        //   "this is the value: ",
+        //   Object.values(item.attendees)[j].name
+        // );
+        // console.log("THIS IS THE USER: ", typeof thisuser);
+        console.log("HELOHELOHELO");
+        if (
+          Object.values(item.attendees)[i].name.toLowerCase() ===
+          thisuser.name.toLowerCase()
+        ) {
+          console.log("KOMST INN Í");
+          // console.log("blablablal");
+          // console.log("objectvalue: ", Object.values(item.attendees)[j]);
+          // console.log("thisUser: ", thisuser);
+          return false;
+          // }
+        }
+        // }
       }
+      return true;
     }
     return true;
   };
+  //const [dayValue, setDay] = useState("");
 
+  const handlePressEvent = (item) => {
+    const pressedEvent = {
+      name: item.name,
+      date: item.date,
+      startTime: item.startTime,
+      endTime: item.endTime,
+      maxNumber: item.maxNumber,
+      description: item.description,
+      attendees: item.attendees,
+    };
+    AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
+    navigate("Event");
+  };
   const renderItem = (item) => {
-    // console.log(item);
+    //console.log(item);
+    //console.log(dayValue);
     return (
+      // {item.date==}
       <View style={styles.event}>
-        <Text>{item.name}</Text>
-        <Text>{item.startTime}</Text>
-        <Text>{item.endTime}</Text>
-        <Text>{item.date}</Text>
-        {isUserOnEvent(item) ? (
-          <TouchableOpacity
-            onPress={() => handleOnEvent(item)}
-            style={styles.eventbutton}
-          >
-            <Text>Skrá</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            //onPress={() => handleOnEvent(item)}
-            style={styles.eventbutton}
-          >
-            <Text>Af Skrá</Text>
-          </TouchableOpacity>
-        )}
-        {/* <TouchableHighlight>skrá</TouchableHighlight> */}
-        {/* <TouchableHighlight>skrá</TouchableHighlight> */}
-        {/* <Text>{items.dateTime}</Text> */}
-
-        {/* <Text>{DateTime.fromISO(items.dateTime).toFormat('HH:mm')}</Text> */}
+        <TouchableOpacity onPress={() => handlePressEvent(item)}>
+          <Text>{item.name}</Text>
+          <Text>{item.startTime}</Text>
+          <Text>{item.endTime}</Text>
+          <Text>{item.date}</Text>
+          {isUserOnEvent(item) ? (
+            <TouchableOpacity
+              onPress={() => handleOnEvent(item)}
+              style={styles.eventbutton}
+            >
+              <Text>Skrá</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => handleOnRemove(item)}
+              style={styles.eventbutton}
+            >
+              <Text>AfSkrá</Text>
+            </TouchableOpacity>
+          )}
+        </TouchableOpacity>
       </View>
     );
   };
+
+  // const changeDay = (day) => {
+
+  // }
 
   return (
     <View style={styles.container}>
@@ -267,6 +355,7 @@ const HomeView = ({ navigation: { navigate } }) => {
           onDayPress={(day) => {
             // console.log("selected day", day);
             const date = day.dateString;
+            //setDay(date);
             console.log(date);
           }}
         />

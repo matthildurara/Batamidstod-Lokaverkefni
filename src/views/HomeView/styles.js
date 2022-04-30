@@ -45,7 +45,7 @@ export default StyleSheet.create({
   eventbutton: {
     borderColor: "black",
     borderWidth: 2,
-    width: 50,
+    width: 70,
     borderRadius: 4,
   },
 });
