@@ -382,7 +382,7 @@ const HomeView = ({ navigation: { navigate } }) => {
         {isUserOnEvent(item) == false ? (
           <View>
             <TouchableOpacity
-              //onPress={() => handleOnEvent(item)}
+              onPress={() => handleOnEvent(item)}
               style={styles.eventbutton}
             >
               <Text>Skrá</Text>
