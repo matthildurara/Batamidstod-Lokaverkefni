@@ -143,7 +143,24 @@ const Main = ({ navigation: { navigate } }) => {
       }
     }
   };
-
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    async function isUser() {
+      try {
+        const value = await AsyncStorage.getItem("User");
+        if (value !== null) {
+          // We have data!!
+          console.log("BEFORE LOG IN");
+          console.log(JSON.parse(value).name);
+          //setUser(JSON.parse(value));
+        }
+      } catch (error) {
+        console.log("BEFORE LOG IN- ERROR");
+        // Error retrieving data
+      }
+    }
+    isUser();
+  });
   //console.log(currentUser);
 
   return (

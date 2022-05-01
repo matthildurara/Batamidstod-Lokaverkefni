@@ -19,7 +19,7 @@ import {
 
 //const Drawer = createDrawerNavigator();
 
-const NotificationView = ({ navigation: { navigate } }) => {
+const EducationView = ({ navigation: { navigate } }) => {
   // const [user, setUser] = useState({});
   // useEffect(() => {
   //   async () => {
@@ -41,41 +41,44 @@ const NotificationView = ({ navigation: { navigate } }) => {
   // console.log("halló 3 ");
 
   const db = getDatabase();
-  const dbRef = ref(db, "Users/Notifications");
-  const [allNotifications, setNotifications] = useState({});
+  const dbRef = ref(db, "Users/EducationMaterial");
+  const [allMaterial, setMaterial] = useState({});
   useEffect(() => {
-    async function setNotifications() {
+    async function setMaterial() {
       onValue(dbRef, (snapshot) => {
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
           const childVal = childSnapshot.val();
-          allNotifications[childKey] = [];
+          allMaterial[childKey] = [];
           // console.log("KEY: ", childKey);
           // console.log(childVal.notification);
 
-          allNotifications[childKey].push({
-            Title: childVal.notificationTitle,
-            Notification: childVal.notification,
+          allMaterial[childKey].push({
+            Title: childVal.educMatTitle,
+            About: childVal.aboutMaterial,
+            Link: childVal.linkToMaterial,
           });
         });
       });
     }
-    setNotifications();
+    setMaterial();
   }, []);
   console.log("hallo");
-  for (var i = 0; i < Object.values(allNotifications).length; i++) {
+  for (var i = 0; i < Object.values(allMaterial).length; i++) {
     console.log("blala");
-    console.log(Object.values(allNotifications)[i][0].Notification);
+    console.log(Object.values(allMaterial)[i][0].Title);
   }
 
   return (
     <View style={styles.container}>
       <Toolbar style={styles.toolbar} />
       <View style={styles.calander}>
-        {Object.values(allNotifications).map((item, index) => (
-          <View key={index} item={item} style={styles.notificationContainer}>
+        {Object.values(allMaterial).map((item, index) => (
+          <View key={index} item={item} style={styles.educationMatContainer}>
             <Text>{item[0].Title}</Text>
-            <Text>{item[0].Notification}</Text>
+            <Text>{item[0].About}</Text>
+            <Text>Linkur á fræðsluefni: </Text>
+            <Text>{item[0].Link}</Text>
           </View>
         ))}
         {/* {allNotifications.map((item, index) => {
@@ -89,4 +92,4 @@ const NotificationView = ({ navigation: { navigate } }) => {
     </View>
   );
 };
-export default NotificationView;
+export default EducationView;

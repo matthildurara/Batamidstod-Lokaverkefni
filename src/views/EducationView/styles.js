@@ -35,7 +35,7 @@ export default StyleSheet.create({
     // flex:2,
     marginTop: "auto",
   },
-  notificationContainer: {
+  educationMatContainer: {
     borderColor: "black",
     borderWidth: 2,
 

@@ -1,19 +1,25 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Menu } from "react-native";
 import styles from "./styles";
 import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import CreateDrawer from "../drawer";
+import SideMenu from "react-native-side-menu";
 
 const Footer = () => {
   const { navigate } = useNavigation();
+  //const menu = <Menu navigator={navigator} />;
+
   return (
     <View styleName="horizontal" style={styles.footer}>
       {/* <View style={styles.toolbarAction}> */}
       <View style={styles.footerAction}>
-        <Text>
-          <Ionicons name="menu" size={24} color="black" />
-        </Text>
+        <TouchableHighlight onPress={() => navigate("Education")}>
+          <Text>
+            <Ionicons name="menu" size={24} color="black" />
+          </Text>
+        </TouchableHighlight>
       </View>
       <View style={styles.footerAction}>
         <TouchableHighlight onPress={() => navigate("Home")}>
@@ -31,9 +37,11 @@ const Footer = () => {
         </TouchableHighlight>
       </View>
       <View style={styles.footerAction}>
-        <Text>
-          <MaterialIcons name="account-circle" size={24} color="black" />
-        </Text>
+        <TouchableHighlight onPress={() => navigate("User")}>
+          <Text>
+            <MaterialIcons name="account-circle" size={24} color="black" />
+          </Text>
+        </TouchableHighlight>
       </View>
       {/* </View> */}
     </View>

@@ -41,4 +41,8 @@ export default StyleSheet.create({
 
     marginBottom: 10,
   },
+  logoutbutton: {
+    borderColor: "black",
+    borderWidth: 2,
+  },
 });
