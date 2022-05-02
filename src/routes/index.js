@@ -16,30 +16,39 @@ const Routes = () => (
   //   <NavigationContainer>
 
   <Stack.Navigator initialRouteName="Main">
-    <Stack.Screen name="Main" component={Main} />
+    <Stack.Screen
+      name="Main"
+      component={Main}
+      options={{ headerShown: false }}
+    />
     <Stack.Screen
       name="Home"
       component={HomeView}
+      initialParams={{ toolbarText: "Dagatal" }}
       options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Notifications"
       component={NotificationView}
+      initialParams={{ toolbarText: "Tilkynningar" }}
       options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Event"
       component={Event}
+      initialParams={{ toolbarText: "Viðburður" }}
       options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Education"
       component={EducationView}
+      initialParams={{ toolbarText: "Fræðsluefni" }}
       options={{ headerShown: false }}
     />
     <Stack.Screen
       name="User"
       component={UserView}
+      initialParams={{ toolbarText: "Notandi" }}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>

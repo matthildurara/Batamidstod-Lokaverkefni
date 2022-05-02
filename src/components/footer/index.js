@@ -7,12 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 
 const Footer = () => {
   const { navigate } = useNavigation();
-  //const menu = <Menu navigator={navigator} />;
 
   return (
     <View styleName="horizontal" style={styles.footer}>
-      {/* <View style={styles.toolbarAction}> */}
-
       <View style={styles.footerAction}>
         <TouchableHighlight
           style={styles.button}
@@ -59,9 +56,12 @@ const Footer = () => {
           style={styles.button}
           onPress={() => navigate("User")}
         >
-          <Text>
-            <MaterialIcons name="account-circle" size={24} color="black" />
-          </Text>
+          <View style={styles.buttonView}>
+            <Text>
+              <MaterialIcons name="account-circle" size={24} color="black" />
+            </Text>
+            <Text>Notandi</Text>
+          </View>
         </TouchableHighlight>
       </View>
       {/* </View> */}

@@ -6,20 +6,17 @@ import Footer from "../../components/footer";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const UserView = ({ navigation: { navigate } }) => {
+const UserView = ({ navigation, route }) => {
+  const parameter = route.params.toolbarText;
   const [user, setUser] = useState("");
   useEffect(() => {
     async function isUser() {
       try {
         const value = await AsyncStorage.getItem("User");
         if (value !== null) {
-          // We have data!!
-          console.log(JSON.parse(value).name);
           setUser(JSON.parse(value));
         }
-      } catch (error) {
-        // Error retrieving data
-      }
+      } catch (error) {}
     }
     isUser();
   }, []);
@@ -37,7 +34,7 @@ const UserView = ({ navigation: { navigate } }) => {
   };
   return (
     <View style={styles.container}>
-      <Toolbar style={styles.toolbar} />
+      <Toolbar toolbarText={parameter} style={styles.toolbar} />
       <View style={styles.calander}></View>
       <Text>{user.name}</Text>
       <TouchableHighlight onPress={handleLogOut} style={styles.logoutbutton}>

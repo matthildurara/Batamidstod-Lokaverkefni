@@ -6,10 +6,9 @@ import { grey, greyBrown } from "../../styles/colors";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
     alignItems: "center",
-
-    // justifyContent: "space-around",
+    justifyContent: "center",
     backgroundColor: "white",
   },
   sign: {
@@ -22,7 +21,6 @@ export default StyleSheet.create({
     height: 45,
     backgroundColor: "#635d5c",
     justifyContent: "center",
-    // justifyItems:'center',
     alignItems: "center",
     margin: 10,
   },
@@ -32,7 +30,6 @@ export default StyleSheet.create({
     width: 185,
     height: 45,
     borderRadius: 1,
-    // justifyContent: "space-around",
     backgroundColor: "#B4B5B8",
   },
   image: {

@@ -92,7 +92,6 @@ const Main = ({ navigation: { navigate } }) => {
     for (var i = 0; i < Object.values(allUsers).length; i++) {
       const user = Object.values(allUsers)[i];
       const tempUserString = JSON.stringify(user[0].email);
-      console.log("TEMPUSERSTRING: ", tempUserString);
       if (tempUserString === email) {
         return user[0].name;
       }
@@ -100,43 +99,23 @@ const Main = ({ navigation: { navigate } }) => {
   };
   const handleLogin = async () => {
     await getUsers();
-    // console.log("ALLLL USERS: ");
-    // console.log(allUsers);
-    // console.log(JSON.stringify(email.toLowerCase()));
 
     for (var i = 0; i < Object.values(allUsers).length; i++) {
-      //console.log(user);
-      console.log(i);
       const user = Object.values(allUsers)[i];
-      console.log("USER: ", user);
-      //console.log("USER IN DATABASE: ", user.email);
       const newEmail = JSON.stringify(email.toLowerCase());
-
       const tempUserString = JSON.stringify(user[0].email);
-
-      console.log("user: ", tempUserString);
-      console.log("LOG IN USER: ", newEmail);
-
-      //console.log(user, newEmail);
-
-      //console.log(tempUserString, newEmail);
       if (tempUserString === newEmail) {
-        console.log(true);
         const thisName = await findName(newEmail);
-        console.log("BLABLABLALBALBALBALBLA");
-        console.log(newEmail, thisName);
-        console.log("TEMP: ", tempUserString);
         const userLogin = {
           name: thisName,
           email: user[0].email,
         };
-        console.log("USERLOGIN OBJECT: ", userLogin);
         try {
           AsyncStorage.setItem("User", JSON.stringify(userLogin));
         } catch (error) {
           console.log(error);
         }
-        navigate("Home");
+        navigate("Home", { toolbarText: "Dagatal" });
       } else {
         console.log(false);
         setErrorm("This email is invalid");
@@ -161,7 +140,6 @@ const Main = ({ navigation: { navigate } }) => {
     }
     isUser();
   });
-  //console.log(currentUser);
 
   return (
     <>
@@ -174,14 +152,7 @@ const Main = ({ navigation: { navigate } }) => {
           setEmail={setEmail}
           onChangeText={setEmail}
         />
-        {/* <TextInput
-          style={styles.textInput}
-          secureTextEntry
-          placeholder="Password"
-          value={password}
-          setPassword={setPassword}
-          onChangeText={setPassword}
-        /> */}
+
         <TouchableHighlight
           onPress={() => handleLogin()}
           style={styles.signButton}

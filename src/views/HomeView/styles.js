@@ -24,6 +24,7 @@ export default StyleSheet.create({
     //  height:400,
     paddingTop: 10,
     flex: 1,
+    //
     width: 400,
   },
   footer: {

@@ -10,12 +10,7 @@ import {
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
-//import { createDrawerNavigator } from "@react-navigation/drawer";
-//import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { dbFirestore } from "../../../firebase-config";
-import { getAuth } from "firebase/auth";
-import { useAuthValue } from "../../../authContext";
 import { Agenda } from "react-native-calendars";
 import {
   getDatabase,
@@ -25,11 +20,9 @@ import {
   DataSnapshot,
   remove,
 } from "firebase/database";
-import { FirebaseError } from "firebase/app";
 
-//const Drawer = createDrawerNavigator();
-
-const HomeView = ({ navigation: { navigate } }) => {
+const HomeView = ({ navigation, route }) => {
+  const parameter = route.params.toolbarText;
   const [reload, setReload] = useState(0);
   const [thisuser, setUser] = useState("");
 
@@ -37,13 +30,8 @@ const HomeView = ({ navigation: { navigate } }) => {
     async function isUser() {
       try {
         const value = await AsyncStorage.getItem("User");
-        // console.log("WHAT IS THIS VALUE: ", value);
         if (value !== null) {
-          // We have data!!
-
-          //console.log("THIS IS THE USER: ", JSON.parse(value));
           const val = JSON.parse(value);
-          //console.log(val.name);
           setUser(JSON.parse(value));
         }
       } catch (error) {
@@ -78,23 +66,10 @@ const HomeView = ({ navigation: { navigate } }) => {
             },
           ];
 
-          setListEvents(
-            (prevState) => ({
-              ...prevState,
-              [childSnapshot.key]: item,
-            })
-
-            // });
-            // listOfEvents[childKey].push({
-            //   name: childchildKey,
-            //   startTime: childValue.startTime,
-            //   endTime: childValue.endTime,
-            //   date: childKey,
-            //   maxNumber: childValue.maxNumber,
-            //   attendees: childValue.attendees,
-            //   description: childValue.description,
-            // });
-          );
+          setListEvents((prevState) => ({
+            ...prevState,
+            [childSnapshot.key]: item,
+          }));
         });
       });
     });
@@ -120,7 +95,6 @@ const HomeView = ({ navigation: { navigate } }) => {
       set(ref(db, urlr), {
         name: thisuser?.name,
       });
-
       alert("þú hefur verið skráður á viðburð");
     } else {
       const urll = `Users/Event/${item.date}/${item.name}/attendees/1`;
@@ -128,28 +102,15 @@ const HomeView = ({ navigation: { navigate } }) => {
       set(ref(db, urll), {
         name: thisuser?.name,
       });
-
       alert("þú hefur verið skráður á viðburð");
     }
-
     await fetchEvents();
-
-    // const starCountRef = ref(
-    //   db,
-    //   "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
-    // );
-    // //console.log("email here " + newEmail);
-
-    //setReload(1);
   };
 
   const findId = (item) => {
     if (item.attendees) {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
         if (Object.values(item.attendees)[i].name === thisuser.name) {
-          // console.log("USER AND OVJECT");
-          // console.log("USER: ", thisuser);
-          // console.log("OBJECT: ", Object.values(item.attendees)[i].name);
           return Object.keys(item.attendees)[i];
         }
       }
@@ -159,11 +120,9 @@ const HomeView = ({ navigation: { navigate } }) => {
   const handleOnRemove = (item) => {
     const db = getDatabase();
     const id = findId(item);
-    // console.log("HE ID IS: ", id);
     const urls = `Users/Event/${item.date}/${item.name}/attendees/${id}/name`;
     remove(ref(db, urls));
     alert("þú hefur verið afskráður á viðburð");
-    //setReload(0);
   };
 
   const isUserOnEvent = (item) => {
@@ -172,39 +131,24 @@ const HomeView = ({ navigation: { navigate } }) => {
       item.attendees == undefined ||
       item.attendees == ""
     ) {
-      // console.log("not in if");
       return false;
-      //return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
-        // console.log("objectvalue: ", Object.values(item.attendees));
         for (var j = 0; j < Object.values(item.attendees).length; j++) {
-          // console.log(
-          //   "this is the value: ",
-          //   Object.values(item.attendees)[i].name
-          // );
-          // console.log("THIS IS THE USER: ", thisuser.name);
           if (
             Object.values(item.attendees)[i].name.toLowerCase() ===
             thisuser.name?.toLowerCase()
           ) {
-            // console.log("KOMST INN Í");
-            // console.log(Object.values(item.attendees)[i]);
-
             const obj = Object.values(item.attendees)[i].name.toLowerCase();
             const us = thisuser.name?.toLowerCase();
-            // console.log(obj);
-            // console.log(us);
             return true;
             // }
           }
         }
       }
-      // console.log("not in for");
       return false;
     }
   };
-  //const [dayValue, setDay] = useState("");
 
   const handlePressEvent = (item) => {
     const pressedEvent = {
@@ -216,17 +160,24 @@ const HomeView = ({ navigation: { navigate } }) => {
       description: item.description,
       attendees: item.attendees,
     };
-    // console.log("ATTENDES BEFORE ASYNC ");
-    // console.log(item.attendees);
     AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
+  const isEventOver = (eventDate) => {
+    //console.log(eventDate);
+
+    const today = new Date();
+    const date = new Date(eventDate);
+    if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
+      return true;
+    }
+    console.log("date", date);
+    console.log("today", today);
+    return false;
+  };
 
   const renderItem = (item) => {
-    //console.log(item);
-    //console.log(dayValue);
     return (
-      // {item.date==}
       <>
         <View style={styles.event}>
           <TouchableOpacity onPress={() => handlePressEvent(item)}>
@@ -236,40 +187,44 @@ const HomeView = ({ navigation: { navigate } }) => {
             <Text>{item.date}</Text>
           </TouchableOpacity>
         </View>
-        {isUserOnEvent(item) == false ? (
+        {isEventOver(item.date) ? (
           <View>
-            <TouchableOpacity
-              onPress={() => handleOnEvent(item)}
-              style={styles.eventbutton}
-            >
-              <Text>Skrá</Text>
-            </TouchableOpacity>
+            {isUserOnEvent(item) == false ? (
+              <View>
+                <TouchableOpacity
+                  onPress={() => handleOnEvent(item)}
+                  style={styles.eventbutton}
+                >
+                  <Text>Skrá</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                <TouchableOpacity
+                  onPress={() => handleOnRemove(item)}
+                  style={styles.eventbutton}
+                >
+                  <Text>AfSkrá</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         ) : (
-          <View>
-            <TouchableOpacity
-              onPress={() => handleOnRemove(item)}
-              style={styles.eventbutton}
-            >
-              <Text>AfSkrá</Text>
-            </TouchableOpacity>
-          </View>
+          <Text>Viðburður er búinn</Text>
         )}
       </>
     );
   };
 
-  // const changeDay = (day) => {
-
-  // }
-
   return (
     <View style={styles.container}>
-      <Toolbar style={styles.toolbar} />
+      <Toolbar toolbarText={parameter} style={styles.toolbar} />
       <SafeAreaView style={styles.calander}>
         <Agenda
           items={listOfEvents}
           renderItem={renderItem}
+          pastScrollRange={10}
+          futureScrollRange={10}
           // renderDay={(day, item) => {
           //   return (
           //     <View>

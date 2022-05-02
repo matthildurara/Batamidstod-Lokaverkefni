@@ -18,10 +18,7 @@ export default StyleSheet.create({
     color: "black",
     backgroundColor: "#b0c4de",
   },
-  calander: {
-    //  height:400,
-    paddingTop: 10,
-  },
+
   footer: {
     flex: 1,
     alignSelf: "flex-end",

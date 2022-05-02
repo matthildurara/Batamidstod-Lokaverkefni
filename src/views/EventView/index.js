@@ -8,7 +8,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 
-const Event = ({ navigation: { navigate } }) => {
+const Event = ({ navigation, route }) => {
+  const parameter = route.params.toolbarText;
   const [thisEvent, setEvent] = useState({});
   useEffect(() => {
     async function isEvent() {
@@ -27,19 +28,9 @@ const Event = ({ navigation: { navigate } }) => {
   }, []);
 
   const checkAttendees = (item) => {
-    // console.log("INSIDE CHECKATTENDEEEEEEEEEEs");
-    console.log("ITEM : ", item);
-    console.log("attendeees: ", item.attendees);
-    // console.log("IN THE MIDDDLE");
-    //console.log("attendeees length: ", Object.values(item.attendees).length);
-
     if (item.attendees) {
-      // console.log("inside if");
-      // console.log(Object.values(item.attendees).length);
       if (Object.values(item.attendees).length > 1) {
         for (var i = 0; i < Object.values(item.attendees).length; i++) {
-          // console.log("NAAAAAMMMMEE");
-          // console.log(Object.values(item?.attendees)[i].name);
           return true;
         }
       }
@@ -59,7 +50,7 @@ const Event = ({ navigation: { navigate } }) => {
   };
   return (
     <View>
-      <Toolbar />
+      <Toolbar toolbarText={parameter} />
       <TouchableHighlight
         style={styles.backButton}
         onPress={() => navigate("Home")}

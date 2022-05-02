@@ -4,7 +4,7 @@ import styles from "./styles";
 import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Toolbar = () => {
+const Toolbar = (parameter) => {
   const [user, setUser] = useState("");
   useEffect(() => {
     async function isUser() {
@@ -29,7 +29,7 @@ const Toolbar = () => {
         </Text> */}
       </View>
       <View style={styles.toolbarActionName}>
-        <Text style={styles.toolbarText}>Batamiðstöðin</Text>
+        <Text style={styles.toolbarText}>{parameter.toolbarText}</Text>
         <Text>{user.name}</Text>
       </View>
     </View>
