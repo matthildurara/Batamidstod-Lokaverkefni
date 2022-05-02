@@ -25,11 +25,11 @@ import {
   DataSnapshot,
   remove,
 } from "firebase/database";
-import { FirebaseError } from "firebase/app";
+import { useNavigation } from "@react-navigation/native";
 
-//const Drawer = createDrawerNavigator();
-
-const HomeView = ({ navigation: { navigate } }) => {
+const HomeView = ({ navigation, route }) => {
+  const { navigate } = useNavigation();
+  const parameter = route.params.toolbarText;
   const [reload, setReload] = useState(0);
   const [thisuser, setUser] = useState("");
 
@@ -63,26 +63,31 @@ const HomeView = ({ navigation: { navigate } }) => {
         const childKey = childSnapshot.key;
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
+          //console.log("CHILDCHILDKEY: ", childchildKey);
+          //console.log("CHILD KEY: ", childKey);
           const childValue = childChild.val();
+          //console.log("CHILD VALUE name: ", childValue);
+          //listOfEvents[childKey] = [];
 
           const item = [
             {
-              name: childchildKey,
+              name: childValue.name,
               startTime: childValue.startTime,
               endTime: childValue.endTime,
               date: childKey,
               maxNumber: childValue.maxNumber,
               attendees: childValue.attendees,
               description: childValue.description,
+              eventId: childchildKey,
+              staffmember: childValue.staffmember,
             },
           ];
 
-          setListEvents(
-            (prevState) => ({
-              ...prevState,
-              [childSnapshot.key]: item,
-            })
-          );
+          setListEvents((prevState) => ({
+            ...prevState,
+            [childSnapshot.key]: item,
+          }));
+          //console.log("EFTIR SET LIST EVENTS");
         });
       });
     });
@@ -95,13 +100,16 @@ const HomeView = ({ navigation: { navigate } }) => {
 
   useEffect(() => {
     fetchEvents();
+    // console.log("LIST OG EVENTS: ");
+    // console.log(listOfEvents);
+    //return;
   }, []);
-  console.log(listOfEvents);
+  //console.log(listOfEvents);
 
   const handleOnEvent = async (item) => {
     const db = getDatabase();
     if (item.attendees) {
-      const urlr = `Users/Event/${item.date}/${item.name}/attendees/${
+      const urlr = `Users/Event/${item.date}/${item.eventId}/attendees/${
         Object.keys(item.attendees).length + 1
       }`;
 
@@ -111,7 +119,7 @@ const HomeView = ({ navigation: { navigate } }) => {
 
       alert("þú hefur verið skráður á viðburð");
     } else {
-      const urll = `Users/Event/${item.date}/${item.name}/attendees/1`;
+      const urll = `Users/Event/${item.date}/${item.eventId}/attendees/1`;
 
       set(ref(db, urll), {
         name: thisuser?.name,
@@ -147,8 +155,8 @@ const HomeView = ({ navigation: { navigate } }) => {
   const handleOnRemove = (item) => {
     const db = getDatabase();
     const id = findId(item);
-    // console.log("HE ID IS: ", id);
-    const urls = `Users/Event/${item.date}/${item.name}/attendees/${id}/name`;
+    console.log(id);
+    const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
     remove(ref(db, urls));
     alert("þú hefur verið afskráður á viðburð");
     //setReload(0);
@@ -195,6 +203,9 @@ const HomeView = ({ navigation: { navigate } }) => {
   //const [dayValue, setDay] = useState("");
 
   const handlePressEvent = (item) => {
+    console.log("======ÖÖÖÖÖ======");
+    console.log(item.name);
+    console.log(item.date);
     const pressedEvent = {
       name: item.name,
       date: item.date,
@@ -203,6 +214,8 @@ const HomeView = ({ navigation: { navigate } }) => {
       maxNumber: item.maxNumber,
       description: item.description,
       attendees: item.attendees,
+      eventId: item.eventId,
+      staffmember: item.staffmember,
     };
     // console.log("ATTENDES BEFORE ASYNC ");
     // console.log(item.attendees);
@@ -222,6 +235,7 @@ const HomeView = ({ navigation: { navigate } }) => {
             <Text>{item.startTime}</Text>
             <Text>{item.endTime}</Text>
             <Text>{item.date}</Text>
+            <Text>{item.staffmember}</Text>
           </TouchableOpacity>
         </View>
         {isUserOnEvent(item) == false ? (

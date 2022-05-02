@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   getDatabase,
@@ -12,6 +13,8 @@ import {
   DataSnapshot,
 } from "firebase/database";
 const NotificationView = ({ navigation, route }) => {
+  const { navigate } = useNavigation();
+
   const parameter = route.params.toolbarText;
   const db = getDatabase();
   const dbRef = ref(db, "Users/Notifications");
