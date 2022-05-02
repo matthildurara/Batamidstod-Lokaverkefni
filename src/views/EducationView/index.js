@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableHighlight, TextInput } from "react-native";
+import { View, Text, TouchableHighlight, TextInput, Linking } from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
@@ -98,6 +98,10 @@ const EducationView = ({ navigation: { navigate } }) => {
             <Text>{item[0]?.About}</Text>
             <Text>Linkur á fræðsluefni: </Text>
             <Text>{item[0]?.Link}</Text>
+            <Text style={{color: 'blue'}}
+              onPress={() => Linking.openURL(item[0]?.Link)}>
+              Linkur á efni
+            </Text>
           </View>
         ))}
         {/* {allNotifications.map((item, index) => {
