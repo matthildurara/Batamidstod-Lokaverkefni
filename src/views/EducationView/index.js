@@ -20,13 +20,14 @@ import {
 //const Drawer = createDrawerNavigator();
 
 const EducationView = ({ navigation: { navigate } }) => {
-  // const [user, setUser] = useState({});
-  // useEffect(() => {
-  //   async () => {
-  //     const user = await AsyncStorage.getItem("user");
-  //     console.log(user.email);
-  //   };
-  // }, []);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    async () => {
+      const user = await AsyncStorage.getItem("user");
+      setUser(JSON.parse(user));
+      console.log(user.email);
+    };
+  });
   // const user = await AsyncStorage.getItem("user");
   // const auth = getAuth();
   // const us = auth.currentUser();
@@ -43,26 +44,44 @@ const EducationView = ({ navigation: { navigate } }) => {
   const db = getDatabase();
   const dbRef = ref(db, "Users/EducationMaterial");
   const [allMaterial, setMaterial] = useState({});
-  useEffect(() => {
-    async function setMaterial() {
-      onValue(dbRef, (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
-          const childVal = childSnapshot.val();
-          allMaterial[childKey] = [];
-          // console.log("KEY: ", childKey);
-          // console.log(childVal.notification);
 
-          allMaterial[childKey].push({
-            Title: childVal.educMatTitle,
-            About: childVal.aboutMaterial,
-            Link: childVal.linkToMaterial,
-          });
+  // const setEduMaterial = async () => {
+  //   onValue(dbRef, (snapshot) => {
+  //     snapshot.forEach((childSnapshot) => {
+  //       const childKey = childSnapshot.key;
+  //       const childVal = childSnapshot.val();
+  //       allMaterial[childKey] = [];
+  //       // console.log("KEY: ", childKey);
+  //       // console.log(childVal.notification);
+
+  //       allMaterial[childKey].push({
+  //         Title: childVal.educMatTitle,
+  //         About: childVal.aboutMaterial,
+  //         Link: childVal.linkToMaterial,
+  //       });
+  //     });
+  //   });
+  // };
+  useEffect(() => {
+    // async function setMaterial() {
+    onValue(dbRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childKey = childSnapshot.key;
+        const childVal = childSnapshot.val();
+        allMaterial[childKey] = [];
+        // console.log("KEY: ", childKey);
+        // console.log(childVal.notification);
+
+        allMaterial[childKey].push({
+          Title: childVal.educMatTitle,
+          About: childVal.aboutMaterial,
+          Link: childVal.linkToMaterial,
         });
       });
-    }
-    setMaterial();
-  }, []);
+    });
+    // }
+    //setMaterial();
+  }, [allMaterial]);
   console.log("hallo");
   for (var i = 0; i < Object.values(allMaterial).length; i++) {
     console.log("blala");
@@ -75,10 +94,10 @@ const EducationView = ({ navigation: { navigate } }) => {
       <View style={styles.calander}>
         {Object.values(allMaterial).map((item, index) => (
           <View key={index} item={item} style={styles.educationMatContainer}>
-            <Text>{item[0].Title}</Text>
-            <Text>{item[0].About}</Text>
+            <Text>{item[0]?.Title}</Text>
+            <Text>{item[0]?.About}</Text>
             <Text>Linkur á fræðsluefni: </Text>
-            <Text>{item[0].Link}</Text>
+            <Text>{item[0]?.Link}</Text>
           </View>
         ))}
         {/* {allNotifications.map((item, index) => {
