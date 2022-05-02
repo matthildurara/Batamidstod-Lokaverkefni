@@ -7,6 +7,7 @@ import { grey, greyBrown } from "../../styles/colors";
 export default StyleSheet.create({
   container: {
     flexDirection: "column",
+
     flex: 1,
     // padding:20,
     alignItems: "center",

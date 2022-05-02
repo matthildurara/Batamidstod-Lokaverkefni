@@ -23,4 +23,8 @@ export default StyleSheet.create({
   eventText: {
     paddingBottom: 10,
   },
+  backButton: {
+    borderColor: "black",
+    borderWidth: 2,
+  },
 });

@@ -17,11 +17,31 @@ const Routes = () => (
 
   <Stack.Navigator initialRouteName="Main">
     <Stack.Screen name="Main" component={Main} />
-    <Stack.Screen name="Home" component={HomeView} />
-    <Stack.Screen name="Notifications" component={NotificationView} />
-    <Stack.Screen name="Event" component={Event} />
-    <Stack.Screen name="Education" component={EducationView} />
-    <Stack.Screen name="User" component={UserView} />
+    <Stack.Screen
+      name="Home"
+      component={HomeView}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Notifications"
+      component={NotificationView}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Event"
+      component={Event}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Education"
+      component={EducationView}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="User"
+      component={UserView}
+      options={{ headerShown: false }}
+    />
   </Stack.Navigator>
   // {/* </NavigationContainer> */}
 );

@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import styles from "./styles";
 import { useState } from "react";
+import Toolbar from "../../components/toolBar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TouchableHighlight } from "react-native-gesture-handler";
+import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 
 const Event = ({ navigation: { navigate } }) => {
   const [thisEvent, setEvent] = useState({});
@@ -55,7 +58,17 @@ const Event = ({ navigation: { navigate } }) => {
     }
   };
   return (
-    <>
+    <View>
+      <Toolbar />
+      <TouchableHighlight
+        style={styles.backButton}
+        onPress={() => navigate("Home")}
+      >
+        <View>
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text>Til baka </Text>
+        </View>
+      </TouchableHighlight>
       <View style={styles.eventContainer}>
         <Text style={styles.eventTitle}> {thisEvent.name}</Text>
         <Text style={styles.eventText}> {thisEvent.date}</Text>
@@ -74,7 +87,7 @@ const Event = ({ navigation: { navigate } }) => {
           <></>
         )}
       </View>
-    </>
+    </View>
   );
 };
 export default Event;

@@ -8,6 +8,7 @@ export default StyleSheet.create({
     flex: 1,
     padding: 20,
     alignItems: "center",
+
     // justifyContent: "space-around",
     backgroundColor: "white",
   },

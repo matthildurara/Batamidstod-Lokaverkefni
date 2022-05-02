@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Menu } from "react-native";
 import styles from "./styles";
-import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import CreateDrawer from "../drawer";
@@ -14,30 +14,53 @@ const Footer = () => {
   return (
     <View styleName="horizontal" style={styles.footer}>
       {/* <View style={styles.toolbarAction}> */}
+
       <View style={styles.footerAction}>
-        <TouchableHighlight onPress={() => navigate("Education")}>
-          <Text>
-            <Ionicons name="menu" size={24} color="black" />
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={styles.footerAction}>
-        <TouchableHighlight onPress={() => navigate("Home")}>
-          <Text>
-            <AntDesign name="calendar" size={24} color="black" />
-          </Text>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => navigate("Home")}
+        >
+          <View style={styles.buttonView}>
+            <Text style={styles.icon}>
+              <AntDesign name="calendar" size={24} color="black" />
+            </Text>
+            <Text>Dagatal</Text>
+          </View>
         </TouchableHighlight>
       </View>
 
       <View style={styles.footerAction}>
-        <TouchableHighlight onPress={() => navigate("Notifications")}>
-          <Text>
-            <MaterialIcons name="notifications" size={24} color="black" />
-          </Text>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => navigate("Notifications")}
+        >
+          <View style={styles.buttonView}>
+            <Text style={styles.icon}>
+              <MaterialIcons name="notifications" size={24} color="black" />
+            </Text>
+            <Text>Tilkynningar</Text>
+          </View>
         </TouchableHighlight>
       </View>
       <View style={styles.footerAction}>
-        <TouchableHighlight onPress={() => navigate("User")}>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => navigate("Education")}
+        >
+          <View style={styles.buttonView}>
+            <Text style={styles.icon}>
+              <Entypo name="graduation-cap" size={24} color="black" />
+              {/* <Ionicons name="menu" size={24} color="black" /> */}
+            </Text>
+            <Text>Fræðsluefni</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+      <View style={styles.footerAction}>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => navigate("User")}
+        >
           <Text>
             <MaterialIcons name="account-circle" size={24} color="black" />
           </Text>
