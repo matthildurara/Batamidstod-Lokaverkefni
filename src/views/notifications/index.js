@@ -26,24 +26,24 @@ const NotificationView = ({ navigation, route }) => {
       setAllNotifications([]);
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
+        console.log("CHILDKEU IS ?");
+        console.log(childKey);
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
+
           const childValue = childChild.val();
 
           const item = [
             {
-              name: childchildKey,
               notification: childValue.notification,
               notificationTitle: childValue.notificationTitle,
             },
           ];
 
-          setAllNotifications(
-            (prevState) => ({
-              ...prevState,
-              [childSnapshot.key]: item,
-            })
-          );
+          setAllNotifications((prevState) => ({
+            ...prevState,
+            [childSnapshot.key]: item,
+          }));
         });
       });
     });
@@ -51,6 +51,7 @@ const NotificationView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchNotifications();
+    console.log(allNotifications);
   }, []);
   // useEffect(() => {
   //   const fetchNotifications = async () => {
@@ -74,18 +75,17 @@ const NotificationView = ({ navigation, route }) => {
   //   fetchNotifications();
   //   return;
   // }, []);
+  console.log(Object.values(allNotifications));
 
   const renderItem = (item) => {
     //console.log(item);
     //console.log(dayValue);
     return (
       // {item.date==}
-        <View style={styles.notificationContainer}>
-            <Text>{item.notificationTitle}</Text>
-            <Text>{item.notification}</Text>
-        </View>
- 
-
+      <View style={styles.notificationContainer}>
+        <Text>{item.notificationTitle}</Text>
+        <Text>{item.notification}</Text>
+      </View>
     );
   };
 
@@ -93,23 +93,16 @@ const NotificationView = ({ navigation, route }) => {
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} style={styles.toolbar} />
       <ScrollView>
-        <View 
-        items={allNotifications}
-        renderItem={renderItem}>
+        {/* <View items={allNotifications} renderItem={renderItem}></View> */}
+        <View>
+          {Object.values(allNotifications).map((item, index) => (
+            <View key={index} item={item} style={styles.notificationContainer}>
+              <Text>{JSON.stringify(item[0].notificationTitle)}</Text>
+              <Text>{item[0].notificationTitle}</Text>
+              <Text>{item[0].notification}</Text>
+            </View>
+          ))}
         </View>
-        {/* <View>
-          {allNotifications &&
-            allNotifications.map((item, index) => (
-              <View
-                key={index}
-                item={item}
-                style={styles.notificationContainer}
-              >
-                <Text>{item.Title}</Text>
-                <Text>{item.Notification}</Text>
-              </View>
-            ))}
-        </View> */}
       </ScrollView>
       <Footer style={styles.footer} />
     </View>

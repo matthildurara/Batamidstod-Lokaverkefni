@@ -52,6 +52,7 @@ const EducationView = ({ navigation, route }) => {
       });
     };
     fetchMaterial();
+
     return;
   }, []);
 
