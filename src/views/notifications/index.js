@@ -23,7 +23,7 @@ const NotificationView = ({ navigation, route }) => {
 
   const fetchNotifications = async () => {
     onValue(dbRef, (snapshot) => {
-      setAllNotifications([]);
+      setAllNotifications({});
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
         console.log("CHILDKEU IS ?");

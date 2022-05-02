@@ -32,29 +32,63 @@ const EducationView = ({ navigation, route }) => {
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/EducationMaterial");
-  const [allMaterial, setMaterial] = useState([]);
+  const [allMaterial, setMaterial] = useState({});
 
-  useEffect(() => {
-    const fetchMaterial = async () => {
-      onValue(dbRef, (snapshot) => {
-        setMaterial([]);
-        snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
-          const childVal = childSnapshot.val();
-          const item = {
-            Title: childVal.educMatTitle,
-            About: childVal.aboutMaterial,
-            Link: childVal.linkToMaterial,
-          };
+  const fetchMaterial = async () => {
+    onValue(dbRef, (snapshot) => {
+      setMaterial({});
+      snapshot.forEach((childSnapshot) => {
+        const childKey = childSnapshot.key;
+        console.log("CHILDKEU IS ?");
+        console.log(childKey);
+        childSnapshot.forEach((childChild) => {
+          const childchildKey = childChild.key;
 
-          setMaterial((allMaterial) => [...allMaterial, item]);
+          const childValue = childChild.val();
+
+          const item = [
+            {
+              aboutMaterial: childValue.aboutMaterial,
+              educMatTitle: childValue.educMatTitle,
+              linkToMaterial: childValue.linkToMaterial,
+            },
+          ];
+
+          setMaterial((prevState) => ({
+            ...prevState,
+            [childSnapshot.key]: item,
+          }));
         });
       });
-    };
-    fetchMaterial();
+    });
+  };
 
-    return;
+  useEffect(() => {
+    fetchMaterial();
+    console.log(allMaterial);
   }, []);
+
+  // useEffect(() => {
+  //   const fetchMaterial = async () => {
+  //     onValue(dbRef, (snapshot) => {
+  //       setMaterial([]);
+  //       snapshot.forEach((childSnapshot) => {
+  //         const childKey = childSnapshot.key;
+  //         const childVal = childSnapshot.val();
+  //         const item = {
+  //           Title: childVal.educMatTitle,
+  //           About: childVal.aboutMaterial,
+  //           Link: childVal.linkToMaterial,
+  //         };
+
+  //         setMaterial((allMaterial) => [...allMaterial, item]);
+  //       });
+  //     });
+  //   };
+  //   fetchMaterial();
+
+  //   return;
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -63,13 +97,12 @@ const EducationView = ({ navigation, route }) => {
         <View>
           {Object.values(allMaterial).map((item, index) => (
             <View key={index} item={item} style={styles.educationMatContainer}>
-              <Text>{item.Title}</Text>
-              <Text>{item.About}</Text>
+              <Text>{item[0].educMatTitle}</Text>
+              <Text>{item[0].aboutMaterial}</Text>
               <Text>Linkur á fræðsluefni: </Text>
-              <Text>{item.Link}</Text>
               <Text
                 style={{ color: "blue" }}
-                onPress={() => Linking.openURL(item.Link)}
+                onPress={() => Linking.openURL(item[0].linkToMaterial)}
               >
                 Linkur á efni
               </Text>
