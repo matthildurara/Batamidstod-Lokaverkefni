@@ -42,10 +42,15 @@ const NotificationView = ({ navigation: { navigate } }) => {
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/Notifications");
-  const [allNotifications, setNotifications] = useState({});
+  // const [allNotifications, setNotificationsData] = useState({});
+  const [allNotifications, setAllNotifications] = useState([]);
+
   useEffect(() => {
-    async function setNotifications() {
+    console.log("==============");
+    console.log("USE EFFECT");
+    async function fetchNotifications() {
       onValue(dbRef, (snapshot) => {
+        console.log("FIREBASE CALL");
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
           const childVal = childSnapshot.val();
@@ -53,36 +58,59 @@ const NotificationView = ({ navigation: { navigate } }) => {
           // console.log("KEY: ", childKey);
           // console.log(childVal.notification);
 
-          allNotifications[childKey].push({
+          console.log("pusha inn allNotification");
+
+          const item = {
             Title: childVal.notificationTitle,
             Notification: childVal.notification,
-          });
+          };
+
+          setAllNotifications((allNotifications) => [
+            ...allNotifications,
+            item,
+          ]);
         });
       });
     }
-    setNotifications();
+
+    console.log("setNotification");
+    fetchNotifications();
   }, []);
-  console.log("hallo");
-  for (var i = 0; i < Object.values(allNotifications).length; i++) {
-    console.log("blala");
-    console.log(Object.values(allNotifications)[i][0].Notification);
-  }
+
+  // console.log("hallo");
+  // for (var i = 0; i < Object.values(allNotifications).length; i++) {
+  //   console.log("blala");
+  //   console.log(Object.values(allNotifications)[i][0].Notification);
+  // }
 
   return (
     <View style={styles.container}>
       <Toolbar style={styles.toolbar} />
       <View style={styles.calander}>
-        {Object.values(allNotifications).map((item, index) => (
+        {allNotifications &&
+          allNotifications.map((item, index) => (
+            <View key={index} item={item} style={styles.notificationContainer}>
+              <Text>{item.Title}</Text>
+              <Text>{item.Notification}</Text>
+            </View>
+          ))}
+
+        {/* {Object.values(allNotifications).map((item, index) => (
           <View key={index} item={item} style={styles.notificationContainer}>
             <Text>{item[0].Title}</Text>
             <Text>{item[0].Notification}</Text>
           </View>
-        ))}
+        ))} */}
+
+        {/* <Text>{JSON.stringify(allNotifications)}</Text> */}
+
         {/* {allNotifications.map((item, index) => {
           <View key={index} item={item}>
             <Text>{item.notification}</Text>
           </View>;
         })} */}
+
+        {/* <Text>HGALLOOO</Text> */}
       </View>
 
       <Footer style={styles.footer} />

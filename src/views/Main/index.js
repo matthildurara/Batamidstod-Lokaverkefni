@@ -29,7 +29,7 @@ import {
   onValue,
   DataSnapshot,
 } from "firebase/database";
-import AsyncStorageLib from "@react-native-async-storage/async-storage";
+//import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { stringify } from "@firebase/util";
 // import { useEffect } from "react/cjs/react.production.min";
 

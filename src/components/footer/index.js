@@ -4,8 +4,6 @@ import styles from "./styles";
 import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import CreateDrawer from "../drawer";
-import SideMenu from "react-native-side-menu";
 
 const Footer = () => {
   const { navigate } = useNavigation();

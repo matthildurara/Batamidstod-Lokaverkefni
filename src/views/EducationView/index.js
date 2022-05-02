@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableHighlight, TextInput, Linking } from "react-native";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  Linking,
+} from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
-//import { createDrawerNavigator } from "@react-navigation/drawer";
-//import { NavigationContainer } from "@react-navigation/native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-//import { auth } from "../../../firebase-config";
-import { getAuth } from "firebase/auth";
-import { useAuthValue } from "../../../authContext";
 import {
   getDatabase,
   ref,
@@ -16,8 +16,6 @@ import {
   onValue,
   DataSnapshot,
 } from "firebase/database";
-
-//const Drawer = createDrawerNavigator();
 
 const EducationView = ({ navigation: { navigate } }) => {
   const [user, setUser] = useState({});
@@ -28,65 +26,37 @@ const EducationView = ({ navigation: { navigate } }) => {
       console.log(user.email);
     };
   });
-  // const user = await AsyncStorage.getItem("user");
-  // const auth = getAuth();
-  // const us = auth.currentUser();
-  //const { currentUser } = useAuthValue();
-  // console.log("halló");
-  // //const user = currentUser?.providerData[0].email;
-  // console.log("halló 2 ");
-
-  // console.log(currentUser);
-  // console.log(user);
-
-  // console.log("halló 3 ");
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/EducationMaterial");
-  const [allMaterial, setMaterial] = useState({});
+  const [allMaterial, setMaterial] = useState([]);
 
-  // const setEduMaterial = async () => {
-  //   onValue(dbRef, (snapshot) => {
-  //     snapshot.forEach((childSnapshot) => {
-  //       const childKey = childSnapshot.key;
-  //       const childVal = childSnapshot.val();
-  //       allMaterial[childKey] = [];
-  //       // console.log("KEY: ", childKey);
-  //       // console.log(childVal.notification);
-
-  //       allMaterial[childKey].push({
-  //         Title: childVal.educMatTitle,
-  //         About: childVal.aboutMaterial,
-  //         Link: childVal.linkToMaterial,
-  //       });
-  //     });
-  //   });
-  // };
   useEffect(() => {
-    // async function setMaterial() {
-    onValue(dbRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childKey = childSnapshot.key;
-        const childVal = childSnapshot.val();
-        allMaterial[childKey] = [];
-        // console.log("KEY: ", childKey);
-        // console.log(childVal.notification);
-
-        allMaterial[childKey].push({
-          Title: childVal.educMatTitle,
-          About: childVal.aboutMaterial,
-          Link: childVal.linkToMaterial,
-        });
-      });
-    });
-    // }
-    //setMaterial();
-  }, [allMaterial]);
-  console.log("hallo");
-  for (var i = 0; i < Object.values(allMaterial).length; i++) {
-    console.log("blala");
-    console.log(Object.values(allMaterial)[i][0].Title);
-  }
+    async function fetchMaterial() {
+      onValue(
+        dbRef,
+        (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const childKey = childSnapshot.key;
+            const childVal = childSnapshot.val();
+            const item = {
+              Title: childVal.educMatTitle,
+              About: childVal.aboutMaterial,
+              Link: childVal.linkToMaterial,
+            };
+            setMaterial((allMaterial) => [...allMaterial, item]);
+          });
+        },
+        []
+      );
+    }
+    fetchMaterial();
+  }, []);
+  //console.log("hallo");
+  // for (var i = 0; i < Object.values(allMaterial).length; i++) {
+  //   console.log("blala");
+  //   console.log(Object.values(allMaterial)[i][0].Title);
+  // }
 
   return (
     <View style={styles.container}>
@@ -94,12 +64,14 @@ const EducationView = ({ navigation: { navigate } }) => {
       <View style={styles.calander}>
         {Object.values(allMaterial).map((item, index) => (
           <View key={index} item={item} style={styles.educationMatContainer}>
-            <Text>{item[0]?.Title}</Text>
-            <Text>{item[0]?.About}</Text>
+            <Text>{item.Title}</Text>
+            <Text>{item.About}</Text>
             <Text>Linkur á fræðsluefni: </Text>
-            <Text>{item[0]?.Link}</Text>
-            <Text style={{color: 'blue'}}
-              onPress={() => Linking.openURL(item[0]?.Link)}>
+            <Text>{item.Link}</Text>
+            <Text
+              style={{ color: "blue" }}
+              onPress={() => Linking.openURL(item[0]?.Link)}
+            >
               Linkur á efni
             </Text>
           </View>
