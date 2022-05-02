@@ -70,7 +70,7 @@ const EducationView = ({ navigation: { navigate } }) => {
             <Text>{item.Link}</Text>
             <Text
               style={{ color: "blue" }}
-              onPress={() => Linking.openURL(item[0]?.Link)}
+              onPress={() => Linking.openURL(item.Link)}
             >
               Linkur á efni
             </Text>
