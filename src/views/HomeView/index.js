@@ -90,11 +90,7 @@ const HomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchEvents();
-    // console.log("LIST OG EVENTS: ");
-    // console.log(listOfEvents);
-    //return;
   }, []);
-  //console.log(listOfEvents);
 
   const handleOnEvent = async (item) => {
     const db = getDatabase();
