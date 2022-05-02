@@ -17,8 +17,10 @@ import {
   onValue,
   DataSnapshot,
 } from "firebase/database";
+import { useNavigation } from "@react-navigation/native";
 
 const EducationView = ({ navigation, route }) => {
+  const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
   const [user, setUser] = useState({});
   useEffect(() => {

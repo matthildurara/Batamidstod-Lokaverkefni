@@ -5,8 +5,11 @@ import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const UserView = ({ navigation, route }) => {
+  const { navigate } = useNavigation();
+
   const parameter = route.params.toolbarText;
   const [user, setUser] = useState("");
   useEffect(() => {

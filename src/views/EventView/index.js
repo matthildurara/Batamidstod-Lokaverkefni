@@ -7,8 +7,10 @@ import Toolbar from "../../components/toolBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const Event = ({ navigation, route }) => {
+  const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
   const [thisEvent, setEvent] = useState({});
   useEffect(() => {
