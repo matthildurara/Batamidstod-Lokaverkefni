@@ -78,11 +78,10 @@ const NotificationView = ({ navigation, route }) => {
               notificationTitle: childValue.notificationTitle,
             };
 
-            console.log("ITEM IS: ", item);
-            setAllNotifications((prevState) => ({
-              ...prevState,
-              [childChild.key]: item,
-            }));
+            setAllNotifications((allNotifications) => [
+              ...allNotifications,
+              item,
+            ]);
           });
         });
       });
@@ -133,12 +132,9 @@ const NotificationView = ({ navigation, route }) => {
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} style={styles.toolbar} />
       <ScrollView>
-        {/* <View items={allNotifications} renderItem={renderItem}></View> */}
-
         <View style={styles.list}>
           {Object.values(allNotifications).map((item, index) => (
             <View key={index} item={item} style={styles.notificationContainer}>
-              {/* <Text>{JSON.stringify(item.notificationTitle)}</Text> */}
               <Text>{item.notificationTitle}</Text>
               <Text>{item.notification}</Text>
             </View>
