@@ -53,6 +53,7 @@ const NotificationView = ({ navigation, route }) => {
     return getNotifications();
     //console.log(allNotifications);
   }, []);
+  console.log(allNotifications);
 
   return (
     <View style={styles.container}>

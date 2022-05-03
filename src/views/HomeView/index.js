@@ -58,48 +58,59 @@ const HomeView = ({ navigation, route }) => {
   const dbRef = ref(db, "Users/Event");
 
   const fetchEvents = async () => {
+    console.log("================AAAAAAA=======");
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
+        let listOfDay = [];
+
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
-          //console.log("CHILDCHILDKEY: ", childchildKey);
-          //console.log("CHILD KEY: ", childKey);
+          console.log("CHILDCHILDKEY: ", childchildKey);
+          console.log("CHILD KEY: ", childKey);
           const childValue = childChild.val();
-          //console.log("CHILD VALUE name: ", childValue);
+          console.log("CHILD VALUE name: ", childValue);
           //listOfEvents[childKey] = [];
 
-          const item = [
-            {
-              name: childValue.name,
-              startTime: childValue.startTime,
-              endTime: childValue.endTime,
-              date: childKey,
-              maxNumber: childValue.maxNumber,
-              attendees: childValue.attendees,
-              description: childValue.description,
-              eventId: childchildKey,
-              staffmember: childValue.staffmember,
-            },
-          ];
+          const item = {
+            name: childValue.name,
+            startTime: childValue.startTime,
+            endTime: childValue.endTime,
+            date: childKey,
+            maxNumber: childValue.maxNumber,
+            attendees: childValue.attendees,
+            description: childValue.description,
+            eventId: childchildKey,
+            staffmember: childValue.staffmember,
+          };
 
-          setListEvents((prevState) => ({
-            ...prevState,
-            [childSnapshot.key]: item,
-          }));
-          //console.log("EFTIR SET LIST EVENTS");
+          listOfDay.push(item);
+          console.log("insideforfor");
+          console.log(listOfDay);
         });
+        console.log("insideFIRST FOR ");
+        console.log(listOfDay);
+        setListEvents((prevState) => ({
+          ...prevState,
+          [childKey]: listOfDay,
+        }));
+        console.log("EFTIR SET LIST EVENTS");
+        console.log(listOfEvents);
       });
     });
+    console.log("AL LIST ================================: ");
+    console.log(listOfEvents);
   };
 
   const [items, setItems] = useState({
-    "2022-04-26": [{ name: "test #2" }],
+    "2022-05-03": [{ name: "test #2" }, { name: "test $4" }],
     "2022-04-25": [{ name: "test #3" }],
   });
 
   useEffect(() => {
     fetchEvents();
+    console.log("AL LIST: ");
+    console.log(listOfEvents);
   }, []);
 
   const handleOnEvent = async (item) => {
@@ -220,7 +231,11 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const renderItem = (item) => {
-    //console.log(item);
+    console.log(
+      "ONE ITEM =============FREFERFEGRGER=========================== "
+    );
+    console.log("ONE ITEM ");
+    console.log(item);
     //console.log(dayValue);
     return (
       // {item.date==}
@@ -267,6 +282,7 @@ const HomeView = ({ navigation, route }) => {
       <SafeAreaView style={styles.calander}>
         <Agenda
           items={listOfEvents}
+          //items={items}
           renderItem={renderItem}
           // renderDay={(day, item) => {
           //   return (
