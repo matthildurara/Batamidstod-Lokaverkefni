@@ -38,4 +38,7 @@ export default StyleSheet.create({
 
     marginBottom: 10,
   },
+  list: {
+    flexDirection: "column-reverse",
+  },
 });

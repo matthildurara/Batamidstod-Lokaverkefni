@@ -21,49 +21,77 @@ const NotificationView = ({ navigation, route }) => {
   //const [allNotifications, setAllNotifications] = useState([]);
   const [allNotifications, setAllNotifications] = useState([]);
 
-  const fetchNotifications = async () => {
-    onValue(dbRef, (snapshot) => {
-      setAllNotifications([]);
-      console.log("=============MMMMM==========");
-      snapshot.forEach((childSnapshot) => {
-        const childKey = childSnapshot.key;
-        console.log("CHILDKEU IS ?");
-        console.log(childKey);
-        childSnapshot.forEach((childChild) => {
-          const childchildKey = childChild.key;
-          console.log("childchild key: ", childchildKey);
-          const childValue = childChild.val();
+  // const fetchNotifications = async () => {
+  //   onValue(dbRef, (snapshot) => {
+  //     //setAllNotifications([]);
+  //     console.log("=============MMMMM==========");
+  //     snapshot.forEach((childSnapshot) => {
+  //       const childKey = childSnapshot.key;
+  //       console.log("CHILDKEU IS ?");
+  //       console.log(childKey);
+  //       childSnapshot.forEach((childChild) => {
+  //         const childchildKey = childChild.key;
+  //         console.log("childchild key: ", childchildKey);
+  //         const childValue = childChild.val();
 
-          const item = {
-            notification: childValue.notification,
-            notificationTitle: childValue.notificationTitle,
-          };
+  //         const item = {
+  //           notification: childValue.notification,
+  //           notificationTitle: childValue.notificationTitle,
+  //         };
 
-          console.log("ITEM IS: ", item);
-          // setAllNotifications((prevState) => ({
-          //   ...prevState,
-          //   [childSnapshot.key]: item,
-          // }));
-          const updatedList = setAllNotifications((allNotifications) => [
-            ...allNotifications,
-            item,
-          ]);
-          let newArray = [...allNotifications];
-          newArray.reverse();
-          console.log("NEEEW ARRAY: ", newArray);
-          setAllNotifications(newArray);
-        });
-      });
-    });
-  };
+  //         console.log("ITEM IS: ", item);
+  //         // setAllNotifications((prevState) => ({
+  //         //   ...prevState,
+  //         //   [childSnapshot.key]: item,
+  //         // }));
+  //         setAllNotifications((allNotifications) => [
+  //           ...allNotifications,
+  //           item,
+  //         ]);
+  //         let newArray = [...allNotifications];
+  //         newArray.slice().reverse();
+  //         console.log("NEEEW ARRAY: ", newArray);
+  //         setAllNotifications(newArray);
+  //       });
+  //     });
+  //   });
+  // };
 
   useEffect(() => {
+    const db = getDatabase();
+    const dbRef = ref(db, "Users/Notifications");
     async function getNotifications() {
-      await fetchNotifications();
+      onValue(dbRef, (snapshot) => {
+        setAllNotifications([]);
+        console.log("=============MMMMM==========");
+        snapshot.forEach((childSnapshot) => {
+          const childKey = childSnapshot.key;
+          console.log("CHILDKEU IS ?");
+          console.log(childKey);
+          childSnapshot.forEach((childChild) => {
+            const childchildKey = childChild.key;
+            console.log("childchild key: ", childchildKey);
+            const childValue = childChild.val();
+
+            const item = {
+              notification: childValue.notification,
+              notificationTitle: childValue.notificationTitle,
+            };
+
+            console.log("ITEM IS: ", item);
+            setAllNotifications((prevState) => ({
+              ...prevState,
+              [childChild.key]: item,
+            }));
+          });
+        });
+      });
     }
+
     return getNotifications();
     //console.log(allNotifications);
   }, []);
+
   // useEffect(() => {
   //   const fetchNotifications = async () => {
   //     onValue(dbRef, (snapshot) => {
@@ -86,30 +114,31 @@ const NotificationView = ({ navigation, route }) => {
   //   fetchNotifications();
   //   return;
   // }, []);
-  console.log("ALL NOT");
-  console.log(Object.values(allNotifications));
+  // console.log("ALL NOT");
+  // console.log(Object.values(allNotifications));
 
-  const renderItem = (item) => {
-    //console.log(item);
-    //console.log(dayValue);
-    return (
-      // {item.date==}
-      <View style={styles.notificationContainer}>
-        <Text>{item.notificationTitle}</Text>
-        <Text>{item.notification}</Text>
-      </View>
-    );
-  };
-  console.log(allNotifications);
+  // const renderItem = (item) => {
+  //   //console.log(item);
+  //   //console.log(dayValue);
+  //   return (
+  //     // {item.date==}
+  //     <View style={styles.notificationContainer}>
+  //       <Text>{item.notificationTitle}</Text>
+  //       <Text>{item.notification}</Text>
+  //     </View>
+  //   );
+  // };
+  //console.log(allNotifications);
   return (
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} style={styles.toolbar} />
       <ScrollView>
         {/* <View items={allNotifications} renderItem={renderItem}></View> */}
+
         <View style={styles.list}>
           {Object.values(allNotifications).map((item, index) => (
             <View key={index} item={item} style={styles.notificationContainer}>
-              <Text>{JSON.stringify(item.notificationTitle)}</Text>
+              {/* <Text>{JSON.stringify(item.notificationTitle)}</Text> */}
               <Text>{item.notificationTitle}</Text>
               <Text>{item.notification}</Text>
             </View>
