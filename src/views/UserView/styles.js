@@ -18,10 +18,6 @@ export default StyleSheet.create({
     color: "black",
     backgroundColor: "#b0c4de",
   },
-  calander: {
-    //  height:400,
-    paddingTop: 10,
-  },
   footer: {
     flex: 1,
     alignSelf: "flex-end",
@@ -35,13 +31,11 @@ export default StyleSheet.create({
     // flex:2,
     marginTop: "auto",
   },
-  notificationContainer: {
+  logoutbutton: {
     borderColor: "black",
     borderWidth: 2,
-
-    marginBottom: 10,
   },
-  logoutbutton: {
+  eventUserItem: {
     borderColor: "black",
     borderWidth: 2,
   },

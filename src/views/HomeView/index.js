@@ -103,6 +103,7 @@ const HomeView = ({ navigation, route }) => {
     });
     console.log("AL LIST ================================: ");
     //console.log(listOfEvents);
+    return;
   };
 
   const [items, setItems] = useState({
@@ -124,29 +125,39 @@ const HomeView = ({ navigation, route }) => {
 
       set(ref(db, urlr), {
         name: thisuser?.name,
-      });
-      fetchEvents();
+      })
+        .then(() => {
+          //console.log("Before fetchEVent");
+          fetchEvents();
+          // console.log("After FEtch Event");
+          // console.log("ALL LIST BEFORE REMOVE");
+          // console.log(listOfEvents);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      //fetchEvents();
 
-      alert("þú hefur verið skráður á viðburð");
+      //alert("þú hefur verið skráður á viðburð");
     } else {
       const urll = `Users/Event/${item.date}/${item.eventId}/attendees/1`;
 
       set(ref(db, urll), {
         name: thisuser?.name,
-      });
-
-      alert("þú hefur verið skráður á viðburð");
+      })
+        .then(() => {
+          //console.log("Before fetchEVent");
+          fetchEvents();
+          // console.log("After FEtch Event");
+          // console.log("ALL LIST BEFORE REMOVE");
+          // console.log(listOfEvents);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-
+    alert("þú hefur verið skráður á viðburð");
     await fetchEvents();
-
-    // const starCountRef = ref(
-    //   db,
-    //   "Users/" + "Event/" + item.date + "/" + item.name + "/" + "Attendees"
-    // );
-    // //console.log("email here " + newEmail);
-
-    //setReload(1);
   };
   const checkForMax = (item) => {
     if (item.attendees) {
@@ -176,29 +187,25 @@ const HomeView = ({ navigation, route }) => {
     return 0;
   };
   const handleOnRemove = (item) => {
-    console.log("CAlling handleOnRemove");
+    // console.log("CAlling handleOnRemove");
     const db = getDatabase();
     const id = findId(item);
-    console.log("ALL LIST BEFORE REMOVE");
-    console.log(listOfEvents);
-    console.log(id);
+    // console.log("ALL LIST BEFORE REMOVE");
+    // console.log(listOfEvents);
+    // console.log(id);
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
     remove(ref(db, urls))
       .then(() => {
-        console.log("Before fetchEVent");
+        //console.log("Before fetchEVent");
         fetchEvents();
-        console.log("After FEtch Event");
-        console.log("ALL LIST BEFORE REMOVE");
-        console.log(listOfEvents);
+        // console.log("After FEtch Event");
+        // console.log("ALL LIST BEFORE REMOVE");
+        // console.log(listOfEvents);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    // console.log("blablablalblbalbalblla");
-    // console.log(item.attendees);
     alert("þú hefur verið afskráður á viðburð");
-    //setReload(0);
   };
 
   const isUserOnEvent = (item) => {
@@ -207,53 +214,33 @@ const HomeView = ({ navigation, route }) => {
       item.attendees == undefined ||
       item.attendees == ""
     ) {
-      // console.log("not in if");
       return false;
-      //return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
-        // console.log("first for");
-        // console.log("objectvalue: ", Object.values(item.attendees));
         for (var j = 0; j < Object.values(item.attendees).length; j++) {
-          //console.log("this is the value: ", Object.values(item.attendees));
-          //console.log("THIS IS THE USER: ", thisuser.name);
           if (
             Object.values(item.attendees)[i].name.toLowerCase() ===
             thisuser.name?.toLowerCase()
           ) {
-            //console.log("KOMST INN Í");
-            // console.log(Object.values(item.attendees)[i]);
-
             const obj = Object.values(item.attendees)[i].name.toLowerCase();
             const us = thisuser.name?.toLowerCase();
-            // console.log(obj);
-            // console.log(us);
             return true;
-            // }
           }
         }
       }
-      // console.log("not in for");
       return false;
     }
   };
-  //const [dayValue, setDay] = useState("");
-  const isEventOver = (eventDate) => {
-    //console.log(eventDate);
 
+  const isEventOver = (eventDate) => {
     const today = new Date();
     const date = new Date(eventDate);
     if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
       return true;
     }
-    // console.log("date", date);
-    // console.log("today", today);
     return false;
   };
   const handlePressEvent = (item) => {
-    // console.log("======ÖÖÖÖÖ======");
-    // console.log(item.name);
-    // console.log(item.date);
     const pressedEvent = {
       name: item.name,
       date: item.date,
@@ -265,27 +252,12 @@ const HomeView = ({ navigation, route }) => {
       eventId: item.eventId,
       staffmember: item.staffmember,
     };
-    // console.log("ATTENDES BEFORE ASYNC ");
-    // console.log(item.attendees);
     AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
 
   const renderItem = (item) => {
-    // console.log(
-    //   "ONE ITEM =============FREFERFEGRGER=========================== "
-    // );
-    // console.log("ONE ITEM ");
-    // console.log(item);
-    // console.log("item.atttendees");
-    // console.log(Object.values(item.length));
-    // Object.values(item).map((e, index) => {
-    //   console.log("Map e ");
-    //   console.log(e);
-    // });
-    //console.log(dayValue);
     return (
-      // {item.date==}
       <>
         <View style={styles.event}>
           <TouchableOpacity onPress={() => handlePressEvent(item)}>
