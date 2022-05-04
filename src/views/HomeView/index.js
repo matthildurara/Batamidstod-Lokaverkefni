@@ -60,6 +60,7 @@ const HomeView = ({ navigation, route }) => {
 
   const fetchEvents = async () => {
     console.log("================AAAAAAA=======");
+    setListEvents({});
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
@@ -67,10 +68,10 @@ const HomeView = ({ navigation, route }) => {
 
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
-          console.log("CHILDCHILDKEY: ", childchildKey);
-          console.log("CHILD KEY: ", childKey);
+          // console.log("CHILDCHILDKEY: ", childchildKey);
+          // console.log("CHILD KEY: ", childKey);
           const childValue = childChild.val();
-          console.log("CHILD VALUE name: ", childValue);
+          //console.log("CHILD VALUE name: ", childValue);
           //listOfEvents[childKey] = [];
 
           const item = {
@@ -84,23 +85,24 @@ const HomeView = ({ navigation, route }) => {
             eventId: childchildKey,
             staffmember: childValue.staffmember,
           };
-
+          // console.log("ITEM");
+          // console.log(item);
           listOfDay.push(item);
-          console.log("insideforfor");
-          console.log(listOfDay);
+          // console.log("insideforfor");
+          // console.log(listOfDay);
         });
-        console.log("insideFIRST FOR ");
-        console.log(listOfDay);
+        // console.log("insideFIRST FOR ");
+        // console.log(listOfDay);
         setListEvents((prevState) => ({
           ...prevState,
           [childKey]: listOfDay,
         }));
-        console.log("EFTIR SET LIST EVENTS");
-        console.log(listOfEvents);
+        // console.log("EFTIR SET LIST EVENTS");
+        // console.log(listOfEvents);
       });
     });
     console.log("AL LIST ================================: ");
-    console.log(listOfEvents);
+    //console.log(listOfEvents);
   };
 
   const [items, setItems] = useState({
@@ -110,8 +112,8 @@ const HomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchEvents();
-    console.log("AL LIST: ");
-    console.log(listOfEvents);
+    // console.log("AL LIST: ");
+    // console.log(listOfEvents);
   }, []);
 
   const handleOnEvent = async (item) => {
@@ -174,12 +176,25 @@ const HomeView = ({ navigation, route }) => {
     return 0;
   };
   const handleOnRemove = (item) => {
+    console.log("CAlling handleOnRemove");
     const db = getDatabase();
     const id = findId(item);
+    console.log("ALL LIST BEFORE REMOVE");
+    console.log(listOfEvents);
     console.log(id);
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
-    remove(ref(db, urls));
-    //fetchEvents();
+    remove(ref(db, urls))
+      .then(() => {
+        console.log("Before fetchEVent");
+        fetchEvents();
+        console.log("After FEtch Event");
+        console.log("ALL LIST BEFORE REMOVE");
+        console.log(listOfEvents);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     // console.log("blablablalblbalbalblla");
     // console.log(item.attendees);
     alert("þú hefur verið afskráður á viðburð");
@@ -197,16 +212,16 @@ const HomeView = ({ navigation, route }) => {
       //return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
-        console.log("first for");
+        // console.log("first for");
         // console.log("objectvalue: ", Object.values(item.attendees));
         for (var j = 0; j < Object.values(item.attendees).length; j++) {
           //console.log("this is the value: ", Object.values(item.attendees));
-          console.log("THIS IS THE USER: ", thisuser.name);
+          //console.log("THIS IS THE USER: ", thisuser.name);
           if (
             Object.values(item.attendees)[i].name.toLowerCase() ===
             thisuser.name?.toLowerCase()
           ) {
-            console.log("KOMST INN Í");
+            //console.log("KOMST INN Í");
             // console.log(Object.values(item.attendees)[i]);
 
             const obj = Object.values(item.attendees)[i].name.toLowerCase();
@@ -231,14 +246,14 @@ const HomeView = ({ navigation, route }) => {
     if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
       return true;
     }
-    console.log("date", date);
-    console.log("today", today);
+    // console.log("date", date);
+    // console.log("today", today);
     return false;
   };
   const handlePressEvent = (item) => {
-    console.log("======ÖÖÖÖÖ======");
-    console.log(item.name);
-    console.log(item.date);
+    // console.log("======ÖÖÖÖÖ======");
+    // console.log(item.name);
+    // console.log(item.date);
     const pressedEvent = {
       name: item.name,
       date: item.date,
@@ -257,11 +272,17 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const renderItem = (item) => {
-    console.log(
-      "ONE ITEM =============FREFERFEGRGER=========================== "
-    );
-    console.log("ONE ITEM ");
-    console.log(item);
+    // console.log(
+    //   "ONE ITEM =============FREFERFEGRGER=========================== "
+    // );
+    // console.log("ONE ITEM ");
+    // console.log(item);
+    // console.log("item.atttendees");
+    // console.log(Object.values(item.length));
+    // Object.values(item).map((e, index) => {
+    //   console.log("Map e ");
+    //   console.log(e);
+    // });
     //console.log(dayValue);
     return (
       // {item.date==}
