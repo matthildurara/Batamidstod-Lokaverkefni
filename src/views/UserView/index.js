@@ -188,12 +188,19 @@ const UserView = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Toolbar toolbarText={parameter} style={styles.toolbar} />
+      <Toolbar toolbarText={parameter} />
       <View style={styles.userInformation}>
-        <Text>{user.name}</Text>
-        <TouchableHighlight onPress={handleLogOut} style={styles.logoutbutton}>
-          <Text>Log Out</Text>
-        </TouchableHighlight>
+        <View>
+          <Text style={styles.username}>{user.name}</Text>
+        </View>
+        <View style={styles.logoutbutton}>
+          <TouchableHighlight
+            onPress={handleLogOut}
+            // style={styles.logoutbutton}
+          >
+            <Text>Log Out</Text>
+          </TouchableHighlight>
+        </View>
       </View>
       <ScrollView>
         <View style={styles.list}>
@@ -204,9 +211,20 @@ const UserView = ({ navigation, route }) => {
                   // {if(item[0].)}
 
                   <View style={styles.eventUserItem}>
-                    <Text> {item.name}</Text>
-                    <Text>{item.startTime}</Text>
-                    <Text>{item.endTime}</Text>
+                    <View style={styles.eventUserText}>
+                      <Text style={styles.text}> {item.name}</Text>
+                      <Text style={styles.text}> {item.date}</Text>
+
+                      <Text style={styles.text}>
+                        {" "}
+                        Byrjar klukkan: {item.startTime}
+                      </Text>
+                      <Text style={styles.text}>
+                        {" "}
+                        Endar klukkan: {item.endTime}
+                      </Text>
+                      <Text style={styles.text}> {item.staffmember}</Text>
+                    </View>
 
                     <View>
                       <TouchableOpacity

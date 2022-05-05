@@ -35,7 +35,9 @@ export default StyleSheet.create({
   notificationContainer: {
     borderColor: "black",
     borderWidth: 2,
-
+    paddingLeft: 5,
+    paddingRight: 5,
+    padding: 5,
     marginBottom: 10,
   },
   list: {

@@ -35,6 +35,7 @@ export default StyleSheet.create({
   educationMatContainer: {
     borderColor: "black",
     borderWidth: 2,
+    padding: 5,
 
     marginBottom: 10,
   },

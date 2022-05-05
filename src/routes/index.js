@@ -48,7 +48,7 @@ const Routes = () => (
     <Stack.Screen
       name="User"
       component={UserView}
-      initialParams={{ toolbarText: "Notandi" }}
+      initialParams={{ toolbarText: "Mitt svæði" }}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>

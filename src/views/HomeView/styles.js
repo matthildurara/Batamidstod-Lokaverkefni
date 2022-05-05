@@ -40,8 +40,9 @@ export default StyleSheet.create({
     marginTop: "auto",
   },
   event: {
-    borderColor: "black",
-    borderWidth: 2,
+    // borderColor: "black",
+    // borderWidth: 2,
+    marginTop: 5,
     width: 300,
   },
   eventbutton: {
@@ -49,5 +50,22 @@ export default StyleSheet.create({
     borderWidth: 2,
     width: 70,
     borderRadius: 4,
+    marginTop: 3,
+    marginBottom: 3,
+  },
+  eventContainer: {
+    borderBottomColor: "#949392",
+    borderBottomWidth: 2,
+    marginBottom: 6,
+    width: 300,
+  },
+  noEvent: {
+    justifyContent: "center",
+    alignContent: "center",
+    marginLeft: 20,
+    // marginLeft:
+  },
+  notButton: {
+    fontWeight: "bold",
   },
 });

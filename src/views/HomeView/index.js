@@ -261,10 +261,10 @@ const HomeView = ({ navigation, route }) => {
     await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
-
+  console.log("ALL EVENTS: ", listOfEvents);
   const renderItem = (item) => {
     return (
-      <>
+      <View style={styles.eventContainer}>
         <View style={styles.event}>
           <TouchableOpacity onPress={() => handlePressEvent(item)}>
             <Text>{item.name}</Text>
@@ -299,14 +299,14 @@ const HomeView = ({ navigation, route }) => {
                 )}
               </View>
             ) : (
-              <Text>Viðburður er búinn</Text>
+              <Text style={styles.notButton}>Viðburður er búinn</Text>
             )}
           </View>
         ) : (
           <View>
             {isUserOnEvent(item) == false ? (
               <View>
-                <Text>Viðburður fullur</Text>
+                <Text style={styles.notButton}>Viðburður fullur</Text>
               </View>
             ) : (
               <View>
@@ -320,17 +320,13 @@ const HomeView = ({ navigation, route }) => {
             )}
           </View>
         )}
-      </>
+      </View>
     );
   };
 
-  // const changeDay = (day) => {
-
-  // }
-
   return (
     <View style={styles.container}>
-      <Toolbar style={styles.toolbar} />
+      <Toolbar toolbarText={parameter} />
       <SafeAreaView style={styles.calander}>
         <Agenda
           items={listOfEvents}
@@ -345,14 +341,14 @@ const HomeView = ({ navigation, route }) => {
           // }}
           renderEmptyDate={() => {
             return (
-              <View>
+              <View style={styles.noEvent}>
                 <Text>No events</Text>
               </View>
             );
           }}
           renderEmptyData={() => {
             return (
-              <View>
+              <View style={styles.noEvent}>
                 <Text>No events</Text>
               </View>
             );
@@ -360,10 +356,7 @@ const HomeView = ({ navigation, route }) => {
         />
       </SafeAreaView>
 
-      <Footer
-        numberOfNotifications={allNotifications.length}
-        style={styles.footer}
-      />
+      <Footer numberOfNotifications={allNotifications.length} />
     </View>
   );
 };
