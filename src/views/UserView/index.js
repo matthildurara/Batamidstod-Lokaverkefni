@@ -19,6 +19,79 @@ const UserView = ({ navigation, route }) => {
   const { navigate } = useNavigation();
 
   const parameter = route.params.toolbarText;
+
+  const [listOfEvents, setListEvents] = useState([]);
+  const [listOfUserEvent, setListUserEvent] = useState([]);
+
+  const db = getDatabase();
+  const dbRef = ref(db, "Users/Event");
+
+  const fetchEvents = async () => {
+    onValue(dbRef, (snapshot) => {
+      setListEvents([]);
+      snapshot.forEach((childSnapshot) => {
+        const childKey = childSnapshot.key;
+        childSnapshot.forEach((childChild) => {
+          const childchildKey = childChild.key;
+          const childValue = childChild.val();
+
+          const item = {
+            date: childKey,
+            name: childValue.name,
+            startTime: childValue.startTime,
+            endTime: childValue.endTime,
+            staffmember: childValue.staffmember,
+            eventId: childValue.eventId,
+
+            attendees: childValue.attendees,
+          };
+          console.log("ATTENDEES", Object.values(childValue.attendees));
+          // if (
+          //   !childValue.attendees ||
+          //   childValue.attendees == undefined ||
+          //   childValue.attendees == ""
+          // ) {
+          //   for (
+          //     var j = 0;
+          //     j < Object.values(childValue.attendees.length);
+          //     j++
+          //   ) {
+          //     if (
+          //       Object.values(childValue.attendees)[i].name.toLowerCase() ===
+          //       user.name?.toLowerCase()
+          //     ) {
+          //       const obj = Object.values(childValue.attendees)[
+          //         i
+          //       ].name.toLowerCase();
+          //       const us = user.name?.toLowerCase();
+          //       setListUserEvent((listOfUserEvent) => [
+          //         ...listOfUserEvent,
+          //         item,
+          //       ]);
+          //       //return true;
+          //     }
+          //   }
+
+          //   // if (isUserOnEvent(item) == true) {
+          //   //   setListEvents((listOfEvents) => [...listOfEvents, item]);
+          //   // }
+          // }
+          // if (isUserOnEvent(item) == true) {
+          setListEvents((listOfEvents) => [...listOfEvents, item]);
+          // }
+        });
+      });
+    });
+    return;
+  };
+
+  useEffect(() => {
+    fetchEvents();
+    console.log("LIST OF ALL USER EVENTS");
+    console.log(listOfEvents);
+    //isUserOnEvent();
+    return;
+  }, []);
   const [user, setUser] = useState("");
   useEffect(() => {
     async function isUser() {
@@ -31,7 +104,6 @@ const UserView = ({ navigation, route }) => {
     }
     isUser();
   }, []);
-
   const handleSetUSer = async () => {
     try {
       AsyncStorage.setItem("User", JSON.stringify(""));
@@ -43,46 +115,6 @@ const UserView = ({ navigation, route }) => {
     await handleSetUSer();
     navigate("Main");
   };
-
-  const [listOfEvents, setListEvents] = useState([]);
-  const [listOfUserEvent, setListUserEvent] = useState([]);
-
-  const db = getDatabase();
-  const dbRef = ref(db, "Users/Event");
-  useEffect(() => {
-    const fetchEvents = async () => {
-      onValue(dbRef, (snapshot) => {
-        setListEvents([]);
-        snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
-          childSnapshot.forEach((childChild) => {
-            const childchildKey = childChild.key;
-            const childValue = childChild.val();
-
-            const item = {
-              date: childKey,
-              name: childValue.name,
-              startTime: childValue.startTime,
-              endTime: childValue.endTime,
-              staffmember: childValue.staffmember,
-              eventId: childValue.eventId,
-
-              attendees: childValue.attendees,
-            };
-            if (isUserOnEvent(item) == true) {
-              setListEvents((listOfEvents) => [...listOfEvents, item]);
-            }
-          });
-        });
-      });
-    };
-
-    fetchEvents();
-    console.log("LIST OF ALL USER EVENTS");
-    console.log(listOfEvents);
-    //isUserOnEvent();
-    return;
-  }, []);
 
   // const checkEventForUser = () => {
   //   console.log("hallo");
@@ -128,12 +160,18 @@ const UserView = ({ navigation, route }) => {
       </TouchableHighlight>
       <View>
         {Object.values(listOfEvents).map((item, index) => (
-          // {if(item[0].)}
+          <View key={index} item={item}>
+            {isUserOnEvent(item) ? (
+              // {if(item[0].)}
 
-          <View key={index} item={item} style={styles.eventUserItem}>
-            <Text> {item.name}</Text>
-            <Text>{item.startTime}</Text>
-            <Text>{item.endTime}</Text>
+              <View style={styles.eventUserItem}>
+                <Text> {item.name}</Text>
+                <Text>{item.startTime}</Text>
+                <Text>{item.endTime}</Text>
+              </View>
+            ) : (
+              <></>
+            )}
           </View>
         ))}
       </View>
