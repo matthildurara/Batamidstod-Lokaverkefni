@@ -44,8 +44,9 @@ const Main = ({ navigation: { navigate } }) => {
   const [email, setEmail] = useState("");
 
   const getUsers = async () => {
-    setEmail("");
     onValue(dbRef, (snapshot) => {
+      setEmail("");
+      setErrorm("");
       snapshot.forEach((childSnapshot) => {
         console.log(childSnapshot);
         const childKey = childSnapshot.key;
@@ -63,6 +64,9 @@ const Main = ({ navigation: { navigate } }) => {
   };
 
   useEffect(() => {
+    getUsers();
+    setEmail("");
+    setErrorm("");
     // async function setUsers() {
     //   onValue(dbRef, (snapshot) => {
     //     snapshot.forEach((childSnapshot) => {
@@ -78,8 +82,6 @@ const Main = ({ navigation: { navigate } }) => {
     //   });
     // }
     // setUsers();
-    getUsers();
-    return;
   }, []);
 
   const [password, setPassword] = useState("");
@@ -123,25 +125,6 @@ const Main = ({ navigation: { navigate } }) => {
     }
     //await getUsers();
   };
-  const [user, setUser] = useState("");
-  useEffect(() => {
-    async function isUser() {
-      try {
-        const value = await AsyncStorage.getItem("User");
-        if (value !== null) {
-          // We have data!!
-          // console.log("BEFORE LOG IN");
-          // console.log(JSON.parse(value).name);
-          //setUser(JSON.parse(value));
-        }
-      } catch (error) {
-        console.log("BEFORE LOG IN- ERROR");
-        // Error retrieving data
-      }
-    }
-    isUser();
-    return;
-  });
 
   return (
     <>

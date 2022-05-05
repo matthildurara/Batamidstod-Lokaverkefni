@@ -4,6 +4,7 @@ import { auth } from "./firebase-config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
+import { LogBox } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,8 @@ import Main from "./src/views/Main";
 import HomeView from "./src/views/HomeView";
 
 export default function App() {
+  LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+  LogBox.ignoreAllLogs(); //Ignore all log notification
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
