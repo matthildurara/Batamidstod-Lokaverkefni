@@ -27,6 +27,17 @@ export default StyleSheet.create({
     //
     width: 400,
   },
+  eventItemContainer: {
+    flexDirection: "row",
+    width: 300,
+
+    justifyContent: "space-between",
+  },
+  arrowRight: {
+    // alignSelf: "flex-end",
+    right: 10,
+    justifyContent: "center",
+  },
   footer: {
     flex: 1,
     alignSelf: "flex-end",

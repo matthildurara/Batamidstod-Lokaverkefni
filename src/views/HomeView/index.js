@@ -10,6 +10,8 @@ import {
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
+import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 //import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -267,11 +269,18 @@ const HomeView = ({ navigation, route }) => {
       <View style={styles.eventContainer}>
         <View style={styles.event}>
           <TouchableOpacity onPress={() => handlePressEvent(item)}>
-            <Text>{item.name}</Text>
-            <Text>{item.startTime}</Text>
-            <Text>{item.endTime}</Text>
-            <Text>{item.date}</Text>
-            <Text>{item.staffmember}</Text>
+            <View style={styles.eventItemContainer}>
+              <View>
+                <Text>{item.name}</Text>
+                <Text>{item.startTime}</Text>
+                <Text>{item.endTime}</Text>
+                <Text>{item.date}</Text>
+                <Text>{item.staffmember}</Text>
+              </View>
+              <View style={styles.arrowRight}>
+                <AntDesign name="doubleright" size={24} color="black" />
+              </View>
+            </View>
           </TouchableOpacity>
         </View>
         {checkForMax(item) ? (

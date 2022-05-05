@@ -22,9 +22,38 @@ export default StyleSheet.create({
   },
   eventText: {
     paddingBottom: 10,
+    fontSize: 18,
+  },
+  eventText2: {
+    paddingBottom: 10,
+    fontSize: 18,
+    marginTop: 2,
+  },
+  eventText1: {
+    fontWeight: "bold",
+    fontSize: 18,
   },
   backButton: {
     borderColor: "black",
     borderWidth: 2,
+    width: 150,
+    marginLeft: 10,
+
+    // flex: 1,
+  },
+  backButtonContainer: {
+    // borderColor: "red",
+    // borderWidth: 2,
+    // flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  arrow: {
+    alignSelf: "flex-start",
+    right: 10,
+  },
+  textBack: {
+    left: 10,
+    top: 2,
   },
 });

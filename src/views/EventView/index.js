@@ -64,22 +64,37 @@ const Event = ({ navigation, route }) => {
         style={styles.backButton}
         onPress={() => navigate("Home")}
       >
-        <View>
-          <AntDesign name="arrowleft" size={24} color="black" />
-          <Text>Til baka </Text>
+        <View style={styles.backButtonContainer}>
+          <AntDesign
+            name="arrowleft"
+            size={24}
+            color="black"
+            style={styles.arrow}
+          />
+          <Text style={styles.textBack}>Til baka </Text>
         </View>
       </TouchableHighlight>
       <View style={styles.eventContainer}>
         <Text style={styles.eventTitle}> {thisEvent.name}</Text>
-        <Text style={styles.eventText}> {thisEvent.date}</Text>
-        <Text style={styles.eventText}> {thisEvent.startTime}</Text>
-        <Text style={styles.eventText}> {thisEvent.endTime}</Text>
-        <Text style={styles.eventText}> {thisEvent.description}</Text>
-        <Text>Skráðir á viðburðinn: </Text>
+        <Text style={styles.eventText}> Dagsetning: {thisEvent.date}</Text>
+        <Text style={styles.eventText}>
+          {" "}
+          Byrjar klukkan: {thisEvent.startTime}
+        </Text>
+        <Text style={styles.eventText}>
+          {" "}
+          Endar klukkan: {thisEvent.endTime}
+        </Text>
+        <Text style={styles.eventText}> Lýsing: {thisEvent.description}</Text>
+        <Text style={styles.eventText1}> Skráðir á viðburðinn: </Text>
         {checkAttendees(thisEvent) ? (
           Object.values(thisEvent.attendees).map((item, index) => (
             <View key={index} item={item}>
-              {checkItem(item) ? <Text>{item.name}</Text> : <></>}
+              {checkItem(item) ? (
+                <Text style={styles.eventText2}> {item.name}</Text>
+              ) : (
+                <></>
+              )}
             </View>
           ))
         ) : (
