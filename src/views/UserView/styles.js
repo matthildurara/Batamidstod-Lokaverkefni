@@ -39,4 +39,10 @@ export default StyleSheet.create({
     borderColor: "black",
     borderWidth: 2,
   },
+  eventbutton: {
+    borderColor: "black",
+    borderWidth: 2,
+    width: 70,
+    borderRadius: 4,
+  },
 });

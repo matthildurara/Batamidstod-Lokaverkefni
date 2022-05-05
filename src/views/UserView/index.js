@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableHighlight, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
@@ -34,7 +40,6 @@ const UserView = ({ navigation, route }) => {
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
           const childValue = childChild.val();
-
           const item = {
             date: childKey,
             name: childValue.name,
@@ -42,43 +47,9 @@ const UserView = ({ navigation, route }) => {
             endTime: childValue.endTime,
             staffmember: childValue.staffmember,
             eventId: childValue.eventId,
-
             attendees: childValue.attendees,
           };
-          console.log("ATTENDEES", Object.values(childValue.attendees));
-          // if (
-          //   !childValue.attendees ||
-          //   childValue.attendees == undefined ||
-          //   childValue.attendees == ""
-          // ) {
-          //   for (
-          //     var j = 0;
-          //     j < Object.values(childValue.attendees.length);
-          //     j++
-          //   ) {
-          //     if (
-          //       Object.values(childValue.attendees)[i].name.toLowerCase() ===
-          //       user.name?.toLowerCase()
-          //     ) {
-          //       const obj = Object.values(childValue.attendees)[
-          //         i
-          //       ].name.toLowerCase();
-          //       const us = user.name?.toLowerCase();
-          //       setListUserEvent((listOfUserEvent) => [
-          //         ...listOfUserEvent,
-          //         item,
-          //       ]);
-          //       //return true;
-          //     }
-          //   }
-
-          //   // if (isUserOnEvent(item) == true) {
-          //   //   setListEvents((listOfEvents) => [...listOfEvents, item]);
-          //   // }
-          // }
-          // if (isUserOnEvent(item) == true) {
           setListEvents((listOfEvents) => [...listOfEvents, item]);
-          // }
         });
       });
     });
@@ -87,12 +58,11 @@ const UserView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchEvents();
-    console.log("LIST OF ALL USER EVENTS");
-    console.log(listOfEvents);
-    //isUserOnEvent();
     return;
   }, []);
+
   const [user, setUser] = useState("");
+
   useEffect(() => {
     async function isUser() {
       try {
@@ -104,6 +74,7 @@ const UserView = ({ navigation, route }) => {
     }
     isUser();
   }, []);
+
   const handleSetUSer = async () => {
     try {
       AsyncStorage.setItem("User", JSON.stringify(""));
@@ -111,18 +82,31 @@ const UserView = ({ navigation, route }) => {
       console.log(error);
     }
   };
+
   const handleLogOut = async () => {
-    await handleSetUSer();
+    try {
+      AsyncStorage.setItem("User", JSON.stringify(""));
+    } catch (error) {
+      console.log(error);
+    }
+    //await handleSetUSer();
     navigate("Main");
   };
 
-  // const checkEventForUser = () => {
-  //   console.log("hallo");
-  //   for (var i = 0; i < Object.keys(listOfEvents).length; i++) {
-  //     console.log(Object.keys(listOfEvents[i]));
-  //   }
-  //   // if (isUserOnEvent(item)) {
-  // };
+  const handleOnRemove = (item) => {
+    const db = getDatabase();
+    const id = findId(item);
+    const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
+    remove(ref(db, urls))
+      .then(() => {
+        fetchEvents();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    alert("þú hefur verið afskráður á viðburð");
+  };
+
   const isUserOnEvent = (item) => {
     console.log("ITEM IS : ");
     console.log(item);
@@ -150,6 +134,15 @@ const UserView = ({ navigation, route }) => {
     }
   };
 
+  const isEventOver = (eventDate) => {
+    const today = new Date();
+    const date = new Date(eventDate);
+    if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} style={styles.toolbar} />
@@ -161,13 +154,22 @@ const UserView = ({ navigation, route }) => {
       <View>
         {Object.values(listOfEvents).map((item, index) => (
           <View key={index} item={item}>
-            {isUserOnEvent(item) ? (
+            {isUserOnEvent(item) && isEventOver(item.date) ? (
               // {if(item[0].)}
 
               <View style={styles.eventUserItem}>
                 <Text> {item.name}</Text>
                 <Text>{item.startTime}</Text>
                 <Text>{item.endTime}</Text>
+
+                <View>
+                  <TouchableOpacity
+                    onPress={() => handleOnRemove(item)}
+                    style={styles.eventbutton}
+                  >
+                    <Text>AfSkrá</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             ) : (
               <></>

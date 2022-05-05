@@ -37,78 +37,78 @@ import { stringify } from "@firebase/util";
 // import { KeyboardAvoidingView } from "react-native-web";
 
 const Main = ({ navigation: { navigate } }) => {
-  // const { currentUser } = useAuthValue();
-  // const [currentUser, setCurrentUser] = useState(null);
-
-  //const auth = firebase.auth();
-  //const history = useHistory();
-
   const db = getDatabase();
   const dbRef = ref(db, "Users/User");
 
-  //let allUsers = [];
-  const [allUsers, setAllUsers] = useState({});
+  const [allUsers, setAllUsers] = useState([]);
+  const [email, setEmail] = useState("");
 
   const getUsers = async () => {
-    //let allUsers = [];
+    setEmail("");
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         console.log(childSnapshot);
         const childKey = childSnapshot.key;
         const childVal = childSnapshot.val();
         allUsers[childKey] = [];
-
-        allUsers[childKey].push({
-          name: childKey,
-          email: childVal.email,
-        });
+        const itemUser = { name: childKey, email: childVal.email };
+        setAllUsers((prevstate) => [...prevstate, itemUser]);
+        // allUsers[childKey].push({
+        //   name: childKey,
+        //   email: childVal.email,
+        // });
       });
     });
     return;
   };
 
   useEffect(() => {
-    async function setUsers() {
-      onValue(dbRef, (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
-          const childVal = childSnapshot.val();
-          allUsers[childKey] = [];
+    // async function setUsers() {
+    //   onValue(dbRef, (snapshot) => {
+    //     snapshot.forEach((childSnapshot) => {
+    //       const childKey = childSnapshot.key;
+    //       const childVal = childSnapshot.val();
+    //       allUsers[childKey] = [];
 
-          allUsers[childKey].push({
-            name: childKey,
-            email: childVal.email,
-          });
-        });
-      });
-    }
-    setUsers();
+    //       allUsers[childKey].push({
+    //         name: childKey,
+    //         email: childVal.email,
+    //       });
+    //     });
+    //   });
+    // }
+    // setUsers();
+    getUsers();
+    return;
   }, []);
-  const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
   const [errorm, setErrorm] = useState("");
 
-  const findName = async (email) => {
-    for (var i = 0; i < Object.values(allUsers).length; i++) {
-      const user = Object.values(allUsers)[i];
-      const tempUserString = JSON.stringify(user[0].email);
-      if (tempUserString === email) {
-        return user[0].name;
-      }
-    }
-  };
+  // const findName = async (email) => {
+  //   for (var i = 0; i < Object.keys(allUsers).length; i++) {
+  //     const user = Object.values(allUsers)[i];
+  //     const tempUserString = JSON.stringify(user[0].email);
+  //     if (tempUserString === email) {
+  //       return user[0].name;
+  //     }
+  //   }
+  // };
   const handleLogin = async () => {
-    await getUsers();
-
-    for (var i = 0; i < Object.values(allUsers).length; i++) {
+    for (var i = 0; i < Object.keys(allUsers).length; i++) {
+      // console.log("inni for ");
       const user = Object.values(allUsers)[i];
+      // console.log(user);
       const newEmail = JSON.stringify(email.toLowerCase());
-      const tempUserString = JSON.stringify(user[0].email);
+      const tempUserString = JSON.stringify(user.email);
+      // console.log("TEmpUSER STRING :       ", tempUserString);
+      // console.log("EEEMAIL: ", newEmail);
+      //console.log(tempUserString[i].name);
       if (tempUserString === newEmail) {
-        const thisName = await findName(newEmail);
+        // const thisName = await findName(newEmail);
         const userLogin = {
-          name: thisName,
-          email: user[0].email,
+          name: user.name,
+          email: user.email,
         };
         try {
           AsyncStorage.setItem("User", JSON.stringify(userLogin));
@@ -121,6 +121,7 @@ const Main = ({ navigation: { navigate } }) => {
         setErrorm("This email is invalid");
       }
     }
+    //await getUsers();
   };
   const [user, setUser] = useState("");
   useEffect(() => {
@@ -129,8 +130,8 @@ const Main = ({ navigation: { navigate } }) => {
         const value = await AsyncStorage.getItem("User");
         if (value !== null) {
           // We have data!!
-          console.log("BEFORE LOG IN");
-          console.log(JSON.parse(value).name);
+          // console.log("BEFORE LOG IN");
+          // console.log(JSON.parse(value).name);
           //setUser(JSON.parse(value));
         }
       } catch (error) {
