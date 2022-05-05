@@ -20,6 +20,8 @@ const NotificationView = ({ navigation, route }) => {
   const dbRef = ref(db, "Users/Notifications");
   const [allNotifications, setAllNotifications] = useState([]);
 
+  const numerNotification = useState("");
+
   useEffect(() => {
     const db = getDatabase();
     const dbRef = ref(db, "Users/Notifications");
@@ -49,11 +51,10 @@ const NotificationView = ({ navigation, route }) => {
         });
       });
     }
-
     return getNotifications();
     //console.log(allNotifications);
   }, []);
-  console.log(allNotifications);
+  console.log("LENGD: ", allNotifications.length);
 
   return (
     <View style={styles.container}>
@@ -68,7 +69,7 @@ const NotificationView = ({ navigation, route }) => {
           ))}
         </View>
       </ScrollView>
-      <Footer style={styles.footer} />
+      <Footer numberOfNotifications={allNotifications?.length} />
     </View>
   );
 };

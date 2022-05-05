@@ -5,8 +5,44 @@ import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-const Footer = () => {
+const Footer = (parameter) => {
   const { navigate } = useNavigation();
+
+  // const [allNotifications, setAllNotifications] = useState([]);
+
+  // useEffect(() => {
+  //   const db = getDatabase();
+  //   const dbRef = ref(db, "Users/Notifications");
+  //   async function getNotifications() {
+  //     onValue(dbRef, (snapshot) => {
+  //       setAllNotifications([]);
+  //       console.log("=============MMMMM==========");
+  //       snapshot.forEach((childSnapshot) => {
+  //         const childKey = childSnapshot.key;
+  //         console.log("CHILDKEU IS ?");
+  //         console.log(childKey);
+  //         childSnapshot.forEach((childChild) => {
+  //           const childchildKey = childChild.key;
+  //           console.log("childchild key: ", childchildKey);
+  //           const childValue = childChild.val();
+
+  //           const item = {
+  //             notification: childValue.notification,
+  //             notificationTitle: childValue.notificationTitle,
+  //           };
+
+  //           setAllNotifications((allNotifications) => [
+  //             ...allNotifications,
+  //             item,
+  //           ]);
+  //         });
+  //       });
+  //     });
+  //   }
+
+  //   return getNotifications();
+  //   //console.log(allNotifications);
+  // }, []);
 
   return (
     <View styleName="horizontal" style={styles.footer}>
@@ -33,7 +69,7 @@ const Footer = () => {
             <Text style={styles.icon}>
               <MaterialIcons name="notifications" size={24} color="black" />
             </Text>
-            <Text>Tilkynningar</Text>
+            <Text>Tilkynningar {parameter.numberOfNotifications}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -60,7 +96,7 @@ const Footer = () => {
             <Text>
               <MaterialIcons name="account-circle" size={24} color="black" />
             </Text>
-            <Text>Notandi</Text>
+            <Text>Mitt svæði</Text>
           </View>
         </TouchableHighlight>
       </View>

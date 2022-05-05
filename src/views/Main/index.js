@@ -48,7 +48,7 @@ const Main = ({ navigation: { navigate } }) => {
       setEmail("");
       setErrorm("");
       snapshot.forEach((childSnapshot) => {
-        console.log(childSnapshot);
+        //console.log(childSnapshot);
         const childKey = childSnapshot.key;
         const childVal = childSnapshot.val();
         allUsers[childKey] = [];
@@ -82,6 +82,7 @@ const Main = ({ navigation: { navigate } }) => {
     //   });
     // }
     // setUsers();
+    return;
   }, []);
 
   const [password, setPassword] = useState("");

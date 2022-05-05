@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { dbFirestore } from "../../../firebase-config";
 import { getAuth } from "firebase/auth";
 import { useAuthValue } from "../../../authContext";
+import getAllNotifications from "../../../services/notificationServices";
 import uuid from "react-native-uuid";
 import { Agenda } from "react-native-calendars";
 import {
@@ -38,13 +39,10 @@ const HomeView = ({ navigation, route }) => {
     async function isUser() {
       try {
         const value = await AsyncStorage.getItem("User");
-        // console.log("WHAT IS THIS VALUE: ", value);
         if (value !== null) {
           // We have data!!
 
-          //console.log("THIS IS THE USER: ", JSON.parse(value));
           const val = JSON.parse(value);
-          //console.log(val.name);
           setUser(JSON.parse(value));
         }
       } catch (error) {
@@ -60,7 +58,7 @@ const HomeView = ({ navigation, route }) => {
   const dbRef = ref(db, "Users/Event");
 
   const fetchEvents = async () => {
-    console.log("================AAAAAAA=======");
+    // console.log("================AAAAAAA=======");
     setListEvents({});
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -69,12 +67,7 @@ const HomeView = ({ navigation, route }) => {
 
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
-          // console.log("CHILDCHILDKEY: ", childchildKey);
-          // console.log("CHILD KEY: ", childKey);
           const childValue = childChild.val();
-          //console.log("CHILD VALUE name: ", childValue);
-          //listOfEvents[childKey] = [];
-
           const item = {
             name: childValue.name,
             startTime: childValue.startTime,
@@ -86,24 +79,14 @@ const HomeView = ({ navigation, route }) => {
             eventId: childchildKey,
             staffmember: childValue.staffmember,
           };
-          // console.log("ITEM");
-          // console.log(item);
           listOfDay.push(item);
-          // console.log("insideforfor");
-          // console.log(listOfDay);
         });
-        // console.log("insideFIRST FOR ");
-        // console.log(listOfDay);
         setListEvents((prevState) => ({
           ...prevState,
           [childKey]: listOfDay,
         }));
-        // console.log("EFTIR SET LIST EVENTS");
-        // console.log(listOfEvents);
       });
     });
-    console.log("AL LIST ================================: ");
-    //console.log(listOfEvents);
     return;
   };
 
@@ -114,10 +97,80 @@ const HomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchEvents();
-    // console.log("AL LIST: ");
-    // console.log(listOfEvents);
     return;
   }, []);
+  const [notificationLength, setNotificationLength] = useState(0);
+  const [allNotifications, setAllNotifications] = useState([]);
+
+  // useEffect(() => {
+  //   const db = getDatabase();
+  //   const dbRef = ref(db, "Users/Notifications");
+  //   async function getNotifications() {
+  //     setNotificationLength(0);
+  //     onValue(dbRef, (snapshot) => {
+  //       // console.log("=============MMMMM==========");
+  //       snapshot.forEach((childSnapshot) => {
+  //         const childKey = childSnapshot.key;
+  //         console.log("CHILDKEU IS ?");
+  //         console.log(childKey);
+  //         childSnapshot.forEach((childChild) => {
+  //           const childchildKey = childChild.key;
+  //           console.log("===================AAAA=========AAAA");
+  //           console.log(childchildKey);
+
+  //           setNotificationLength(notificationLength + 1);
+  //         });
+  //       });
+  //     });
+  //     AsyncStorage.setItem(
+  //       "NumberNotifications",
+  //       JSON.stringify(notificationLength)
+  //     );
+  //   }
+  //   getNotifications();
+  //   return;
+  // }, []);
+
+  useEffect(() => {
+    const db = getDatabase();
+    const dbRef = ref(db, "Users/Notifications");
+    async function getNotifications() {
+      onValue(dbRef, (snapshot) => {
+        setAllNotifications([]);
+        // console.log("=============MMMMM==========");
+        snapshot.forEach((childSnapshot) => {
+          const childKey = childSnapshot.key;
+          // console.log("CHILDKEU IS ?");
+          // console.log(childKey);
+          childSnapshot.forEach((childChild) => {
+            const childchildKey = childChild.key;
+            // console.log("childchild key: ", childchildKey);
+            const childValue = childChild.val();
+
+            const item = {
+              notification: childValue.notification,
+              notificationTitle: childValue.notificationTitle,
+            };
+
+            setAllNotifications((allNotifications) => [
+              ...allNotifications,
+              item,
+            ]);
+          });
+        });
+      });
+    }
+
+    return getNotifications();
+    //console.log(allNotifications);
+  }, []);
+
+  console.log("nvjknavkjnvjkenvkjnrkjtnkrtnjvjrnbkjrnnrk");
+  console.log(allNotifications.length);
+  AsyncStorage.setItem(
+    "NumberNotifications",
+    JSON.stringify(allNotifications.length)
+  );
 
   const handleOnEvent = async (item) => {
     const db = getDatabase();
@@ -129,30 +182,19 @@ const HomeView = ({ navigation, route }) => {
         name: thisuser?.name,
       })
         .then(() => {
-          //console.log("Before fetchEVent");
           fetchEvents();
-          // console.log("After FEtch Event");
-          // console.log("ALL LIST BEFORE REMOVE");
-          // console.log(listOfEvents);
         })
         .catch((err) => {
           console.log(err);
         });
-      //fetchEvents();
-
-      //alert("þú hefur verið skráður á viðburð");
     } else {
-      const urll = `Users/Event/${item.date}/${item.eventId}/attendees/1`;
+      const urll = `Users/Event/${item.date}/${item.eventId}/attendees/${userId}`;
 
       set(ref(db, urll), {
         name: thisuser?.name,
       })
         .then(() => {
-          //console.log("Before fetchEVent");
           fetchEvents();
-          // console.log("After FEtch Event");
-          // console.log("ALL LIST BEFORE REMOVE");
-          // console.log(listOfEvents);
         })
         .catch((err) => {
           console.log(err);
@@ -179,9 +221,6 @@ const HomeView = ({ navigation, route }) => {
     if (item.attendees) {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
         if (Object.values(item.attendees)[i].name === thisuser.name) {
-          // console.log("USER AND OVJECT");
-          // console.log("USER: ", thisuser);
-          // console.log("OBJECT: ", Object.values(item.attendees)[i].name);
           return Object.keys(item.attendees)[i];
         }
       }
@@ -189,20 +228,12 @@ const HomeView = ({ navigation, route }) => {
     return 0;
   };
   const handleOnRemove = (item) => {
-    // console.log("CAlling handleOnRemove");
     const db = getDatabase();
     const id = findId(item);
-    // console.log("ALL LIST BEFORE REMOVE");
-    // console.log(listOfEvents);
-    // console.log(id);
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
     remove(ref(db, urls))
       .then(() => {
-        //console.log("Before fetchEVent");
         fetchEvents();
-        // console.log("After FEtch Event");
-        // console.log("ALL LIST BEFORE REMOVE");
-        // console.log(listOfEvents);
       })
       .catch((err) => {
         console.log(err);
@@ -353,16 +384,13 @@ const HomeView = ({ navigation, route }) => {
               </View>
             );
           }}
-          // onDayPress={(day) => {
-          //   // console.log("selected day", day);
-          //   const date = day.dateString;
-          //   //setDay(date);
-          //   console.log(date);
-          // }}
         />
       </SafeAreaView>
 
-      <Footer style={styles.footer} />
+      <Footer
+        numberOfNotifications={allNotifications.length}
+        style={styles.footer}
+      />
     </View>
   );
 };

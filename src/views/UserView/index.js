@@ -5,6 +5,7 @@ import {
   TouchableHighlight,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
@@ -72,17 +73,45 @@ const UserView = ({ navigation, route }) => {
         }
       } catch (error) {}
     }
+    getNotificationLength();
     isUser();
+
     return;
   }, []);
 
-  const handleSetUSer = async () => {
+  const [notificationLength, setNotificationLength] = useState(0);
+
+  const getNotificationLength = async () => {
     try {
-      AsyncStorage.setItem("User", JSON.stringify(""));
+      console.log("inside try before asyncstore");
+
+      const value = await AsyncStorage.getItem("NumberNotifications");
+      console.log("inside Try after asyncstore");
+      console.log(value);
+      console.log("value: ", JSON.parse(value));
+      if (value !== null) {
+        console.log("inside If");
+
+        // We have data!!
+
+        console.log("value: ", value);
+        const parsedData = JSON.parse(value);
+        console.log("parsedValue: ", parsedData);
+        setNotificationLength(parsedData);
+        //return parsedData;
+      }
     } catch (error) {
-      console.log(error);
+      console.log("error: ", error);
+      // Error retrieving data
     }
   };
+  // const handleSetUSer = async () => {
+  //   try {
+  //     AsyncStorage.setItem("User", JSON.stringify(""));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const handleLogOut = async () => {
     try {
@@ -160,40 +189,81 @@ const UserView = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} style={styles.toolbar} />
-      <View style={styles.calander}></View>
-      <Text>{user.name}</Text>
-      <TouchableHighlight onPress={handleLogOut} style={styles.logoutbutton}>
-        <Text>Log Out</Text>
-      </TouchableHighlight>
-      <View>
-        {Object.values(listOfEvents).map((item, index) => (
-          <View key={index} item={item}>
-            {isUserOnEvent(item) && isEventOver(item.date) ? (
-              // {if(item[0].)}
-
-              <View style={styles.eventUserItem}>
-                <Text> {item.name}</Text>
-                <Text>{item.startTime}</Text>
-                <Text>{item.endTime}</Text>
-
-                <View>
-                  <TouchableOpacity
-                    onPress={() => handleOnRemove(item)}
-                    style={styles.eventbutton}
-                  >
-                    <Text>AfSkrá</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ) : (
-              <></>
-            )}
-          </View>
-        ))}
+      <View style={styles.userInformation}>
+        <Text>{user.name}</Text>
+        <TouchableHighlight onPress={handleLogOut} style={styles.logoutbutton}>
+          <Text>Log Out</Text>
+        </TouchableHighlight>
       </View>
+      <ScrollView>
+        <View style={styles.list}>
+          <View>
+            {Object.values(listOfEvents).map((item, index) => (
+              <View key={index} item={item}>
+                {isUserOnEvent(item) && isEventOver(item.date) ? (
+                  // {if(item[0].)}
 
-      <Footer style={styles.footer} />
+                  <View style={styles.eventUserItem}>
+                    <Text> {item.name}</Text>
+                    <Text>{item.startTime}</Text>
+                    <Text>{item.endTime}</Text>
+
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => handleOnRemove(item)}
+                        style={styles.eventbutton}
+                      >
+                        <Text>AfSkrá</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <></>
+                )}
+              </View>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+      <Footer numberOfNotifications={notificationLength} />
     </View>
+    // <View style={styles.container}>
+    //   <Toolbar toolbarText={parameter} style={styles.toolbar} />
+    //   {/* <View> */}
+    //   <Text>{user.name}</Text>
+    //   <TouchableHighlight onPress={handleLogOut} style={styles.logoutbutton}>
+    //     <Text>Log Out</Text>
+    //   </TouchableHighlight>
+    //   {/* </View> */}
+    //   <View>
+    //     {Object.values(listOfEvents).map((item, index) => (
+    //       <View key={index} item={item}>
+    //         {isUserOnEvent(item) && isEventOver(item.date) ? (
+    //           // {if(item[0].)}
+
+    //           <View style={styles.eventUserItem}>
+    //             <Text> {item.name}</Text>
+    //             <Text>{item.startTime}</Text>
+    //             <Text>{item.endTime}</Text>
+
+    //             <View>
+    //               <TouchableOpacity
+    //                 onPress={() => handleOnRemove(item)}
+    //                 style={styles.eventbutton}
+    //               >
+    //                 <Text>AfSkrá</Text>
+    //               </TouchableOpacity>
+    //             </View>
+    //           </View>
+    //         ) : (
+    //           <></>
+    //         )}
+    //       </View>
+    //     ))}
+    //   </View>
+
+    //   <Footer />
+    // </View>
   );
 };
 export default UserView;

@@ -9,8 +9,15 @@ export default StyleSheet.create({
     flex: 1,
     // padding:20,
     alignItems: "center",
-    justifyContent: "space-between",
+    // padding:20,
+    //alignItems: "center",
+    //justifyContent: "space-between",
     backgroundColor: "white",
+  },
+  userInformation: {
+    //height: 80,
+    borderColor: "red",
+    borderWidth: 2,
   },
   toolbarAction: {
     // width:100,
@@ -22,6 +29,7 @@ export default StyleSheet.create({
     flex: 1,
     alignSelf: "flex-end",
     bottom: 0,
+
     // position:'absolute',
     // bottom:0,
   },
