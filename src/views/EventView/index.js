@@ -27,6 +27,7 @@ const Event = ({ navigation, route }) => {
       }
     }
     isEvent();
+    return;
   }, []);
 
   const checkAttendees = (item) => {

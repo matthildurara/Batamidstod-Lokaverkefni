@@ -73,6 +73,7 @@ const UserView = ({ navigation, route }) => {
       } catch (error) {}
     }
     isUser();
+    return;
   }, []);
 
   const handleSetUSer = async () => {
@@ -93,6 +94,19 @@ const UserView = ({ navigation, route }) => {
     navigate("Main");
   };
 
+  const findId = (item) => {
+    if (item.attendees) {
+      for (var i = 0; i < Object.keys(item.attendees).length; i++) {
+        if (Object.values(item.attendees)[i].name === user.name) {
+          // console.log("USER AND OVJECT");
+          // console.log("USER: ", thisuser);
+          // console.log("OBJECT: ", Object.values(item.attendees)[i].name);
+          return Object.keys(item.attendees)[i];
+        }
+      }
+    }
+    return 0;
+  };
   const handleOnRemove = (item) => {
     const db = getDatabase();
     const id = findId(item);

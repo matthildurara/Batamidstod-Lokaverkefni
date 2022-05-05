@@ -52,6 +52,7 @@ const HomeView = ({ navigation, route }) => {
       }
     }
     isUser();
+    return;
   }, []);
   const [listOfEvents, setListEvents] = useState({});
 
@@ -115,6 +116,7 @@ const HomeView = ({ navigation, route }) => {
     fetchEvents();
     // console.log("AL LIST: ");
     // console.log(listOfEvents);
+    return;
   }, []);
 
   const handleOnEvent = async (item) => {

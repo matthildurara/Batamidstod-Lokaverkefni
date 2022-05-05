@@ -140,6 +140,7 @@ const Main = ({ navigation: { navigate } }) => {
       }
     }
     isUser();
+    return;
   });
 
   return (

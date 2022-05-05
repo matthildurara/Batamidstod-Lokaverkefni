@@ -20,6 +20,7 @@ const Toolbar = (parameter) => {
       }
     }
     isUser();
+    return;
   }, []);
   return (
     <View styleName="horizontal" style={styles.toolbar}>

@@ -34,6 +34,7 @@ export default function App() {
 
       // setUser(currentUser);
     });
+    return;
   }, []);
   return (
     <NavigationContainer>
