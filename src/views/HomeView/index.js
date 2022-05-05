@@ -30,6 +30,15 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 const HomeView = ({ navigation, route }) => {
+  const [notificationLength, setNotificationLength] = useState(0);
+  const [allNotifications, setAllNotifications] = useState([]);
+
+  // console.log("nvjknavkjnvjkenvkjnrkjtnkrtnjvjrnbkjrnnrk");
+  // console.log(allNotifications.length);
+  AsyncStorage.setItem(
+    "NumberNotifications",
+    JSON.stringify(allNotifications.length)
+  );
   const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
   const [reload, setReload] = useState(0);
@@ -57,8 +66,8 @@ const HomeView = ({ navigation, route }) => {
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
 
-  const fetchEvents = async () => {
-    // console.log("================AAAAAAA=======");
+  const fetchEvents = () => {
+    console.log("================AAAAAAA=======");
     setListEvents({});
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -79,6 +88,7 @@ const HomeView = ({ navigation, route }) => {
             eventId: childchildKey,
             staffmember: childValue.staffmember,
           };
+          // console.log(item);
           listOfDay.push(item);
         });
         setListEvents((prevState) => ({
@@ -99,37 +109,6 @@ const HomeView = ({ navigation, route }) => {
     fetchEvents();
     return;
   }, []);
-  const [notificationLength, setNotificationLength] = useState(0);
-  const [allNotifications, setAllNotifications] = useState([]);
-
-  // useEffect(() => {
-  //   const db = getDatabase();
-  //   const dbRef = ref(db, "Users/Notifications");
-  //   async function getNotifications() {
-  //     setNotificationLength(0);
-  //     onValue(dbRef, (snapshot) => {
-  //       // console.log("=============MMMMM==========");
-  //       snapshot.forEach((childSnapshot) => {
-  //         const childKey = childSnapshot.key;
-  //         console.log("CHILDKEU IS ?");
-  //         console.log(childKey);
-  //         childSnapshot.forEach((childChild) => {
-  //           const childchildKey = childChild.key;
-  //           console.log("===================AAAA=========AAAA");
-  //           console.log(childchildKey);
-
-  //           setNotificationLength(notificationLength + 1);
-  //         });
-  //       });
-  //     });
-  //     AsyncStorage.setItem(
-  //       "NumberNotifications",
-  //       JSON.stringify(notificationLength)
-  //     );
-  //   }
-  //   getNotifications();
-  //   return;
-  // }, []);
 
   useEffect(() => {
     const db = getDatabase();
@@ -164,13 +143,6 @@ const HomeView = ({ navigation, route }) => {
     return getNotifications();
     //console.log(allNotifications);
   }, []);
-
-  console.log("nvjknavkjnvjkenvkjnrkjtnkrtnjvjrnbkjrnnrk");
-  console.log(allNotifications.length);
-  AsyncStorage.setItem(
-    "NumberNotifications",
-    JSON.stringify(allNotifications.length)
-  );
 
   const handleOnEvent = async (item) => {
     const db = getDatabase();
@@ -273,7 +245,8 @@ const HomeView = ({ navigation, route }) => {
     }
     return false;
   };
-  const handlePressEvent = (item) => {
+  const handlePressEvent = async (item) => {
+    console.log("attendees: ", item.attendees);
     const pressedEvent = {
       name: item.name,
       date: item.date,
@@ -285,7 +258,7 @@ const HomeView = ({ navigation, route }) => {
       eventId: item.eventId,
       staffmember: item.staffmember,
     };
-    AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
+    await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
 

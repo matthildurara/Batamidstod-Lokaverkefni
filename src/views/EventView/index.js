@@ -19,7 +19,9 @@ const Event = ({ navigation, route }) => {
         const value = await AsyncStorage.getItem("Event");
         if (value !== null) {
           // We have data!!
+          const parsed = JSON.parse(value);
           console.log("PArsed EVENT: ", JSON.parse(value));
+          console.log("attttttendeeeees: ", parsed.attendees);
           setEvent(JSON.parse(value));
         }
       } catch (error) {
@@ -31,11 +33,15 @@ const Event = ({ navigation, route }) => {
   }, []);
 
   const checkAttendees = (item) => {
+    console.log("in checkAttendees");
     if (item.attendees) {
-      if (Object.values(item.attendees).length > 1) {
-        for (var i = 0; i < Object.values(item.attendees).length; i++) {
-          return true;
-        }
+      console.log("in checkAttendees inside  first if");
+      if (Object.keys(item.attendees).length > 0) {
+        console.log("in checkAttendees inside  second if");
+        //for (var i = 0; i < Object.values(item.attendees).length; i++) {
+        // console.log("in checkAttendees inside for ");
+        return true;
+        //}
       }
     }
     return false;

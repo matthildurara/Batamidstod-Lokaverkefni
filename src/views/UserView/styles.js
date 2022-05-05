@@ -16,8 +16,10 @@ export default StyleSheet.create({
   },
   userInformation: {
     //height: 80,
-    borderColor: "red",
-    borderWidth: 2,
+    //borderColor: "red",
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
+    //borderWidth: 2,
   },
   toolbarAction: {
     // width:100,
