@@ -93,8 +93,8 @@ const HomeView = ({ navigation, route }) => {
             color: childValue.color,
           };
           // console.log(item);
-          let stringStart = childValue.startTime.replace(":", "");
-          console.log(stringStart);
+          //let stringStart = childValue.startTime.replace(":", "");
+          // console.log(stringStart);
           listOfDay.push(item);
           parseInt(childValue.startTime);
         });

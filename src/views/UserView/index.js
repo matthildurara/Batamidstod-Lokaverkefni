@@ -33,11 +33,12 @@ const UserView = ({ navigation, route }) => {
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
 
-  const fetchEvents = async () => {
+  const fetchEvents = () => {
     onValue(dbRef, (snapshot) => {
       setListEvents([]);
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
+        let listOfDay = [];
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
           const childValue = childChild.val();
@@ -49,11 +50,23 @@ const UserView = ({ navigation, route }) => {
             staffmember: childValue.staffmember,
             eventId: childValue.eventId,
             attendees: childValue.attendees,
+            color: childValue.color,
           };
+          listOfDay.push(item);
+          parseInt(childValue.startTime);
+        });
+        listOfDay.sort((a, b) =>
+          parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
+        );
+        //for (var i = 0; i < listOfDay?.length; i++) {
+        listOfDay.map((item) => {
+          console.log("EACH ITEM: ", item);
           setListEvents((listOfEvents) => [...listOfEvents, item]);
         });
       });
     });
+    console.log("===============LISTOFEVENTS===============");
+    console.log(listOfEvents);
     return;
   };
 
@@ -203,7 +216,13 @@ const UserView = ({ navigation, route }) => {
                 {isUserOnEvent(item) && isEventOver(item.date) ? (
                   // {if(item[0].)}
 
-                  <View style={styles.eventUserItem}>
+                  <View
+                    style={[
+                      styles.eventUserItem,
+                      { backgroundColor: item.color },
+                    ]}
+                    //style={styles.eventUserItem}
+                  >
                     <View style={styles.eventUserText}>
                       <Text style={styles.text}> {item.name}</Text>
                       <Text style={styles.text}> {item.date}</Text>
