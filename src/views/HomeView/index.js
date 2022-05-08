@@ -65,6 +65,7 @@ const HomeView = ({ navigation, route }) => {
     return;
   }, []);
   const [listOfEvents, setListEvents] = useState({});
+  const [currTime, setCurrTime] = useState("");
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
@@ -92,8 +93,35 @@ const HomeView = ({ navigation, route }) => {
             staffmember: childValue.staffmember,
           };
           // console.log(item);
+          let stringStart = childValue.startTime.replace(":", "");
+          console.log(stringStart);
+          // const start = new Date(childValue.startTime).getHours();
+
+          //console.log("startTime is : ", start);
+          // if ("1" > "2") {
+          //   console.log(false);
+          // } else {
+          //   console.log(true);
+          // }
+
+          // if (stringStart < currTime) {
+          //   console.log("inside if string< curr");
+          //   console.log(stringStart, currTime);
+          //   listOfDay(unshift(item));
+          //   setCurrTime(stringStart);
+          // } else {
+          //   console.log("else  string < curr");
+          //   console.log(stringStart, currTime);
+          //   listOfDay.push(item);
+          //   setCurrTime(stringStart);
+          // }
           listOfDay.push(item);
+          parseInt(childValue.startTime);
         });
+        listOfDay.sort((a, b) =>
+          parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
+        );
+        // console.log(newList);
         setListEvents((prevState) => ({
           ...prevState,
           [childKey]: listOfDay,
@@ -267,7 +295,7 @@ const HomeView = ({ navigation, route }) => {
   };
   // console.log("ALL EVENTS");
   // console.log(listOfEvents);
-  console.log("ALL EVENTS: ", listOfEvents);
+  //console.log("ALL EVENTS: ", listOfEvents);
   const renderItem = (item) => {
     return (
       <View style={styles.eventContainer}>
