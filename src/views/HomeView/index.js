@@ -263,6 +263,8 @@ const HomeView = ({ navigation, route }) => {
     await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
+  // console.log("ALL EVENTS");
+  // console.log(listOfEvents);
   console.log("ALL EVENTS: ", listOfEvents);
   const renderItem = (item) => {
     return (
