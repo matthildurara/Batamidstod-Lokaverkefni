@@ -65,7 +65,6 @@ const HomeView = ({ navigation, route }) => {
     return;
   }, []);
   const [listOfEvents, setListEvents] = useState({});
-  const [currTime, setCurrTime] = useState("");
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
@@ -91,30 +90,11 @@ const HomeView = ({ navigation, route }) => {
             description: childValue.description,
             eventId: childchildKey,
             staffmember: childValue.staffmember,
+            color: childValue.color,
           };
           // console.log(item);
           let stringStart = childValue.startTime.replace(":", "");
           console.log(stringStart);
-          // const start = new Date(childValue.startTime).getHours();
-
-          //console.log("startTime is : ", start);
-          // if ("1" > "2") {
-          //   console.log(false);
-          // } else {
-          //   console.log(true);
-          // }
-
-          // if (stringStart < currTime) {
-          //   console.log("inside if string< curr");
-          //   console.log(stringStart, currTime);
-          //   listOfDay(unshift(item));
-          //   setCurrTime(stringStart);
-          // } else {
-          //   console.log("else  string < curr");
-          //   console.log(stringStart, currTime);
-          //   listOfDay.push(item);
-          //   setCurrTime(stringStart);
-          // }
           listOfDay.push(item);
           parseInt(childValue.startTime);
         });
@@ -131,14 +111,13 @@ const HomeView = ({ navigation, route }) => {
     return;
   };
 
-  const [items, setItems] = useState({
-    "2022-05-03": [{ name: "test #2" }, { name: "test $4" }],
-    "2022-04-25": [{ name: "test #3" }],
-  });
+  // const [items, setItems] = useState({
+  //   "2022-05-03": [{ name: "test #2" }, { name: "test $4" }],
+  //   "2022-04-25": [{ name: "test #3" }],
+  // });
 
   useEffect(() => {
     fetchEvents();
-    //getAllNotifications();
     return;
   }, []);
 
@@ -171,9 +150,7 @@ const HomeView = ({ navigation, route }) => {
         });
       });
     }
-
     return getNotifications();
-    //console.log(allNotifications);
   }, []);
 
   const handleOnEvent = async (item) => {
@@ -297,8 +274,13 @@ const HomeView = ({ navigation, route }) => {
   // console.log(listOfEvents);
   //console.log("ALL EVENTS: ", listOfEvents);
   const renderItem = (item) => {
+    console.log("=========================================");
+    console.log(item);
     return (
-      <View style={styles.eventContainer}>
+      <View
+        //  style={styles.eventContainer}
+        style={[styles.eventContainer, { backgroundColor: item.color }]}
+      >
         <View style={styles.event}>
           <TouchableOpacity onPress={() => handlePressEvent(item)}>
             <View style={styles.eventItemContainer}>
@@ -315,9 +297,9 @@ const HomeView = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
         </View>
-        {checkForMax(item) ? (
+        {isEventOver(item.date) ? (
           <View>
-            {isEventOver(item.date) ? (
+            {checkForMax(item) ? (
               <View>
                 {isUserOnEvent(item) == false ? (
                   <View>
@@ -340,26 +322,26 @@ const HomeView = ({ navigation, route }) => {
                 )}
               </View>
             ) : (
-              <Text style={styles.notButton}>Viðburður er búinn</Text>
+              <View>
+                {isUserOnEvent(item) == false ? (
+                  <View>
+                    <Text style={styles.notButton}>Viðburður fullur</Text>
+                  </View>
+                ) : (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => handleOnRemove(item)}
+                      style={styles.eventbutton}
+                    >
+                      <Text>AfSkrá</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
             )}
           </View>
         ) : (
-          <View>
-            {isUserOnEvent(item) == false ? (
-              <View>
-                <Text style={styles.notButton}>Viðburður fullur</Text>
-              </View>
-            ) : (
-              <View>
-                <TouchableOpacity
-                  onPress={() => handleOnRemove(item)}
-                  style={styles.eventbutton}
-                >
-                  <Text>AfSkrá</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
+          <Text style={styles.notButton}>Viðburður er búinn</Text>
         )}
       </View>
     );
