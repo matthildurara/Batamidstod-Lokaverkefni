@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#B4B5B8",
+    backgroundColor: "#C6DDEC",
     // bottom:0,
     paddingLeft: 10,
     paddingRight: 10,
