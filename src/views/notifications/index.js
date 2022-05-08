@@ -12,6 +12,8 @@ import {
   onValue,
   DataSnapshot,
 } from "firebase/database";
+import getAllNotifications from "../../services/notificationServices";
+import { getNotif } from "../../services/notificationServices";
 const NotificationView = ({ navigation, route }) => {
   const { navigate } = useNavigation();
 
@@ -22,7 +24,15 @@ const NotificationView = ({ navigation, route }) => {
 
   const numerNotification = useState("");
 
+  // const callNoti = async () => {
+  //   console.log(allNotifications);
+  //   const noti = await getAllNotifications();
+  //   console.log(noti);
+  //   return noti;
+  // };
+
   useEffect(() => {
+    // async function getNotifications() {
     const db = getDatabase();
     const dbRef = ref(db, "Users/Notifications");
     async function getNotifications() {
@@ -52,7 +62,15 @@ const NotificationView = ({ navigation, route }) => {
       });
     }
     return getNotifications();
-    //console.log(allNotifications);
+
+    //   console.log(allNotifications);
+    //   const noti = await getAllNotifications();
+    //   console.log(noti);
+    //   setAllNotifications(noti);
+    // }
+    // getNotifications();
+    // const notifi = callNoti();
+    // setAllNotifications(notifi);
   }, []);
   console.log("LENGD: ", allNotifications.length);
 

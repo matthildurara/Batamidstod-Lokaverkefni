@@ -56,4 +56,13 @@ export default StyleSheet.create({
     left: 10,
     top: 2,
   },
+  eventbutton: {
+    borderColor: "black",
+    borderWidth: 2,
+    marginBottom: 5,
+    width: 65,
+    paddingLeft: 5,
+    marginRight: 10,
+    marginLeft: 4,
+  },
 });

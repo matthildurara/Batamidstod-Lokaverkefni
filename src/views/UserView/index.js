@@ -105,13 +105,6 @@ const UserView = ({ navigation, route }) => {
       // Error retrieving data
     }
   };
-  // const handleSetUSer = async () => {
-  //   try {
-  //     AsyncStorage.setItem("User", JSON.stringify(""));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handleLogOut = async () => {
     try {

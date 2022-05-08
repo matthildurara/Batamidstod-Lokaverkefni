@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { dbFirestore } from "../../../firebase-config";
 import { getAuth } from "firebase/auth";
 import { useAuthValue } from "../../../authContext";
-import getAllNotifications from "../../../services/notificationServices";
+import getAllNotifications from "../../services/notificationServices";
 import uuid from "react-native-uuid";
 import { Agenda } from "react-native-calendars";
 import {
@@ -30,6 +30,7 @@ import {
   remove,
 } from "firebase/database";
 import { useNavigation } from "@react-navigation/native";
+//import getAllNotifications from "../../services/notificationServices";
 
 const HomeView = ({ navigation, route }) => {
   const [notificationLength, setNotificationLength] = useState(0);
@@ -109,6 +110,7 @@ const HomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchEvents();
+    //getAllNotifications();
     return;
   }, []);
 
