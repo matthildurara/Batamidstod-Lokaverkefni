@@ -105,6 +105,7 @@ const Event = ({ navigation, route }) => {
               description: childValue.description,
               eventId: childchildKey,
               staffmember: childValue.staffmember,
+              color: childValue.color,
             };
             setRightEvent(item);
           }
