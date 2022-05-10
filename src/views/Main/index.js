@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   KeyboardAvoidingView,
@@ -8,20 +8,8 @@ import {
   Image,
 } from "react-native";
 // import { TextInput } from 'react-native-web';
-import styles from "./styles";
-import bata from "../../resources/Bata.png";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, dbFirestore } from "../../../firebase-config";
-
-//import { getAuth } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//import { getAuth } from "firebase";
-//import * as firebase from "firebase";
-//import firebase from "firebase/compat/app";
-//import "firebase/auth";
-import { useAuthValue } from "../../../authContext";
+import { useNavigate } from "react-router-dom";
 import {
   getDatabase,
   ref,
@@ -29,6 +17,19 @@ import {
   onValue,
   DataSnapshot,
 } from "firebase/database";
+
+import styles from "./styles";
+import bata from "../../resources/Bata.png";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, dbFirestore } from "../../../firebase-config";
+
+//import { getAuth } from "firebase/auth";
+//import { getAuth } from "firebase";
+//import * as firebase from "firebase";
+//import firebase from "firebase/compat/app";
+//import "firebase/auth";
+import { useAuthValue } from "../../../authContext";
+
 //import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { stringify } from "@firebase/util";
 // import { useEffect } from "react/cjs/react.production.min";
@@ -150,4 +151,5 @@ const Main = ({ navigation: { navigate } }) => {
     </>
   );
 };
+
 export default Main;

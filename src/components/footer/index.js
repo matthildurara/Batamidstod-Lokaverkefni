@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, Menu } from "react-native";
-import styles from "./styles";
+import { View, Text } from "react-native";
 import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+
+import styles from "./styles";
 
 const Footer = (parameter) => {
   const { navigate } = useNavigation();
@@ -104,4 +105,5 @@ const Footer = (parameter) => {
     </View>
   );
 };
+
 export default Footer;
