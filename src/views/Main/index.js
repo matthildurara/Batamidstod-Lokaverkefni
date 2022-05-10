@@ -130,11 +130,12 @@ const Main = ({ navigation: { navigate } }) => {
 
   return (
     <>
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.imgContainer}>
         <Image source={bata} style={styles.image} />
+        <KeyboardAvoidingView style={styles.container}>
         <TextInput
           style={styles.textInput}
-          placeholder="Email"
+          placeholder="Netfang"
           value={email}
           setEmail={setEmail}
           onChangeText={setEmail}
@@ -144,10 +145,11 @@ const Main = ({ navigation: { navigate } }) => {
           onPress={() => handleLogin()}
           style={styles.signButton}
         >
-          <Text style={styles.sign}>Sign in</Text>
+          <Text style={styles.sign}>Innskrá</Text>
         </TouchableHighlight>
         {errorm != "" ? <Text>{errorm}</Text> : <></>}
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     </>
   );
 };
