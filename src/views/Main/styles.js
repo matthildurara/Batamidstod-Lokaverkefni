@@ -11,7 +11,6 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#C6DDEC",
-
   },
   container: {
     flex: 1,
@@ -22,8 +21,8 @@ export default StyleSheet.create({
   },
   sign: {
     // color: "white",
-    // color: "grey",
-    color: "lightgrey",
+    color: "grey",
+    //color: "lightgrey",
     fontSize: 22,
   },
   signButton: {
@@ -38,14 +37,14 @@ export default StyleSheet.create({
     alignItems: "center",
     margin: 10,
   },
-//   buttonSign: {
-//   width: 140,
-//   font-size: 17px;
-//   border-radius: 10px;
-//   border-width: 1px;
-//   border-color: black;
-//   background-color: white;
-// },
+  //   buttonSign: {
+  //   width: 140,
+  //   font-size: 17px;
+  //   border-radius: 10px;
+  //   border-width: 1px;
+  //   border-color: black;
+  //   background-color: white;
+  // },
   textInput: {
     fontSize: 18,
     margin: 10,
@@ -57,7 +56,7 @@ export default StyleSheet.create({
   },
   image: {
     width: 280,
-    height:140,
+    height: 140,
     paddingTop: 100,
     // width: 140,
     // height: 70,

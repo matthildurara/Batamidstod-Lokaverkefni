@@ -19,13 +19,15 @@ import {
 import uuid from "react-native-uuid";
 
 const Event = ({ navigation, route }) => {
-  const [listOfEvents, setListEvents] = useState({});
+  //const [listOfEvents, setListEvents] = useState({});
 
   const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
   const [thisEvent, setEvent] = useState({});
   const [event, setRightEvent] = useState({});
+
   useEffect(() => {
+    //setRightEvent({});
     const db = getDatabase();
     const dbRef = ref(db, "Users/Event");
     async function isEvent() {
@@ -34,15 +36,12 @@ const Event = ({ navigation, route }) => {
         if (value !== null) {
           // We have data!!
           const parsed = JSON.parse(value);
-          console.log("PArsed EVENT: ", JSON.parse(value));
-          // console.log("attttttendeeeees: ", parsed.attendees);
 
           onValue(dbRef, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
               const childKey = childSnapshot.key;
               childSnapshot.forEach((childChild) => {
                 const childchildKey = childChild.key;
-                console.log("CHILDCHIOLD KEY IS; ", childchildKey);
                 const childValue = childChild.val();
 
                 if (childchildKey == parsed.eventId) {
@@ -56,26 +55,18 @@ const Event = ({ navigation, route }) => {
                     description: childValue.description,
                     eventId: childchildKey,
                     staffmember: childValue.staffmember,
+                    color: childValue.color,
                   };
                   setRightEvent(item);
                 }
-                // return;
-                // console.log(item);
-                //listOfDay.push(item);
               });
-              // setListEvents((prevState) => ({
-              //   ...prevState,
-              //   [childKey]: listOfDay,
-              // }));
             });
           });
         }
       } catch (error) {
         // Error retrieving data
       }
-      //await fetchEvent();
     }
-
     isEvent();
 
     return;
@@ -84,41 +75,40 @@ const Event = ({ navigation, route }) => {
   const fetchEvent = async () => {
     const db = getDatabase();
     const dbRef = ref(db, "Users/Event");
-    console.log("================AAAAAAA=======");
-    // setListEvents({});
-    onValue(dbRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childKey = childSnapshot.key;
-        childSnapshot.forEach((childChild) => {
-          const childchildKey = childChild.key;
-          console.log("CHILDCHIOLD KEY IS; ", childchildKey);
-          const childValue = childChild.val();
+    try {
+      const value = await AsyncStorage.getItem("Event");
+      if (value !== null) {
+        // We have data!!
+        const parsed = JSON.parse(value);
+        onValue(dbRef, (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const childKey = childSnapshot.key;
+            childSnapshot.forEach((childChild) => {
+              const childchildKey = childChild.key;
+              const childValue = childChild.val();
 
-          if (childchildKey == thisEvent.eventId) {
-            const item = {
-              name: childValue.name,
-              startTime: childValue.startTime,
-              endTime: childValue.endTime,
-              date: childKey,
-              maxNumber: childValue.maxNumber,
-              attendees: childValue.attendees,
-              description: childValue.description,
-              eventId: childchildKey,
-              staffmember: childValue.staffmember,
-              color: childValue.color,
-            };
-            setRightEvent(item);
-          }
-          // return;
-          // console.log(item);
-          //listOfDay.push(item);
+              if (childchildKey == thisEvent.eventId) {
+                const item = {
+                  name: childValue.name,
+                  startTime: childValue.startTime,
+                  endTime: childValue.endTime,
+                  date: childKey,
+                  maxNumber: childValue.maxNumber,
+                  attendees: childValue.attendees,
+                  description: childValue.description,
+                  eventId: childchildKey,
+                  staffmember: childValue.staffmember,
+                  color: childValue.color,
+                };
+                setRightEvent(item);
+              }
+            });
+          });
         });
-        // setListEvents((prevState) => ({
-        //   ...prevState,
-        //   [childKey]: listOfDay,
-        // }));
-      });
-    });
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
     return;
   };
 
@@ -153,23 +143,17 @@ const Event = ({ navigation, route }) => {
     return 0;
   };
   const checkAttendees = (item) => {
-    // console.log("in checkAttendees");
+    //checking if item has any attendees
     if (item.attendees) {
-      // console.log("in checkAttendees inside  first if");
       if (Object.keys(item.attendees).length > 0) {
-        // console.log("in checkAttendees inside  second if");
-        //for (var i = 0; i < Object.values(item.attendees).length; i++) {
-        // console.log("in checkAttendees inside for ");
         return true;
-        //}
       }
     }
     return false;
   };
 
   const isUserOnEvent = (item) => {
-    // console.log("ITEM IS : ");
-    // console.log(item);
+    //checking if this user is on this event
     if (
       !item.attendees ||
       item.attendees == undefined ||
@@ -178,16 +162,13 @@ const Event = ({ navigation, route }) => {
       return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
-        for (var j = 0; j < Object.values(item.attendees).length; j++) {
-          if (
-            Object.values(item.attendees)[i].name.toLowerCase() ===
-            thisuser.name?.toLowerCase()
-          ) {
-            const obj = Object.values(item.attendees)[i].name.toLowerCase();
-            const us = thisuser.name?.toLowerCase();
-            // setListUserEvent((listOfUserEvent) => [...listOfUserEvent, item]);
-            return true;
-          }
+        if (
+          Object.values(item.attendees)[i].name.toLowerCase() ===
+          thisuser.name?.toLowerCase()
+        ) {
+          // const obj = Object.values(item.attendees)[i].name.toLowerCase();
+          // const us = thisuser.name?.toLowerCase();
+          return true;
         }
       }
       return false;
@@ -195,11 +176,9 @@ const Event = ({ navigation, route }) => {
   };
 
   const isEventOver = (eventDate) => {
-    console.log(eventDate);
     const today = new Date();
     const date = new Date(eventDate);
-    console.log(today);
-    console.log(date);
+
     if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
       return true;
     }
@@ -208,10 +187,8 @@ const Event = ({ navigation, route }) => {
   const checkItem = (item) => {
     // console.log(item);
     if (item == null || item == "null") {
-      // console.log("false");
       return false;
     } else {
-      // console.log("true");
       return true;
     }
   };
@@ -244,13 +221,13 @@ const Event = ({ navigation, route }) => {
         });
     }
     alert("þú hefur verið skráður á viðburð");
-    //await fetchEvents();
   };
 
   const handleOnRemove = (item) => {
     const db = getDatabase();
     const id = findId(item);
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
+
     remove(ref(db, urls))
       .then(() => {
         fetchEvent();
@@ -258,11 +235,10 @@ const Event = ({ navigation, route }) => {
       .catch((err) => {
         console.log(err);
       });
+
     alert("þú hefur verið afskráður á viðburð");
   };
 
-  // console.log("THIS EVENT:; ", thisEvent);
-  // console.log("=======RIGHT EVENT: ", event);
   return (
     <View>
       <Toolbar toolbarText={parameter} />
@@ -325,11 +301,11 @@ const Event = ({ navigation, route }) => {
             </View>
           ))
         ) : (
-          //<Text>Hello </Text>
           <></>
         )}
       </View>
     </View>
   );
 };
+
 export default Event;

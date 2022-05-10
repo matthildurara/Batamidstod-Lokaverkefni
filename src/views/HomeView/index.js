@@ -93,6 +93,7 @@ const HomeView = ({ navigation, route }) => {
             description: childValue.description,
             eventId: childchildKey,
             staffmember: childValue.staffmember,
+            color: childValue.color,
           };
           listOfDay.push(item);
           setListEvents((prevState) => ({
@@ -161,8 +162,47 @@ const HomeView = ({ navigation, route }) => {
   // });
 
   useEffect(() => {
-    fetchEvents();
+    async function getEvents() {
+      // setListEvents({});
+      onValue(dbRef, (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          const childKey = childSnapshot.key;
+          let listOfDay = [];
+
+          childSnapshot.forEach((childChild) => {
+            const childchildKey = childChild.key;
+            const childValue = childChild.val();
+            const item = {
+              name: childValue.name,
+              startTime: childValue.startTime,
+              endTime: childValue.endTime,
+              date: childKey,
+              maxNumber: childValue.maxNumber,
+              attendees: childValue.attendees,
+              description: childValue.description,
+              eventId: childchildKey,
+              staffmember: childValue.staffmember,
+              color: childValue.color,
+            };
+            listOfDay.push(item);
+            setListEvents((prevState) => ({
+              ...prevState,
+              [childKey]: listOfDay,
+            }));
+          });
+          // setListEvents((prevState) => ({
+          //   ...prevState,
+          //   [childKey]: listOfDay,
+          // }));
+        });
+      });
+    }
+    getEvents();
+    // console.log("listofevents inide useEffect");
+    // console.log(listOfEvents);
     return;
+    //fetchEvents();
+    //return;
   }, []);
 
   useEffect(() => {
@@ -327,11 +367,11 @@ const HomeView = ({ navigation, route }) => {
   };
   // console.log("ALL EVENTS");
   // console.log(listOfEvents);
-  console.log("ALL EVENTS: ", listOfEvents);
+  //console.log("ALL EVENTS: ", listOfEvents);
 
   const renderItem = (item) => {
-    // console.log("=========================================");
-    // console.log(item);
+    console.log("=========================================");
+    console.log(item);
     return (
       <View
         //  style={styles.eventContainer}
@@ -405,14 +445,15 @@ const HomeView = ({ navigation, route }) => {
 
   const today = moment().format("YYYY-MM-DD");
   //const today = "2022-05-18";
-  console.log(today);
+  // console.log(today);
 
   const [selectedDay, setSelectedDay] = useState(today);
-  const dayPress = (day) => {
+  const dayPress = async (day) => {
     console.log("before");
 
-    fetchEvents();
-    setSelectedDay(moment(day.dateString).format("YYYY-MM-DD"));
+    //await fetchEvents();
+    const select = moment(day.dateString).format("YYYY-MM-DD");
+    setSelectedDay(select);
 
     console.log("day pressed", day.dateString);
   };
@@ -425,6 +466,9 @@ const HomeView = ({ navigation, route }) => {
           renderItem={renderItem}
           selected={today}
           showOnlySelectedDayItems={true}
+          theme={{
+            agendaKnobColor: "#C6DDEC",
+          }}
           // renderItem={(item, firstItemInDay) => {
           //   console.log(item);
           //   return (
@@ -440,10 +484,7 @@ const HomeView = ({ navigation, route }) => {
           //     </View>
           //   );
           // }}
-          onDayPress={(day) => {
-            fetchEvents();
-            console.log("day pressed");
-          }}
+          onDayPress={(day) => dayPress(day)}
           // onDayChange={(day) => {
           //   setSelectedDay(moment(day.dateString).format("YYYY-MM-DD"));
 
