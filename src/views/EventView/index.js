@@ -12,7 +12,14 @@ import { useState } from "react";
 import Toolbar from "../../components/toolBar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AntDesign, MaterialIcons, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialIcons,
+  Ionicons,
+  FontAwesome,
+  Fontisto,
+  Entypo,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   getDatabase,
@@ -46,6 +53,7 @@ const Event = ({ navigation, route }) => {
           onValue(dbRef, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
               const childKey = childSnapshot.key;
+              console.log("CHILDKEY DATE IA : ", childKey);
               childSnapshot.forEach((childChild) => {
                 const childchildKey = childChild.key;
                 const childValue = childChild.val();
@@ -64,6 +72,7 @@ const Event = ({ navigation, route }) => {
                     color: childValue.color,
                     location: childValue.location,
                   };
+                  console.log("ITEM DATE IS : ", item.date);
                   setRightEvent(item);
                 }
               });
@@ -74,6 +83,7 @@ const Event = ({ navigation, route }) => {
         // Error retrieving data
       }
     }
+    console.log("EVENT DATE IS : ", event.date);
     isEvent();
 
     return;
@@ -182,6 +192,7 @@ const Event = ({ navigation, route }) => {
   };
 
   const isEventOver = (eventDate) => {
+    console.log(eventDate);
     const today = new Date();
     const date = new Date(eventDate);
 
@@ -258,31 +269,37 @@ const Event = ({ navigation, route }) => {
 
     alert("þú hefur verið afskráður á viðburð");
   };
-  const getDate = (date) => {
-    var months = [
-      "janúar",
-      "febrúar",
-      "mars",
-      "apríl",
-      "maí",
-      "júní",
-      "júlí",
-      "ágúst",
-      "september",
-      "október",
-      "nóvember",
-      "desember",
-    ];
-    let dateStr = toString(date);
-    let d = new Date(dateStr);
-    // var datePosted = new Date(post.publish_date).toString();
-    let monthName = months[d.getMonth()];
-    let res = date.substring(8, 10);
-    return res + ". " + monthName;
+  const getDate = (evedate) => {
+    if (evedate) {
+      console.log("EVENT IS : ", event);
+      console.log("EVEDATE IS : ", evedate);
+      var months = [
+        "janúar",
+        "febrúar",
+        "mars",
+        "apríl",
+        "maí",
+        "júní",
+        "júlí",
+        "ágúst",
+        "september",
+        "október",
+        "nóvember",
+        "desember",
+      ];
+      //let dateStr = toString(event.date);
+      let d = new Date(evedate);
+      // var datePosted = new Date(post.publish_date).toString();
+      let monthName = months[d.getMonth()];
+
+      let res = evedate.slice(8, 10);
+      return res + ". " + monthName;
+    }
+    //return res + ". " + monthName;
     // setDateFormat(monthName);
   };
-  console.log("event date");
-  console.log(event.date);
+  // console.log("event date");
+  // console.log(event.date);
 
   return (
     <View>
@@ -370,11 +387,34 @@ const Event = ({ navigation, route }) => {
             </Text>
             <Text style={styles.eventText}> Staðsetning: {event.location}</Text> */}
             <Text style={styles.eventTitle}>{event.name}</Text>
-            <Text> <Fontisto name="date" size={24} color="black"/> <Text style={styles.eventText}>{event.date}</Text></Text>
-            <Text> <Ionicons name="time" size={28} color="black"/><Text style={styles.eventText}>{event.startTime} - {event.endTime}</Text></Text>
-            <Text><Entypo name="location-pin" size={28} color="black"/><Text style={styles.eventText}>{event.location}</Text></Text>
-            <Text>  <FontAwesome name="user" size={28} color="black" /><Text style={styles.eventText}> {event.staffmember}</Text></Text>
-            <Text> <MaterialIcons name="description" size={28} color="black"/><Text style={styles.eventText}>{event.description}</Text></Text>
+            <Text>
+              <Text>
+                {" "}
+                <Fontisto name="date" size={24} color="black" />{" "}
+                {getDate(event?.date)}
+              </Text>
+            </Text>
+            <Text>
+              {" "}
+              <Ionicons name="time" size={28} color="black" />
+              <Text style={styles.eventText}>
+                {event.startTime} - {event.endTime}
+              </Text>
+            </Text>
+            <Text>
+              <Entypo name="location-pin" size={28} color="black" />
+              <Text style={styles.eventText}>{event.location}</Text>
+            </Text>
+            <Text>
+              {" "}
+              <FontAwesome name="user" size={28} color="black" />
+              <Text style={styles.eventText}> {event.staffmember}</Text>
+            </Text>
+            <Text>
+              {" "}
+              <MaterialIcons name="description" size={28} color="black" />
+              <Text style={styles.eventText}>{event.description}</Text>
+            </Text>
             <Text style={styles.eventText1}> Skráðir á viðburðinn: </Text>
             {checkAttendees(event) ? (
               Object.values(event.attendees).map((item, index) => (

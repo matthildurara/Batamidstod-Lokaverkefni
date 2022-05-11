@@ -11,7 +11,14 @@ import {
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
-import { AntDesign, MaterialIcons, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialIcons,
+  Ionicons,
+  FontAwesome,
+  Fontisto,
+  Entypo,
+} from "@expo/vector-icons";
 //import CalendarPicker from "react-native-calendar-picker";
 import CalendarStrip from "react-native-calendar-strip";
 //import WeekSelector from "react-native-week-selector";
@@ -360,6 +367,7 @@ const HomeView = ({ navigation, route }) => {
   // };
   //const [dateFormat, setDateFormat] = useState("");
   const getDate = (date) => {
+    console.log("DATE IS :", date);
     var months = [
       "janúar",
       "febrúar",
@@ -376,15 +384,14 @@ const HomeView = ({ navigation, route }) => {
     ];
     let d = new Date(date);
     let monthName = months[d.getMonth()];
-    let res = date.substring(8, 10);
-    return res + ". " + monthName;
+    //let res = date.substring(8, 10);
+    return monthName;
+    // return res + ". " + monthName;
     // setDateFormat(monthName);
   };
 
   console.log("list of day");
   console.log(listOfDay);
-
-  
 
   return (
     <View style={styles.container}>
@@ -439,10 +446,37 @@ const HomeView = ({ navigation, route }) => {
                           <View>
                             {/* <Text> {JSON.stringify(item)}</Text> */}
                             <Text style={styles.itemTitle}>{item.name}</Text>
-                            <Text> <Fontisto name="date" size={24} color="black"/> {getDate(item.date)}</Text>
-                            <Text> <Ionicons name="time" size={28} color="black"/>{item.startTime} - {item.endTime}</Text>
-                            <Text><Entypo name="location-pin" size={28} color="black"/>{item.location}</Text>
-                            <Text>  <FontAwesome name="user" size={24} color="black" /> {item.staffmember} </Text> 
+                            <Text>
+                              {" "}
+                              <Fontisto
+                                name="date"
+                                size={24}
+                                color="black"
+                              />{" "}
+                              {getDate(item.date)}
+                            </Text>
+                            <Text>
+                              {" "}
+                              <Ionicons name="time" size={28} color="black" />
+                              {item.startTime} - {item.endTime}
+                            </Text>
+                            <Text>
+                              <Entypo
+                                name="location-pin"
+                                size={28}
+                                color="black"
+                              />
+                              {item.location}
+                            </Text>
+                            <Text>
+                              {" "}
+                              <FontAwesome
+                                name="user"
+                                size={24}
+                                color="black"
+                              />{" "}
+                              {item.staffmember}{" "}
+                            </Text>
                           </View>
                           <View style={styles.arrowRight}>
                             <AntDesign
