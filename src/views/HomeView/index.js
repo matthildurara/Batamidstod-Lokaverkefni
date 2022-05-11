@@ -384,9 +384,9 @@ const HomeView = ({ navigation, route }) => {
     ];
     let d = new Date(date);
     let monthName = months[d.getMonth()];
-    //let res = date.substring(8, 10);
-    return monthName;
-    // return res + ". " + monthName;
+    let res = date.substring(8, 10);
+    //return monthName;
+    return res + ". " + monthName;
     // setDateFormat(monthName);
   };
 
@@ -447,35 +447,34 @@ const HomeView = ({ navigation, route }) => {
                             {/* <Text> {JSON.stringify(item)}</Text> */}
                             <Text style={styles.itemTitle}>{item.name}</Text>
                             <Text>
-                              {" "}
-                              <Fontisto
-                                name="date"
-                                size={24}
-                                color="black"
-                              />{" "}
+                              <Fontisto name="date" size={24} color="black" />
+                              {"    "}
                               {getDate(item.date)}
                             </Text>
                             <Text>
-                              {" "}
                               <Ionicons name="time" size={28} color="black" />
+                              {"   "}
                               {item.startTime} - {item.endTime}
                             </Text>
+
                             <Text>
                               <Entypo
                                 name="location-pin"
                                 size={28}
                                 color="black"
                               />
-                              {item.location}
+                              {"   "}
+                              <Text>{item.location}</Text>
                             </Text>
                             <Text>
                               {" "}
                               <FontAwesome
                                 name="user"
-                                size={24}
+                                size={25}
                                 color="black"
-                              />{" "}
-                              {item.staffmember}{" "}
+                              />
+                              {"     "}
+                              <Text>{item.staffmember}</Text>
                             </Text>
                           </View>
                           <View style={styles.arrowRight}>

@@ -91,6 +91,7 @@ export default StyleSheet.create({
     borderWidth: 2,
     marginBottom: 5,
     width: 65,
+    borderRadius: 4,
     paddingLeft: 5,
     marginTop: 5,
     marginRight: 10,

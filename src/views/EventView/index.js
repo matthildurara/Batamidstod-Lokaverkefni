@@ -388,32 +388,54 @@ const Event = ({ navigation, route }) => {
             <Text style={styles.eventText}> Staðsetning: {event.location}</Text> */}
             <Text style={styles.eventTitle}>{event.name}</Text>
             <Text>
-              <Text>
-                {" "}
-                <Fontisto name="date" size={24} color="black" />{" "}
+              <Text style={styles.eventText}>
+                <Fontisto name="date" size={24} color="black" />
+                {"    "}
                 {getDate(event?.date)}
               </Text>
             </Text>
-            <Text>
-              {" "}
-              <Ionicons name="time" size={28} color="black" />
+
+            <Text style={styles.iconNameCont}>
               <Text style={styles.eventText}>
+                <Ionicons name="time" size={28} color="black" /> {"  "}
                 {event.startTime} - {event.endTime}
               </Text>
             </Text>
-            <Text>
-              <Entypo name="location-pin" size={28} color="black" />
-              <Text style={styles.eventText}>{event.location}</Text>
+
+            <Text style={styles.iconNameCont}>
+              <Text style={styles.eventText}>
+                <Entypo
+                  style={styles.eventIcon}
+                  name="location-pin"
+                  size={28}
+                  color="black"
+                />{" "}
+                {"  "}
+                {event.location}
+              </Text>
             </Text>
-            <Text>
-              {" "}
-              <FontAwesome name="user" size={28} color="black" />
-              <Text style={styles.eventText}> {event.staffmember}</Text>
+
+            <Text style={styles.iconNameCont}>
+              <Text style={styles.eventText}>
+                {" "}
+                <FontAwesome
+                  style={styles.eventIcon}
+                  name="user"
+                  size={27}
+                  color="black"
+                />
+                {"    "}
+                {event.staffmember}
+              </Text>
             </Text>
-            <Text>
-              {" "}
-              <MaterialIcons name="description" size={28} color="black" />
-              <Text style={styles.eventText}>{event.description}</Text>
+            <Text style={styles.iconNameCont}>
+              <Text style={styles.eventIcon}>
+                <MaterialIcons name="description" size={27} color="black" />
+              </Text>
+              <Text style={styles.eventText}>
+                {"   "}
+                {event.description}
+              </Text>
             </Text>
             <Text style={styles.eventText1}> Skráðir á viðburðinn: </Text>
             {checkAttendees(event) ? (

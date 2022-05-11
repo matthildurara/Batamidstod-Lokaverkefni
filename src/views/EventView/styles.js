@@ -84,9 +84,19 @@ export default StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
   },
+  iconNameCont: {
+    flexDirection: "row",
+    marginTop: 5,
+  },
+  eventIcon: {
+    // marginBottom: 5,
+    //  marginTop: 5,
+    // paddingTop: 5,
+  },
   eventText: {
     paddingBottom: 10,
     fontSize: 18,
+    marginBottom: 5,
     //marginLeft: 5,
   },
   eventText2: {

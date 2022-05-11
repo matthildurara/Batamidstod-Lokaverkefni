@@ -89,7 +89,7 @@ export default StyleSheet.create({
   eventbuttonOn: {
     borderColor: "black",
     borderWidth: 2,
-    width: 48,
+    width: 54,
     borderRadius: 4,
     marginTop: 5,
     marginBottom: 3,
