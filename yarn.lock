@@ -2785,6 +2785,11 @@
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-3.0.11.tgz"
   "version" "3.0.11"
 
+"date-fns@^1.29.0":
+  "integrity" "sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-1.30.1.tgz"
+  "version" "1.30.1"
+
 "dayjs@^1.8.15":
   "integrity" "sha512-ER7EjqVAMkRRsxNCC5YqJ9d9VQYuWdGt7aiH2qA5R5wt8ZmWaP2dLUSIK6y/kVzLMlmh1Tvu5xUf4M/wdGJ5KA=="
   "resolved" "https://registry.npmjs.org/dayjs/-/dayjs-1.11.1.tgz"
@@ -4799,7 +4804,7 @@
   dependencies:
     "minimist" "^1.2.6"
 
-"moment@^2.24.0", "moment@^2.29.3":
+"moment@^2.24.0", "moment@^2.29.3", "moment@>=2.0.0":
   "integrity" "sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.3.tgz"
   "version" "2.29.3"
@@ -4891,6 +4896,11 @@
   "version" "2.6.7"
   dependencies:
     "whatwg-url" "^5.0.0"
+
+"node-git-hooks@^1.0.1":
+  "integrity" "sha512-ZTiTpRm16kxZY3JQugqjtm1u6nRt0cF2IH8lTMbiyv1V0qUA6ao8yHBwu4p58s3Ry+DbrlXOgUR4b4o/KzjWAA=="
+  "resolved" "https://registry.npmjs.org/node-git-hooks/-/node-git-hooks-1.0.6.tgz"
+  "version" "1.0.6"
 
 "node-int64@^0.4.0":
   "integrity" "sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs="
@@ -5379,6 +5389,25 @@
     "theming" "^3.3.0"
     "tiny-warning" "^1.0.2"
 
+"react-native-calendar-picker@^7.1.2":
+  "integrity" "sha512-n5ngdqbMIUeu2iHYxvKSX5u67wWqPYdhTx9sMjjQsjF6BrStxF65JCJSPaAORxD+wbFI5AK/xKDCFJfA0o1uFQ=="
+  "resolved" "https://registry.npmjs.org/react-native-calendar-picker/-/react-native-calendar-picker-7.1.2.tgz"
+  "version" "7.1.2"
+  dependencies:
+    "node-git-hooks" "^1.0.1"
+    "prop-types" "^15.6.0"
+    "recyclerlistview" "^3.0.0"
+
+"react-native-calendar-strip@^2.2.5":
+  "integrity" "sha512-3DmHIJX+Uu9Nv2wNTViPOGBY7rvODaHl7xaaxuqDFTN4sCxeM+1ref8k5RE1PgyZ3Wqs4Z8XJoEyORQIc++VMA=="
+  "resolved" "https://registry.npmjs.org/react-native-calendar-strip/-/react-native-calendar-strip-2.2.5.tgz"
+  "version" "2.2.5"
+  dependencies:
+    "moment" ">=2.0.0"
+    "node-git-hooks" "^1.0.1"
+    "prop-types" "^15.6.0"
+    "recyclerlistview" "^3.0.0"
+
 "react-native-calendars@^1.1282.0":
   "integrity" "sha512-CKrjFwM+vLE0qd2M8OyClrtmjZsbCPb9QJs3uTZ9vZc1hnweURIVPSTBINWQrRw8Q/uTzzYmIpS0jlb/kBhKYg=="
   "resolved" "https://registry.npmjs.org/react-native-calendars/-/react-native-calendars-1.1283.0.tgz"
@@ -5491,6 +5520,13 @@
     "normalize-css-color" "^1.0.2"
     "prop-types" "^15.6.0"
 
+"react-native-week-selector@^0.0.6":
+  "integrity" "sha512-NSR+eYvtK8HyReqheRwRpTpK2fmWyYIiylKpjAXlRYubLZTq7Yrlte/fYktkcA4+iNrf0KKebDIAhN/2iCvOKA=="
+  "resolved" "https://registry.npmjs.org/react-native-week-selector/-/react-native-week-selector-0.0.6.tgz"
+  "version" "0.0.6"
+  dependencies:
+    "date-fns" "^1.29.0"
+
 "react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.67 || 1000.0.0", "react-native@>= 0.30.0", "react-native@>=0.56", "react-native@>=0.57", "react-native@>=0.64.0-rc.0 || 0.0.0-*", "react-native@0.64.3":
   "integrity" "sha512-2OEU74U0Ek1/WeBzPbg6XDsCfjF/9fhrNX/5TFgEiBKd5mNc9LOZ/OlMmkb7iues/ZZ/oc51SbEfLRQdcW0fVw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.64.3.tgz"
@@ -5602,7 +5638,7 @@
   dependencies:
     "resolve" "^1.1.6"
 
-"recyclerlistview@^3.0.5":
+"recyclerlistview@^3.0.0", "recyclerlistview@^3.0.5":
   "integrity" "sha512-JVHz13u520faEsbVqFrJOMuJjc4mJlOXODe5QdqAJHdl5/IpyYeo83uiHrpzxyLb8QtJ0889JMlDik+Z1Ed0QQ=="
   "resolved" "https://registry.npmjs.org/recyclerlistview/-/recyclerlistview-3.0.5.tgz"
   "version" "3.0.5"

@@ -1,35 +1,48 @@
 import { StyleSheet } from "react-native";
 import { buildUnavailableHoursBlocks } from "react-native-calendars/src/timeline/Packer";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import {
+  backgroundColor,
+  borderLeftColor,
+} from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import { AuthProvider } from "../../../authContext";
 import { grey, greyBrown } from "../../styles/colors";
 
 export default StyleSheet.create({
   container: {
-    flexDirection: "column",
-
+    //flexDirection: "column",
     flex: 1,
+
     // padding:20,
-    alignItems: "center",
+    //alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "white",
   },
+  homeViewContainer: {
+    flex: 1,
+    // flexDirection: "row",
+    // justifyContent: "center",
+  },
+
   toolbarAction: {
     // width:100,
     textAlign: "center",
     color: "black",
     backgroundColor: "#b0c4de",
   },
-  calander: {
-    //  height:400,
-    paddingTop: 10,
+  // calander: {
+  //   flex: 1,
+  //   //
+  // },
+  cont: {
     flex: 1,
-    //
-    width: 400,
+  },
+  itemcont: {
+    // marginLeft: 35,
   },
   eventItemContainer: {
     flexDirection: "row",
-    width: 300,
+    //width: 300,
+    marginLeft: 20,
 
     justifyContent: "space-between",
   },
@@ -44,17 +57,26 @@ export default StyleSheet.create({
     // position:'absolute',
     // bottom:0,
   },
+  calander: {},
   toolbar: {
     flex: 1,
     alignSelf: "flex-start",
     // flex:2,
     marginTop: "auto",
   },
+  eventButton: {
+    marginLeft: 20,
+    marginBottom: 5,
+  },
   event: {
     // borderColor: "black",
     // borderWidth: 2,
     marginTop: 5,
     width: 300,
+  },
+  itemTitle: {
+    fontWeight: "bold",
+    fontSize: 15,
   },
   eventbutton: {
     borderColor: "black",
@@ -68,7 +90,8 @@ export default StyleSheet.create({
     borderBottomColor: "#949392",
     borderBottomWidth: 2,
     marginBottom: 6,
-    width: 300,
+    width: 320,
+    alignSelf: "center",
   },
   noEvent: {
     justifyContent: "center",
@@ -79,4 +102,7 @@ export default StyleSheet.create({
   notButton: {
     fontWeight: "bold",
   },
+  // overview: {
+  //   height: 370,
+  // },
 });

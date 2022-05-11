@@ -6,11 +6,15 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
 import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+//import CalendarPicker from "react-native-calendar-picker";
+import CalendarStrip from "react-native-calendar-strip";
+//import WeekSelector from "react-native-week-selector";
 
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 //import { NavigationContainer } from "@react-navigation/native";
@@ -67,18 +71,17 @@ const HomeView = ({ navigation, route }) => {
     return;
   }, []);
 
-  const [listOfEvents, setListEvents] = useState({});
+  const [listOfEvents, setListEvents] = useState([]);
 
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
 
   const fetchEvents = async () => {
-    // console.log("================AAAAAAA=======");
-    setListEvents({});
+    setListEvents([]);
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
-        let listOfDay = [];
+        //let listOfDay = [];
 
         childSnapshot.forEach((childChild) => {
           const childchildKey = childChild.key;
@@ -95,67 +98,17 @@ const HomeView = ({ navigation, route }) => {
             staffmember: childValue.staffmember,
             color: childValue.color,
           };
-          listOfDay.push(item);
-          setListEvents((prevState) => ({
-            ...prevState,
-            [childKey]: listOfDay,
-          }));
+          setListEvents((listOfEvents) => [...listOfEvents, item]);
+          // listOfDay.push(item);
+          // setListEvents((prevState) => ({
+          //   ...prevState,
+          //   [childKey]: listOfDay,
+          // }));
         });
-        // setListEvents((prevState) => ({
-        //   ...prevState,
-        //   [childKey]: listOfDay,
-        // }));
       });
     });
     return;
   };
-
-  // const fetchEvents = () => {
-  //   console.log("================AAAAAAA=======");
-  //   setListEvents({});
-  //   onValue(dbRef, (snapshot) => {
-  //     snapshot.forEach((childSnapshot) => {
-  //       const childKey = childSnapshot.key;
-  //       let listOfDay = [];
-
-  //       childSnapshot.forEach((childChild) => {
-  //         const childchildKey = childChild.key;
-  //         const childValue = childChild.val();
-  //         const item = {
-  //           name: childValue.name,
-  //           startTime: childValue.startTime,
-  //           endTime: childValue.endTime,
-  //           date: childKey,
-  //           maxNumber: childValue.maxNumber,
-  //           attendees: childValue.attendees,
-  //           description: childValue.description,
-  //           eventId: childchildKey,
-  //           staffmember: childValue.staffmember,
-  //           color: childValue.color,
-  //         };
-  //         // console.log(item);
-  //         //let stringStart = childValue.startTime.replace(":", "");
-  //         // console.log(stringStart);
-  //         listOfDay.push(item);
-  //         parseInt(childValue.startTime);
-  //         // setListEvents((prevState) => ({
-  //         //   ...prevState,
-  //         //   [childKey]: listOfDay,
-  //         // }));
-  //       });
-  //       listOfDay.sort((a, b) =>
-  //         parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
-  //       );
-  //       // console.log(newList);
-  //       setListEvents((prevState) => ({
-  //         ...prevState,
-  //         [childKey]: listOfDay,
-  //       }));
-  //     });
-  //   });
-  //   return;
-  // };
-
   // const [items, setItems] = useState({
   //   "2022-05-03": [{ name: "test #2" }, { name: "test $4" }],
   //   "2022-04-25": [{ name: "test #3" }],
@@ -163,11 +116,12 @@ const HomeView = ({ navigation, route }) => {
 
   useEffect(() => {
     async function getEvents() {
-      // setListEvents({});
+      console.log("Getting new events from the database");
+      setListEvents([]);
       onValue(dbRef, (snapshot) => {
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
-          let listOfDay = [];
+          //let listOfDay = [];
 
           childSnapshot.forEach((childChild) => {
             const childchildKey = childChild.key;
@@ -184,25 +138,18 @@ const HomeView = ({ navigation, route }) => {
               staffmember: childValue.staffmember,
               color: childValue.color,
             };
-            listOfDay.push(item);
-            setListEvents((prevState) => ({
-              ...prevState,
-              [childKey]: listOfDay,
-            }));
+            setListEvents((listOfEvents) => [...listOfEvents, item]);
+            // listOfDay.push(item);
+            // setListEvents((prevState) => ({
+            //   ...prevState,
+            //   [childKey]: listOfDay,
+            //}));
           });
-          // setListEvents((prevState) => ({
-          //   ...prevState,
-          //   [childKey]: listOfDay,
-          // }));
         });
       });
     }
     getEvents();
-    // console.log("listofevents inide useEffect");
-    // console.log(listOfEvents);
     return;
-    //fetchEvents();
-    //return;
   }, []);
 
   useEffect(() => {
@@ -215,11 +162,8 @@ const HomeView = ({ navigation, route }) => {
 
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
-          // console.log("CHILDKEU IS ?");
-          // console.log(childKey);
           childSnapshot.forEach((childChild) => {
             const childchildKey = childChild.key;
-            // console.log("childchild key: ", childchildKey);
             const childValue = childChild.val();
 
             const item = {
@@ -283,7 +227,6 @@ const HomeView = ({ navigation, route }) => {
         return true;
       }
     }
-
     return true;
   };
 
@@ -365,148 +308,312 @@ const HomeView = ({ navigation, route }) => {
     await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
   };
-  // console.log("ALL EVENTS");
-  // console.log(listOfEvents);
-  //console.log("ALL EVENTS: ", listOfEvents);
 
-  const renderItem = (item) => {
-    console.log("=========================================");
-    console.log(item);
-    return (
-      <View
-        //  style={styles.eventContainer}
-        style={[styles.eventContainer, { backgroundColor: item.color }]}
-      >
-        <View style={styles.event}>
-          <TouchableOpacity onPress={() => handlePressEvent(item)}>
-            <View style={styles.eventItemContainer}>
-              <View>
-                <Text>{item.name}</Text>
-                <Text>{item.startTime}</Text>
-                <Text>{item.endTime}</Text>
-                <Text>{item.date}</Text>
-                <Text>{item.staffmember}</Text>
-              </View>
-              <View style={styles.arrowRight}>
-                <AntDesign name="doubleright" size={24} color="black" />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        {isEventOver(item.date) ? (
-          <View>
-            {checkForMax(item) ? (
-              <View>
-                {isUserOnEvent(item) == false ? (
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => handleOnEvent(item)}
-                      style={styles.eventbutton}
-                    >
-                      <Text>Skrá</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => handleOnRemove(item)}
-                      style={styles.eventbutton}
-                    >
-                      <Text>AfSkrá</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            ) : (
-              <View>
-                {isUserOnEvent(item) == false ? (
-                  <View>
-                    <Text style={styles.notButton}>Viðburður fullur</Text>
-                  </View>
-                ) : (
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => handleOnRemove(item)}
-                      style={styles.eventbutton}
-                    >
-                      <Text>AfSkrá</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            )}
-          </View>
-        ) : (
-          <Text style={styles.notButton}>Viðburður er búinn</Text>
-        )}
-      </View>
-    );
-  };
+  // listOfDay.sort((a, b) =>
+  //   parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
+  // );
+
+  // const listDay = listOfEvents.filter((data) => data.date.includes(format));
+  // listDay.sort((a, b) =>
+  //   parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
+  // );
+  //setListOfDay(listDay);
+
+  //console.log("day pressed", day.dateString);
+
+  // listOfDay = listOfEvents.filter((data) => data.date.includes(selectedDay));
+  // listOfDay.sort((a, b) =>
+  //   parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
+  // );
+
+  // const renderItem = (item) => {
+  //   moment(item.date).format();
+  //   if (item.date === selectedDay) {
+  //     console.log("===============DATES IN RENDER Ö============");
+  //     console.log(item.date);
+  //     console.log(selectedDay);
+  //     return (
+  //       <View style={[styles.eventContainer, { backgroundColor: item.color }]}>
+  //         <View style={styles.event}>
+  //           <TouchableOpacity onPress={() => handlePressEvent(item)}>
+  //             <View style={styles.eventItemContainer}>
+  //               <View>
+  //                 <Text style={styles.itemTitle}>{item.name}</Text>
+  //                 <Text>{item.date}</Text>
+  //                 <Text>
+  //                   {item.startTime} - {item.endTime}
+  //                 </Text>
+  //                 <Text>{item.staffmember}</Text>
+  //               </View>
+  //               <View style={styles.arrowRight}>
+  //                 <AntDesign name="doubleright" size={24} color="black" />
+  //               </View>
+  //             </View>
+  //           </TouchableOpacity>
+  //         </View>
+  //         {isEventOver(item.date) ? (
+  //           <View>
+  //             {checkForMax(item) ? (
+  //               <View>
+  //                 {isUserOnEvent(item) == false ? (
+  //                   <View>
+  //                     <TouchableOpacity
+  //                       onPress={() => handleOnEvent(item)}
+  //                       style={styles.eventbutton}
+  //                     >
+  //                       <Text>Skrá</Text>
+  //                     </TouchableOpacity>
+  //                   </View>
+  //                 ) : (
+  //                   <View>
+  //                     <TouchableOpacity
+  //                       onPress={() => handleOnRemove(item)}
+  //                       style={styles.eventbutton}
+  //                     >
+  //                       <Text>AfSkrá</Text>
+  //                     </TouchableOpacity>
+  //                   </View>
+  //                 )}
+  //               </View>
+  //             ) : (
+  //               <View>
+  //                 {isUserOnEvent(item) == false ? (
+  //                   <View>
+  //                     <Text style={styles.notButton}>Viðburður fullur</Text>
+  //                   </View>
+  //                 ) : (
+  //                   <View>
+  //                     <TouchableOpacity
+  //                       onPress={() => handleOnRemove(item)}
+  //                       style={styles.eventbutton}
+  //                     >
+  //                       <Text>AfSkrá</Text>
+  //                     </TouchableOpacity>
+  //                   </View>
+  //                 )}
+  //               </View>
+  //             )}
+  //           </View>
+  //         ) : (
+  //           <Text style={styles.notButton}>Viðburður er búinn</Text>
+  //         )}
+  //       </View>
+  //     );
+  //   } else {
+  //     console.log("===============DATES IN RENDER ELSE ============");
+  //     console.log(item.date);
+  //     console.log(selectedDay);
+  //   }
+  // };
+
+  // const render = (item) => {
+  //   if()
+  //   return (
+  //     <View>
+  //       {listOfDay.length > 0 ? (
+  //         <View>
+  //           {Object.values(listOfDay).map((item, index) => {
+  //             <View>{item.name}</View>;
+  //           })}
+  //         </View>
+  //       ) : (
+  //         <></>
+  //       )}
+  //     </View>
+  //   );
+  // };
 
   const today = moment().format("YYYY-MM-DD");
-  //const today = "2022-05-18";
-  // console.log(today);
 
+  // const [listOfDay, setListOfDay] = useState(today);
+  // console.log("LIST OF ALL EVENTS: ", listOfEvents);
   const [selectedDay, setSelectedDay] = useState(today);
+
   const dayPress = async (day) => {
-    console.log("before");
-
+    // console.log("Day Pressed: ", day);
+    let listDay = [];
     //await fetchEvents();
-    const select = moment(day.dateString).format("YYYY-MM-DD");
+    const select = moment(day).format("YYYY-MM-DD");
     setSelectedDay(select);
-
-    console.log("day pressed", day.dateString);
+    // const listOfDay = listOfEvents.filter((data) =>
+    // data.date.includes(selectedDay)
+    // for (let i = 0; i < Object.keys(listOfEvents).length; i++) {
+    //   // console.log(
+    //   //   "==========BBFBFBFBFB===========",
+    //   //   Object.values(listOfEvents)[i].date
+    //   // );
+    //   // console.log(select);
+    //   if (Object.values(listOfEvents)[i].date == select) {
+    //     listDay.push(Object.values(listOfEvents)[i]);
+    //   }
+    // }
+    // setListOfDay(listDay);
+    // console.log("LIST OF DAY ====: ", listOfDay);
+    return;
   };
+
+  // setListOfDay(dayItems);
+  // const checkDate = () => {
+  //   // Object.values(listOfEvents).map((item, index) => {
+  //   //   console.log(item.date);
+  //   // });
+
+  //   // console.log("SELECTED DATE: ", selectedDay);
+  //   // if (item.date == selectedDay) {
+  //   //   console.log("INSIDE IF : ", item.date);
+  //   //   return true;
+  //   // }
+  // };
+  //let dayItems = [];
+  //console.log("DAYITEMS : ", dayItems);
+  const listOfDay = listOfEvents.filter((data) =>
+    data.date.includes(selectedDay)
+  );
+  listOfDay.sort((a, b) =>
+    parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
+  );
+  console.log("LIST OF DAY ITEMS : ", listOfDay);
+  const checkDate = (item) => {
+    // Object.values(listOfEvents).map((item, index) => {
+    //   console.log(item.date);
+    // });
+    // dayItems = [];
+    // // //console.log("ITEM DATE IS : ", item.date);
+    // for (let i = 0; i < Object.keys(listOfEvents).length; i++) {
+    //   if (Object.values(listOfEvents)[i].date == selectedDay) {
+    //     console.log(Object.values(listOfEvents)[i]);
+    //     dayItems.push(Object.values(listOfEvents)[i]);
+    //   }
+    // }
+    // console.log(dayItems);
+
+    //setListOfDay(dayItems);
+    //console.log("ITEM DATE IS : ", item.date);
+    // console.log("SELECTED DATE: ", selectedDay);
+    if (item.date == selectedDay) {
+      //console.log("INSIDE IF : ", item.date);
+      return true;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} />
-      <SafeAreaView style={styles.calander}>
-        <Agenda
-          items={listOfEvents}
-          renderItem={renderItem}
-          selected={today}
-          showOnlySelectedDayItems={true}
-          theme={{
-            agendaKnobColor: "#C6DDEC",
-          }}
-          // renderItem={(item, firstItemInDay) => {
-          //   console.log(item);
-          //   return (
-          //     <View>
-          //       <Text>{JSON.stringify(item)}</Text>
-          //     </View>
-          //   );
-          // }}
-          // renderDay={(day, item) => {
-          //   return (
-          //     <View>
-          //       <Text>{day}</Text>
-          //     </View>
-          //   );
-          // }}
-          onDayPress={(day) => dayPress(day)}
-          // onDayChange={(day) => {
-          //   setSelectedDay(moment(day.dateString).format("YYYY-MM-DD"));
+      <View style={styles.homeViewContainer}>
+        <View style={styles.calander}>
+          <CalendarStrip
+            style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+            selectedDate={selectedDay}
+            daySelectionAnimation={{
+              type: "background",
+              duration: 200,
+              highlightColor: "#C6DDEC",
+              // borderWidth: 1,
+              // borderHighlightColor: "blue",
+            }}
+            onDateSelected={(day) => {
+              dayPress(moment(day).format("YYYY-MM-DD"));
+            }}
+            //calendarColor={"#3343CE"}
+          />
+        </View>
 
-          //   console.log("day changed");
-          // }}
-          // renderEmptyDate={() => {
-          //   return (
-          //     <View style={styles.noEvent}>
-          //       <Text>No events</Text>
-          //     </View>
-          //   );
-          // }}
-          renderEmptyData={() => {
-            return (
-              <View style={styles.noEvent}>
-                <Text>No events</Text>
-              </View>
-            );
-          }}
-        />
-      </SafeAreaView>
-
+        <ScrollView style={styles.itemcont}>
+          {listOfDay.length != 0 ? (
+            <View>
+              {Object.values(listOfDay).map((item, index) => (
+                <View key={index} item={item}>
+                  {/* {checkDate(item) ? ( */}
+                  <View
+                    style={[
+                      styles.eventContainer,
+                      { backgroundColor: item.color },
+                    ]}
+                  >
+                    <View style={styles.event}>
+                      <TouchableOpacity onPress={() => handlePressEvent(item)}>
+                        <View style={styles.eventItemContainer}>
+                          <View>
+                            {/* <Text> {JSON.stringify(item)}</Text> */}
+                            <Text style={styles.itemTitle}>{item.name}</Text>
+                            <Text>{item.date}</Text>
+                            <Text>
+                              {item.startTime} - {item.endTime}
+                            </Text>
+                            <Text>{item.staffmember}</Text>
+                          </View>
+                          <View style={styles.arrowRight}>
+                            <AntDesign
+                              name="doubleright"
+                              size={24}
+                              color="black"
+                            />
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    {isEventOver(item.date) ? (
+                      <View>
+                        {checkForMax(item) ? (
+                          <View>
+                            {isUserOnEvent(item) == false ? (
+                              <View style={styles.eventButton}>
+                                <TouchableOpacity
+                                  onPress={() => handleOnEvent(item)}
+                                  style={styles.eventbutton}
+                                >
+                                  <Text>Skrá</Text>
+                                </TouchableOpacity>
+                              </View>
+                            ) : (
+                              <View style={styles.eventButton}>
+                                <TouchableOpacity
+                                  onPress={() => handleOnRemove(item)}
+                                  style={styles.eventbutton}
+                                >
+                                  <Text>AfSkrá</Text>
+                                </TouchableOpacity>
+                              </View>
+                            )}
+                          </View>
+                        ) : (
+                          <View>
+                            {isUserOnEvent(item) == false ? (
+                              <View style={styles.eventButton}>
+                                <Text style={styles.notButton}>
+                                  Viðburður fullur
+                                </Text>
+                              </View>
+                            ) : (
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => handleOnRemove(item)}
+                                  style={styles.eventbutton}
+                                >
+                                  <Text>AfSkrá</Text>
+                                </TouchableOpacity>
+                              </View>
+                            )}
+                          </View>
+                        )}
+                      </View>
+                    ) : (
+                      <View style={styles.eventButton}>
+                        <Text style={styles.notButton}>Viðburður er búinn</Text>
+                      </View>
+                    )}
+                  </View>
+                  {/* ) : (
+                <></>
+              )} */}
+                </View>
+              ))}
+            </View>
+          ) : (
+            <></>
+          )}
+        </ScrollView>
+      </View>
       <Footer numberOfNotifications={allNotifications.length} />
     </View>
   );
