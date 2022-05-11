@@ -11,7 +11,7 @@ import {
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
-import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
 //import CalendarPicker from "react-native-calendar-picker";
 import CalendarStrip from "react-native-calendar-strip";
 //import WeekSelector from "react-native-week-selector";
@@ -434,14 +434,10 @@ const HomeView = ({ navigation, route }) => {
                           <View>
                             {/* <Text> {JSON.stringify(item)}</Text> */}
                             <Text style={styles.itemTitle}>{item.name}</Text>
-                            <Text>{getDate(item.date)}</Text>
-
-                            <Text>
-                              {item.startTime} - {item.endTime}
-                            </Text>
-                            <Text>{item.location}</Text>
-
-                            <Text>{item.staffmember}</Text>
+                            <Text> <Fontisto name="date" size={24} color="black"/> {getDate(item.date)}</Text>
+                            <Text> <Ionicons name="time" size={28} color="black"/>{item.startTime} - {item.endTime}</Text>
+                            <Text><Entypo name="location-pin" size={28} color="black"/>{item.location}</Text>
+                            <Text>  <FontAwesome name="user" size={24} color="black" /> {item.staffmember} </Text> 
                           </View>
                           <View style={styles.arrowRight}>
                             <AntDesign

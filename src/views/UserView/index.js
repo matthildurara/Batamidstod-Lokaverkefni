@@ -10,7 +10,7 @@ import {
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
-import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -262,7 +262,12 @@ const UserView = ({ navigation, route }) => {
                     <TouchableOpacity onPress={() => handlePressEvent(item)}>
                       <View style={styles.eventtextContainer}>
                         <View style={styles.eventUserText}>
-                          <Text style={styles.text1}> {item.name}</Text>
+                        <Text style={styles.text1}>{item.name}</Text>
+                            <Text> <Fontisto name="date" size={24} color="black"/> {getDate(item.date)}</Text>
+                            <Text> <Ionicons name="time" size={28} color="black"/>{item.startTime} - {item.endTime}</Text>
+                            <Text><Entypo name="location-pin" size={28} color="black"/>{item.location}</Text>
+                            <Text>  <FontAwesome name="user" size={24} color="black" /> {item.staffmember} </Text>
+                          {/* <Text style={styles.text1}> {item.name}</Text>
                           <Text style={styles.text}> {getDate(item.date)}</Text>
 
                           <Text style={styles.text2}>
@@ -270,7 +275,7 @@ const UserView = ({ navigation, route }) => {
                           </Text>
                           <Text style={styles.text}>{item.location}</Text>
 
-                          <Text style={styles.text}> {item.staffmember}</Text>
+                          <Text style={styles.text}> {item.staffmember}</Text> */}
                         </View>
 
                         <View style={styles.userArrowRight}>

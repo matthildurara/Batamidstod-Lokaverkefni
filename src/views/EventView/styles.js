@@ -95,6 +95,7 @@ export default StyleSheet.create({
     marginTop: 2,
   },
   eventText1: {
+    paddingTop: 20,
     fontWeight: "bold",
     fontSize: 18,
   },
@@ -104,7 +105,6 @@ export default StyleSheet.create({
     width: 130,
     marginLeft: 8,
     marginBottom: 1,
-
     borderRadius: 4,
 
     // flex: 1,

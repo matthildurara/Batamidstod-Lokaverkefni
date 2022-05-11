@@ -12,7 +12,7 @@ import { useState } from "react";
 import Toolbar from "../../components/toolBar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   getDatabase,
@@ -258,6 +258,27 @@ const Event = ({ navigation, route }) => {
 
     alert("þú hefur verið afskráður á viðburð");
   };
+  const getDate = (date) => {
+    var months = [
+      "janúar",
+      "febrúar",
+      "mars",
+      "apríl",
+      "maí",
+      "júní",
+      "júlí",
+      "ágúst",
+      "september",
+      "október",
+      "nóvember",
+      "desember",
+    ];
+    let d = new Date(date);
+    let monthName = months[d.getMonth()];
+    let res = date.substring(8, 10);
+    return res + ". " + monthName;
+    // setDateFormat(monthName);
+  };
 
   return (
     <View>
@@ -333,7 +354,7 @@ const Event = ({ navigation, route }) => {
           <View
             style={[styles.eventContainer, { backgroundColor: event.color }]}
           >
-            <Text style={styles.eventTitle}> {event.name}</Text>
+            {/* <Text style={styles.eventTitle}> {event.name}</Text>
             <Text style={styles.eventText}> Dagsetning: {event.date}</Text>
             <Text style={styles.eventText}>
               {" "}
@@ -343,9 +364,13 @@ const Event = ({ navigation, route }) => {
               {" "}
               Endar klukkan: {event.endTime}
             </Text>
-            <Text style={styles.eventText}> Staðsetning: {event.location}</Text>
-
-            <Text style={styles.eventText}> Lýsing: {event.description}</Text>
+            <Text style={styles.eventText}> Staðsetning: {event.location}</Text> */}
+            <Text style={styles.eventTitle}>{event.name}</Text>
+            <Text> <Fontisto name="date" size={24} color="black"/> <Text style={styles.eventText}>{event.date}</Text></Text>
+            <Text> <Ionicons name="time" size={28} color="black"/><Text style={styles.eventText}>{event.startTime} - {event.endTime}</Text></Text>
+            <Text><Entypo name="location-pin" size={28} color="black"/><Text style={styles.eventText}>{event.location}</Text></Text>
+            <Text>  <FontAwesome name="user" size={28} color="black" /><Text style={styles.eventText}> {event.staffmember}</Text></Text>
+            <Text> <MaterialIcons name="description" size={28} color="black"/><Text style={styles.eventText}>{event.description}</Text></Text>
             <Text style={styles.eventText1}> Skráðir á viðburðinn: </Text>
             {checkAttendees(event) ? (
               Object.values(event.attendees).map((item, index) => (
