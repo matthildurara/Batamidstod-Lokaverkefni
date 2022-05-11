@@ -202,7 +202,7 @@ const Event = ({ navigation, route }) => {
         name: thisuser?.name,
       })
         .then(() => {
-          fetchEvent();
+          //fetchEvent();
         })
         .catch((err) => {
           console.log(err);
@@ -214,7 +214,7 @@ const Event = ({ navigation, route }) => {
         name: thisuser?.name,
       })
         .then(() => {
-          fetchEvent();
+          //fetchEvent();
         })
         .catch((err) => {
           console.log(err);
@@ -230,7 +230,7 @@ const Event = ({ navigation, route }) => {
 
     remove(ref(db, urls))
       .then(() => {
-        fetchEvent();
+        //fetchEvent();
       })
       .catch((err) => {
         console.log(err);

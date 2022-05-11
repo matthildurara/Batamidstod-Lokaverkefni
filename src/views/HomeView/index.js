@@ -117,8 +117,9 @@ const HomeView = ({ navigation, route }) => {
   useEffect(() => {
     async function getEvents() {
       console.log("Getting new events from the database");
-      setListEvents([]);
+
       onValue(dbRef, (snapshot) => {
+        setListEvents([]);
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
           //let listOfDay = [];
@@ -159,7 +160,6 @@ const HomeView = ({ navigation, route }) => {
     async function getNotifications() {
       onValue(dbRef, (snapshot) => {
         setAllNotifications([]);
-
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
           childSnapshot.forEach((childChild) => {
@@ -193,7 +193,7 @@ const HomeView = ({ navigation, route }) => {
         name: thisuser?.name,
       })
         .then(() => {
-          fetchEvents();
+          //fetchEvents();
         })
         .catch((err) => {
           console.log(err);
@@ -205,14 +205,14 @@ const HomeView = ({ navigation, route }) => {
         name: thisuser?.name,
       })
         .then(() => {
-          fetchEvents();
+          //fetchEvents();
         })
         .catch((err) => {
           console.log(err);
         });
     }
     alert("þú hefur verið skráður á viðburð");
-    await fetchEvents();
+    //await fetchEvents();
   };
 
   const checkForMax = (item) => {
@@ -309,120 +309,6 @@ const HomeView = ({ navigation, route }) => {
     navigate("Event");
   };
 
-  // listOfDay.sort((a, b) =>
-  //   parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
-  // );
-
-  // const listDay = listOfEvents.filter((data) => data.date.includes(format));
-  // listDay.sort((a, b) =>
-  //   parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
-  // );
-  //setListOfDay(listDay);
-
-  //console.log("day pressed", day.dateString);
-
-  // listOfDay = listOfEvents.filter((data) => data.date.includes(selectedDay));
-  // listOfDay.sort((a, b) =>
-  //   parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
-  // );
-
-  // const renderItem = (item) => {
-  //   moment(item.date).format();
-  //   if (item.date === selectedDay) {
-  //     console.log("===============DATES IN RENDER Ö============");
-  //     console.log(item.date);
-  //     console.log(selectedDay);
-  //     return (
-  //       <View style={[styles.eventContainer, { backgroundColor: item.color }]}>
-  //         <View style={styles.event}>
-  //           <TouchableOpacity onPress={() => handlePressEvent(item)}>
-  //             <View style={styles.eventItemContainer}>
-  //               <View>
-  //                 <Text style={styles.itemTitle}>{item.name}</Text>
-  //                 <Text>{item.date}</Text>
-  //                 <Text>
-  //                   {item.startTime} - {item.endTime}
-  //                 </Text>
-  //                 <Text>{item.staffmember}</Text>
-  //               </View>
-  //               <View style={styles.arrowRight}>
-  //                 <AntDesign name="doubleright" size={24} color="black" />
-  //               </View>
-  //             </View>
-  //           </TouchableOpacity>
-  //         </View>
-  //         {isEventOver(item.date) ? (
-  //           <View>
-  //             {checkForMax(item) ? (
-  //               <View>
-  //                 {isUserOnEvent(item) == false ? (
-  //                   <View>
-  //                     <TouchableOpacity
-  //                       onPress={() => handleOnEvent(item)}
-  //                       style={styles.eventbutton}
-  //                     >
-  //                       <Text>Skrá</Text>
-  //                     </TouchableOpacity>
-  //                   </View>
-  //                 ) : (
-  //                   <View>
-  //                     <TouchableOpacity
-  //                       onPress={() => handleOnRemove(item)}
-  //                       style={styles.eventbutton}
-  //                     >
-  //                       <Text>AfSkrá</Text>
-  //                     </TouchableOpacity>
-  //                   </View>
-  //                 )}
-  //               </View>
-  //             ) : (
-  //               <View>
-  //                 {isUserOnEvent(item) == false ? (
-  //                   <View>
-  //                     <Text style={styles.notButton}>Viðburður fullur</Text>
-  //                   </View>
-  //                 ) : (
-  //                   <View>
-  //                     <TouchableOpacity
-  //                       onPress={() => handleOnRemove(item)}
-  //                       style={styles.eventbutton}
-  //                     >
-  //                       <Text>AfSkrá</Text>
-  //                     </TouchableOpacity>
-  //                   </View>
-  //                 )}
-  //               </View>
-  //             )}
-  //           </View>
-  //         ) : (
-  //           <Text style={styles.notButton}>Viðburður er búinn</Text>
-  //         )}
-  //       </View>
-  //     );
-  //   } else {
-  //     console.log("===============DATES IN RENDER ELSE ============");
-  //     console.log(item.date);
-  //     console.log(selectedDay);
-  //   }
-  // };
-
-  // const render = (item) => {
-  //   if()
-  //   return (
-  //     <View>
-  //       {listOfDay.length > 0 ? (
-  //         <View>
-  //           {Object.values(listOfDay).map((item, index) => {
-  //             <View>{item.name}</View>;
-  //           })}
-  //         </View>
-  //       ) : (
-  //         <></>
-  //       )}
-  //     </View>
-  //   );
-  // };
-
   const today = moment().format("YYYY-MM-DD");
 
   // const [listOfDay, setListOfDay] = useState(today);
@@ -435,20 +321,7 @@ const HomeView = ({ navigation, route }) => {
     //await fetchEvents();
     const select = moment(day).format("YYYY-MM-DD");
     setSelectedDay(select);
-    // const listOfDay = listOfEvents.filter((data) =>
-    // data.date.includes(selectedDay)
-    // for (let i = 0; i < Object.keys(listOfEvents).length; i++) {
-    //   // console.log(
-    //   //   "==========BBFBFBFBFB===========",
-    //   //   Object.values(listOfEvents)[i].date
-    //   // );
-    //   // console.log(select);
-    //   if (Object.values(listOfEvents)[i].date == select) {
-    //     listDay.push(Object.values(listOfEvents)[i]);
-    //   }
-    // }
-    // setListOfDay(listDay);
-    // console.log("LIST OF DAY ====: ", listOfDay);
+
     return;
   };
 
@@ -472,6 +345,7 @@ const HomeView = ({ navigation, route }) => {
   listOfDay.sort((a, b) =>
     parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
   );
+
   console.log("LIST OF DAY ITEMS : ", listOfDay);
   const checkDate = (item) => {
     // Object.values(listOfEvents).map((item, index) => {
@@ -495,6 +369,26 @@ const HomeView = ({ navigation, route }) => {
       return true;
     }
   };
+  //const [dateFormat, setDateFormat] = useState("");
+  // const getDate = (date) => {
+  //   var months = [
+  //     "Janúar",
+  //     "Febrúar",
+  //     "Mars",
+  //     "Apríl",
+  //     "Maí",
+  //     "Júní",
+  //     "Júlí",
+  //     "Ágúst",
+  //     "September",
+  //     "Október",
+  //     "Nóvember",
+  //     "Desember",
+  //   ];
+  //   var d = new Date(date);
+  //   var monthName = months[d.getMonth()];
+  //   setDateFormat(monthName);
+  // };
 
   return (
     <View style={styles.container}>
@@ -502,11 +396,18 @@ const HomeView = ({ navigation, route }) => {
       <View style={styles.homeViewContainer}>
         <View style={styles.calander}>
           <CalendarStrip
+            //scrollable={true}
             style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
             selectedDate={selectedDay}
+            // name={"dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi".split(
+            //   "_"
+            // )}
+            // dateNameStyle={"dim._lun._mar._mer._jeu._ven._sam.".split("_")}
+            // name'fr',
             daySelectionAnimation={{
               type: "background",
               duration: 200,
+              //calendarHeaderStyle
               highlightColor: "#C6DDEC",
               // borderWidth: 1,
               // borderHighlightColor: "blue",
@@ -537,6 +438,7 @@ const HomeView = ({ navigation, route }) => {
                             {/* <Text> {JSON.stringify(item)}</Text> */}
                             <Text style={styles.itemTitle}>{item.name}</Text>
                             <Text>{item.date}</Text>
+
                             <Text>
                               {item.startTime} - {item.endTime}
                             </Text>
@@ -610,7 +512,7 @@ const HomeView = ({ navigation, route }) => {
               ))}
             </View>
           ) : (
-            <></>
+            <Text> Enginn viðburður í dag</Text>
           )}
         </ScrollView>
       </View>
