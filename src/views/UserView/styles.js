@@ -70,7 +70,7 @@ export default StyleSheet.create({
     borderBottomColor: "#949392",
     borderBottomWidth: 2,
     marginBottom: 6,
-    width: 300,
+    width: 320,
 
     //marginLeft: 4,
   },
