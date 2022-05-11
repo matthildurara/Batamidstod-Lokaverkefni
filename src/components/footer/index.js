@@ -9,42 +9,6 @@ import styles from "./styles";
 const Footer = (parameter) => {
   const { navigate } = useNavigation();
 
-  // const [allNotifications, setAllNotifications] = useState([]);
-
-  // useEffect(() => {
-  //   const db = getDatabase();
-  //   const dbRef = ref(db, "Users/Notifications");
-  //   async function getNotifications() {
-  //     onValue(dbRef, (snapshot) => {
-  //       setAllNotifications([]);
-  //       console.log("=============MMMMM==========");
-  //       snapshot.forEach((childSnapshot) => {
-  //         const childKey = childSnapshot.key;
-  //         console.log("CHILDKEU IS ?");
-  //         console.log(childKey);
-  //         childSnapshot.forEach((childChild) => {
-  //           const childchildKey = childChild.key;
-  //           console.log("childchild key: ", childchildKey);
-  //           const childValue = childChild.val();
-
-  //           const item = {
-  //             notification: childValue.notification,
-  //             notificationTitle: childValue.notificationTitle,
-  //           };
-
-  //           setAllNotifications((allNotifications) => [
-  //             ...allNotifications,
-  //             item,
-  //           ]);
-  //         });
-  //       });
-  //     });
-  //   }
-
-  //   return getNotifications();
-  //   //console.log(allNotifications);
-  // }, []);
-
   return (
     <View styleName="horizontal" style={styles.footer}>
       <View style={styles.footerAction}>

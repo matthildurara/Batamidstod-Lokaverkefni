@@ -77,8 +77,8 @@ const HomeView = ({ navigation, route }) => {
   const dbRef = ref(db, "Users/Event");
 
   const fetchEvents = async () => {
-    setListEvents([]);
     onValue(dbRef, (snapshot) => {
+      setListEvents([]);
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
         //let listOfDay = [];
@@ -248,7 +248,7 @@ const HomeView = ({ navigation, route }) => {
 
     remove(ref(db, urls))
       .then(() => {
-        fetchEvents();
+        // fetchEvents();
       })
       .catch((err) => {
         console.log(err);
