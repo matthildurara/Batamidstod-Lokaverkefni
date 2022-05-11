@@ -273,12 +273,16 @@ const Event = ({ navigation, route }) => {
       "nóvember",
       "desember",
     ];
-    let d = new Date(date);
+    let dateStr = toString(date);
+    let d = new Date(dateStr);
+    // var datePosted = new Date(post.publish_date).toString();
     let monthName = months[d.getMonth()];
     let res = date.substring(8, 10);
     return res + ". " + monthName;
     // setDateFormat(monthName);
   };
+  console.log("event date");
+  console.log(event.date);
 
   return (
     <View>

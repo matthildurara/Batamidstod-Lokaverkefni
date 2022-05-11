@@ -381,6 +381,11 @@ const HomeView = ({ navigation, route }) => {
     // setDateFormat(monthName);
   };
 
+  console.log("list of day");
+  console.log(listOfDay);
+
+  
+
   return (
     <View style={styles.container}>
       <Toolbar toolbarText={parameter} />
