@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Button,
+  TouchableHighlight,
+  ScrollView,
+} from "react-native";
 import styles from "./styles";
 import { useState } from "react";
 import Toolbar from "../../components/toolBar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TouchableHighlight } from "react-native-gesture-handler";
 import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -56,6 +62,7 @@ const Event = ({ navigation, route }) => {
                     eventId: childchildKey,
                     staffmember: childValue.staffmember,
                     color: childValue.color,
+                    location: childValue.location,
                   };
                   setRightEvent(item);
                 }
@@ -99,6 +106,7 @@ const Event = ({ navigation, route }) => {
                   eventId: childchildKey,
                   staffmember: childValue.staffmember,
                   color: childValue.color,
+                  location: childValue.location,
                 };
                 setRightEvent(item);
               }
@@ -144,7 +152,7 @@ const Event = ({ navigation, route }) => {
   };
   const checkAttendees = (item) => {
     //checking if item has any attendees
-    if (item.attendees) {
+    if (item.attendees && item.attendees != "") {
       if (Object.keys(item.attendees).length > 0) {
         return true;
       }
@@ -166,8 +174,6 @@ const Event = ({ navigation, route }) => {
           Object.values(item.attendees)[i].name.toLowerCase() ===
           thisuser.name?.toLowerCase()
         ) {
-          // const obj = Object.values(item.attendees)[i].name.toLowerCase();
-          // const us = thisuser.name?.toLowerCase();
           return true;
         }
       }
@@ -185,12 +191,26 @@ const Event = ({ navigation, route }) => {
     return false;
   };
   const checkItem = (item) => {
-    // console.log(item);
-    if (item == null || item == "null") {
+    if (!item || item == null || item == "null") {
       return false;
     } else {
       return true;
     }
+  };
+
+  const checkForMax = (item) => {
+    if (item.attendees) {
+      if (item.attendees == "") {
+        return true;
+      }
+
+      if (Object.keys(item.attendees).length >= item.maxNumber) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
   };
   const handleOnEvent = async (item) => {
     const db = getDatabase();
@@ -242,67 +262,106 @@ const Event = ({ navigation, route }) => {
   return (
     <View>
       <Toolbar toolbarText={parameter} />
-      <TouchableHighlight
-        style={styles.backButton}
-        onPress={() => navigate("Home")}
-      >
-        <View style={styles.backButtonContainer}>
-          <AntDesign
-            name="arrowleft"
-            size={24}
-            color="black"
-            style={styles.arrow}
-          />
-          <Text style={styles.textBack}>Til baka </Text>
+      <View style={styles.buttonEventView}>
+        <View>
+          <TouchableHighlight
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <View style={styles.backButtonContainer}>
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="black"
+                style={styles.arrow}
+              />
+              <Text style={styles.textBack}>Til baka </Text>
+            </View>
+          </TouchableHighlight>
         </View>
-      </TouchableHighlight>
-      <View>
-        {isEventOver(event.date) ? (
-          <View>
-            {isUserOnEvent(event) ? (
-              <View>
-                <TouchableOpacity
-                  onPress={() => handleOnRemove(event)}
-                  style={styles.eventbutton}
-                >
-                  <Text>AfSkrá</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View>
-                <TouchableOpacity
-                  onPress={() => handleOnEvent(event)}
-                  style={styles.eventbutton}
-                >
-                  <Text>Skrá</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ) : (
-          <Text> Viðburður er búinn</Text>
-        )}
-      </View>
-      <View style={styles.eventContainer}>
-        <Text style={styles.eventTitle}> {event.name}</Text>
-        <Text style={styles.eventText}> Dagsetning: {event.date}</Text>
-        <Text style={styles.eventText}> Byrjar klukkan: {event.startTime}</Text>
-        <Text style={styles.eventText}> Endar klukkan: {event.endTime}</Text>
-        <Text style={styles.eventText}> Lýsing: {event.description}</Text>
-        <Text style={styles.eventText1}> Skráðir á viðburðinn: </Text>
-        {checkAttendees(event) ? (
-          Object.values(event.attendees).map((item, index) => (
-            <View key={index} item={item}>
-              {checkItem(item) ? (
-                <Text style={styles.eventText2}> {item.name}</Text>
+        <View style={styles.buttonView}>
+          {isEventOver(event.date) ? (
+            <View>
+              {checkForMax(event) ? (
+                <View>
+                  {isUserOnEvent(event) ? (
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => handleOnRemove(event)}
+                        style={styles.eventbuttonOff}
+                      >
+                        <Text style={styles.buttonText}>AfSkrá</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => handleOnEvent(event)}
+                        style={styles.eventbuttonOn}
+                      >
+                        <Text style={styles.buttonText}>Skrá</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
               ) : (
-                <></>
+                <View>
+                  {isUserOnEvent(event) == false ? (
+                    <View style={styles.eventButton}>
+                      <Text style={styles.notButton}>Viðburður fullur</Text>
+                    </View>
+                  ) : (
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => handleOnRemove(event)}
+                        style={styles.eventbuttonOff}
+                      >
+                        <Text style={styles.buttonText}>AfSkrá</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
               )}
             </View>
-          ))
-        ) : (
-          <></>
-        )}
+          ) : (
+            <Text style={styles.noButton}> Viðburður er búinn</Text>
+          )}
+        </View>
+      </View>
+      <View>
+        <ScrollView>
+          <View
+            style={[styles.eventContainer, { backgroundColor: event.color }]}
+          >
+            <Text style={styles.eventTitle}> {event.name}</Text>
+            <Text style={styles.eventText}> Dagsetning: {event.date}</Text>
+            <Text style={styles.eventText}>
+              {" "}
+              Byrjar klukkan: {event.startTime}
+            </Text>
+            <Text style={styles.eventText}>
+              {" "}
+              Endar klukkan: {event.endTime}
+            </Text>
+            <Text style={styles.eventText}> Staðsetning: {event.location}</Text>
+
+            <Text style={styles.eventText}> Lýsing: {event.description}</Text>
+            <Text style={styles.eventText1}> Skráðir á viðburðinn: </Text>
+            {checkAttendees(event) ? (
+              Object.values(event.attendees).map((item, index) => (
+                <View key={index} item={item}>
+                  {checkItem(item) ? (
+                    <Text style={styles.eventText2}> {item.name}</Text>
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              ))
+            ) : (
+              <></>
+            )}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );

@@ -10,6 +10,7 @@ import {
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
+import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -51,6 +52,7 @@ const UserView = ({ navigation, route }) => {
             eventId: childValue.eventId,
             attendees: childValue.attendees,
             color: childValue.color,
+            location: childValue.location,
           };
           listOfDay.push(item);
           parseInt(childValue.startTime);
@@ -133,9 +135,6 @@ const UserView = ({ navigation, route }) => {
     if (item.attendees) {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
         if (Object.values(item.attendees)[i].name === user.name) {
-          // console.log("USER AND OVJECT");
-          // console.log("USER: ", thisuser);
-          // console.log("OBJECT: ", Object.values(item.attendees)[i].name);
           return Object.keys(item.attendees)[i];
         }
       }
@@ -174,7 +173,6 @@ const UserView = ({ navigation, route }) => {
           ) {
             const obj = Object.values(item.attendees)[i].name.toLowerCase();
             const us = user.name?.toLowerCase();
-            // setListUserEvent((listOfUserEvent) => [...listOfUserEvent, item]);
             return true;
           }
         }
@@ -190,6 +188,44 @@ const UserView = ({ navigation, route }) => {
       return true;
     }
     return false;
+  };
+  const getDate = (date) => {
+    var months = [
+      "janúar",
+      "febrúar",
+      "mars",
+      "apríl",
+      "maí",
+      "júní",
+      "júlí",
+      "ágúst",
+      "september",
+      "október",
+      "nóvember",
+      "desember",
+    ];
+    let d = new Date(date);
+    let monthName = months[d.getMonth()];
+    let res = date.substring(8, 10);
+    return res + ". " + monthName;
+  };
+
+  const handlePressEvent = async (item) => {
+    console.log("attendees: ", item.attendees);
+    const pressedEvent = {
+      name: item.name,
+      date: item.date,
+      startTime: item.startTime,
+      endTime: item.endTime,
+      maxNumber: item.maxNumber,
+      description: item.description,
+      attendees: item.attendees,
+      eventId: item.eventId,
+      staffmember: item.staffmember,
+      location: item.location,
+    };
+    await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
+    navigate("Event");
   };
 
   return (
@@ -223,21 +259,29 @@ const UserView = ({ navigation, route }) => {
                     ]}
                     //style={styles.eventUserItem}
                   >
-                    <View style={styles.eventUserText}>
-                      <Text style={styles.text}> {item.name}</Text>
-                      <Text style={styles.text}> {item.date}</Text>
+                    <TouchableOpacity onPress={() => handlePressEvent(item)}>
+                      <View style={styles.eventtextContainer}>
+                        <View style={styles.eventUserText}>
+                          <Text style={styles.text1}> {item.name}</Text>
+                          <Text style={styles.text}> {getDate(item.date)}</Text>
 
-                      <Text style={styles.text}>
-                        {" "}
-                        Byrjar klukkan: {item.startTime}
-                      </Text>
-                      <Text style={styles.text}>
-                        {" "}
-                        Endar klukkan: {item.endTime}
-                      </Text>
-                      <Text style={styles.text}> {item.staffmember}</Text>
-                    </View>
+                          <Text style={styles.text2}>
+                            {item.startTime} - {item.endTime}
+                          </Text>
+                          <Text style={styles.text}>{item.location}</Text>
 
+                          <Text style={styles.text}> {item.staffmember}</Text>
+                        </View>
+
+                        <View style={styles.userArrowRight}>
+                          <AntDesign
+                            name="doubleright"
+                            size={24}
+                            color="black"
+                          />
+                        </View>
+                      </View>
+                    </TouchableOpacity>
                     <View>
                       <TouchableOpacity
                         onPress={() => handleOnRemove(item)}

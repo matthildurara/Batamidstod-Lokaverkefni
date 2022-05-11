@@ -67,6 +67,7 @@ export default StyleSheet.create({
   eventButton: {
     marginLeft: 20,
     marginBottom: 5,
+    // paddingLeft: 5,
   },
   event: {
     // borderColor: "black",
@@ -77,14 +78,25 @@ export default StyleSheet.create({
   itemTitle: {
     fontWeight: "bold",
     fontSize: 15,
+    marginTop: 3,
   },
-  eventbutton: {
+  eventbuttonOff: {
     borderColor: "black",
     borderWidth: 2,
-    width: 70,
+    width: 65,
     borderRadius: 4,
-    marginTop: 3,
+    marginTop: 5,
     marginBottom: 3,
+    paddingLeft: 7,
+  },
+  eventbuttonOn: {
+    borderColor: "black",
+    borderWidth: 2,
+    width: 48,
+    borderRadius: 4,
+    marginTop: 5,
+    marginBottom: 3,
+    paddingLeft: 7,
   },
   eventContainer: {
     borderBottomColor: "#949392",

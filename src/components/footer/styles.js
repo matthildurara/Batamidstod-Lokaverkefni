@@ -46,4 +46,7 @@ export default StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
   },
+  footerText: {
+    fontSize: 13,
+  },
 });

@@ -97,6 +97,7 @@ const HomeView = ({ navigation, route }) => {
             eventId: childchildKey,
             staffmember: childValue.staffmember,
             color: childValue.color,
+            location: childValue.location,
           };
           setListEvents((listOfEvents) => [...listOfEvents, item]);
           // listOfDay.push(item);
@@ -138,6 +139,7 @@ const HomeView = ({ navigation, route }) => {
               eventId: childchildKey,
               staffmember: childValue.staffmember,
               color: childValue.color,
+              location: childValue.location,
             };
             setListEvents((listOfEvents) => [...listOfEvents, item]);
             // listOfDay.push(item);
@@ -304,6 +306,7 @@ const HomeView = ({ navigation, route }) => {
       attendees: item.attendees,
       eventId: item.eventId,
       staffmember: item.staffmember,
+      location: item.location,
     };
     await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
     navigate("Event");
@@ -325,20 +328,6 @@ const HomeView = ({ navigation, route }) => {
     return;
   };
 
-  // setListOfDay(dayItems);
-  // const checkDate = () => {
-  //   // Object.values(listOfEvents).map((item, index) => {
-  //   //   console.log(item.date);
-  //   // });
-
-  //   // console.log("SELECTED DATE: ", selectedDay);
-  //   // if (item.date == selectedDay) {
-  //   //   console.log("INSIDE IF : ", item.date);
-  //   //   return true;
-  //   // }
-  // };
-  //let dayItems = [];
-  //console.log("DAYITEMS : ", dayItems);
   const listOfDay = listOfEvents.filter((data) =>
     data.date.includes(selectedDay)
   );
@@ -347,48 +336,50 @@ const HomeView = ({ navigation, route }) => {
   );
 
   console.log("LIST OF DAY ITEMS : ", listOfDay);
-  const checkDate = (item) => {
-    // Object.values(listOfEvents).map((item, index) => {
-    //   console.log(item.date);
-    // });
-    // dayItems = [];
-    // // //console.log("ITEM DATE IS : ", item.date);
-    // for (let i = 0; i < Object.keys(listOfEvents).length; i++) {
-    //   if (Object.values(listOfEvents)[i].date == selectedDay) {
-    //     console.log(Object.values(listOfEvents)[i]);
-    //     dayItems.push(Object.values(listOfEvents)[i]);
-    //   }
-    // }
-    // console.log(dayItems);
+  // const checkDate = (item) => {
+  //   // Object.values(listOfEvents).map((item, index) => {
+  //   //   console.log(item.date);
+  //   // });
+  //   // dayItems = [];
+  //   // // //console.log("ITEM DATE IS : ", item.date);
+  //   // for (let i = 0; i < Object.keys(listOfEvents).length; i++) {
+  //   //   if (Object.values(listOfEvents)[i].date == selectedDay) {
+  //   //     console.log(Object.values(listOfEvents)[i]);
+  //   //     dayItems.push(Object.values(listOfEvents)[i]);
+  //   //   }
+  //   // }
+  //   // console.log(dayItems);
 
-    //setListOfDay(dayItems);
-    //console.log("ITEM DATE IS : ", item.date);
-    // console.log("SELECTED DATE: ", selectedDay);
-    if (item.date == selectedDay) {
-      //console.log("INSIDE IF : ", item.date);
-      return true;
-    }
-  };
-  //const [dateFormat, setDateFormat] = useState("");
-  // const getDate = (date) => {
-  //   var months = [
-  //     "Janúar",
-  //     "Febrúar",
-  //     "Mars",
-  //     "Apríl",
-  //     "Maí",
-  //     "Júní",
-  //     "Júlí",
-  //     "Ágúst",
-  //     "September",
-  //     "Október",
-  //     "Nóvember",
-  //     "Desember",
-  //   ];
-  //   var d = new Date(date);
-  //   var monthName = months[d.getMonth()];
-  //   setDateFormat(monthName);
+  //   //setListOfDay(dayItems);
+  //   //console.log("ITEM DATE IS : ", item.date);
+  //   // console.log("SELECTED DATE: ", selectedDay);
+  //   if (item.date == selectedDay) {
+  //     //console.log("INSIDE IF : ", item.date);
+  //     return true;
+  //   }
   // };
+  //const [dateFormat, setDateFormat] = useState("");
+  const getDate = (date) => {
+    var months = [
+      "janúar",
+      "febrúar",
+      "mars",
+      "apríl",
+      "maí",
+      "júní",
+      "júlí",
+      "ágúst",
+      "september",
+      "október",
+      "nóvember",
+      "desember",
+    ];
+    let d = new Date(date);
+    let monthName = months[d.getMonth()];
+    let res = date.substring(8, 10);
+    return res + ". " + monthName;
+    // setDateFormat(monthName);
+  };
 
   return (
     <View style={styles.container}>
@@ -397,7 +388,13 @@ const HomeView = ({ navigation, route }) => {
         <View style={styles.calander}>
           <CalendarStrip
             //scrollable={true}
-            style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+            style={{
+              height: 120,
+              paddingTop: 8,
+              paddingBottom: 8,
+              paddingLeft: 8,
+              paddingRight: 8,
+            }}
             selectedDate={selectedDay}
             // name={"dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi".split(
             //   "_"
@@ -437,11 +434,13 @@ const HomeView = ({ navigation, route }) => {
                           <View>
                             {/* <Text> {JSON.stringify(item)}</Text> */}
                             <Text style={styles.itemTitle}>{item.name}</Text>
-                            <Text>{item.date}</Text>
+                            <Text>{getDate(item.date)}</Text>
 
                             <Text>
                               {item.startTime} - {item.endTime}
                             </Text>
+                            <Text>{item.location}</Text>
+
                             <Text>{item.staffmember}</Text>
                           </View>
                           <View style={styles.arrowRight}>
@@ -462,7 +461,7 @@ const HomeView = ({ navigation, route }) => {
                               <View style={styles.eventButton}>
                                 <TouchableOpacity
                                   onPress={() => handleOnEvent(item)}
-                                  style={styles.eventbutton}
+                                  style={styles.eventbuttonOn}
                                 >
                                   <Text>Skrá</Text>
                                 </TouchableOpacity>
@@ -471,7 +470,7 @@ const HomeView = ({ navigation, route }) => {
                               <View style={styles.eventButton}>
                                 <TouchableOpacity
                                   onPress={() => handleOnRemove(item)}
-                                  style={styles.eventbutton}
+                                  style={styles.eventbuttonOff}
                                 >
                                   <Text>AfSkrá</Text>
                                 </TouchableOpacity>
@@ -490,7 +489,7 @@ const HomeView = ({ navigation, route }) => {
                               <View>
                                 <TouchableOpacity
                                   onPress={() => handleOnRemove(item)}
-                                  style={styles.eventbutton}
+                                  style={styles.eventbuttonOff}
                                 >
                                   <Text>AfSkrá</Text>
                                 </TouchableOpacity>
@@ -505,9 +504,6 @@ const HomeView = ({ navigation, route }) => {
                       </View>
                     )}
                   </View>
-                  {/* ) : (
-                <></>
-              )} */}
                 </View>
               ))}
             </View>

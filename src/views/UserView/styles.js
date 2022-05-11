@@ -21,7 +21,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginBottom: 5,
 
-    width: 380,
+    width: 370,
     borderBottomColor: "black",
     borderBottomWidth: 2,
     //borderWidth: 2,
@@ -52,7 +52,7 @@ export default StyleSheet.create({
     marginBottom: 5,
     width: 65,
     paddingLeft: 5,
-    marginRight: 10,
+    marginRight: 38,
 
     // margin: 5,
     alignSelf: "flex-end",
@@ -61,7 +61,8 @@ export default StyleSheet.create({
   username: {
     //alignSelf: "flex-end",
     marginBottom: 5,
-    marginLeft: 20,
+    fontSize: 15,
+    marginLeft: 38,
   },
   eventUserItem: {
     // borderColor: "black",
@@ -70,6 +71,20 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
     marginBottom: 6,
     width: 300,
+
+    //marginLeft: 4,
+  },
+  userArrowRight: {
+    // alignSelf: "flex-end",
+    right: 10,
+    justifyContent: "center",
+  },
+  eventtextContainer: {
+    flexDirection: "row",
+    //width: 300,
+    marginLeft: 15,
+
+    justifyContent: "space-between",
   },
   eventbutton: {
     borderColor: "black",
@@ -77,25 +92,31 @@ export default StyleSheet.create({
     marginBottom: 5,
     width: 65,
     paddingLeft: 5,
+    marginTop: 5,
     marginRight: 10,
-    marginLeft: 4,
+    marginLeft: 15,
   },
-  eventUserText: {},
+  eventUserText: {
+    marginTop: 5,
+    // marginLeft: 5,
+    //marginLeft: 20,
+  },
   text: {
     // borderColor: "black",
     // borderWidth: 2,
     // marginLeft: 2,
-    marginBottom: 4,
+    marginBottom: 2,
     // fontWeight: "bold",
     // justifyContent: "center",
     // alignSelf: "center",
   },
-  // buttonText: {
-  //   borderColor: "black",
-  //   borderWidth: 2,
-  //   marginBottom: 5,
-  //   width: 65,
-  //   paddingLeft: 5,
-  //   marginRight: 10,
-  // },
+  text1: {
+    marginBottom: 2,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  text2: {
+    marginLeft: 4,
+    marginBottom: 2,
+  },
 });
