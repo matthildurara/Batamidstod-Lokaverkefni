@@ -36,9 +36,6 @@ export default StyleSheet.create({
   cont: {
     flex: 1,
   },
-  itemcont: {
-    // marginLeft: 35,
-  },
   eventItemContainer: {
     flexDirection: "row",
     //width: 300,

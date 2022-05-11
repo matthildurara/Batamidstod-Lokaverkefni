@@ -240,7 +240,7 @@ const UserView = ({ navigation, route }) => {
             onPress={handleLogOut}
             // style={styles.logoutbutton}
           >
-            <Text>Log Out</Text>
+            <Text>Skrá út</Text>
           </TouchableHighlight>
         </View>
       </View>
