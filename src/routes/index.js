@@ -1,9 +1,5 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-
 import { createStackNavigator } from "@react-navigation/stack";
-
-const Stack = createStackNavigator();
 
 import Main from "../views/Main";
 import HomeView from "../views/HomeView";
@@ -12,9 +8,9 @@ import Event from "../views/EventView";
 import EducationView from "../views/EducationView";
 import UserView from "../views/UserView";
 
-const Routes = () => (
-  //   <NavigationContainer>
+const Stack = createStackNavigator();
 
+const Routes = () => (
   <Stack.Navigator initialRouteName="Main">
     <Stack.Screen
       name="Main"
@@ -52,6 +48,5 @@ const Routes = () => (
       options={{ headerShown: false }}
     />
   </Stack.Navigator>
-  // {/* </NavigationContainer> */}
 );
 export default Routes;

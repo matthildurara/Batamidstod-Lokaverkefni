@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { getDatabase, ref, onValue } from "firebase/database";
+
 import styles from "./styles";
 import Toolbar from "../../components/toolBar";
 import Footer from "../../components/footer";
-import { useNavigation } from "@react-navigation/native";
 
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  DataSnapshot,
-} from "firebase/database";
-import getAllNotifications from "../../services/notificationServices";
-import { getNotif } from "../../services/notificationServices";
 const NotificationView = ({ navigation, route }) => {
   const { navigate } = useNavigation();
 
@@ -22,32 +15,15 @@ const NotificationView = ({ navigation, route }) => {
   const dbRef = ref(db, "Users/Notifications");
   const [allNotifications, setAllNotifications] = useState([]);
 
-  const numerNotification = useState("");
-
-  // const callNoti = async () => {
-  //   console.log(allNotifications);
-  //   const noti = await getAllNotifications();
-  //   console.log(noti);
-  //   return noti;
-  // };
-
   useEffect(() => {
-    // async function getNotifications() {
     const db = getDatabase();
     const dbRef = ref(db, "Users/Notifications");
     async function getNotifications() {
       onValue(dbRef, (snapshot) => {
         setAllNotifications([]);
-        console.log("=============MMMMM==========");
         snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
-          console.log("CHILDKEU IS ?");
-          console.log(childKey);
           childSnapshot.forEach((childChild) => {
-            const childchildKey = childChild.key;
-            console.log("childchild key: ", childchildKey);
             const childValue = childChild.val();
-
             const item = {
               notification: childValue.notification,
               notificationTitle: childValue.notificationTitle,
@@ -62,17 +38,7 @@ const NotificationView = ({ navigation, route }) => {
       });
     }
     return getNotifications();
-
-    //   console.log(allNotifications);
-    //   const noti = await getAllNotifications();
-    //   console.log(noti);
-    //   setAllNotifications(noti);
-    // }
-    // getNotifications();
-    // const notifi = callNoti();
-    // setAllNotifications(notifi);
   }, []);
-  console.log("LENGD: ", allNotifications.length);
 
   return (
     <View style={styles.container}>
@@ -91,4 +57,5 @@ const NotificationView = ({ navigation, route }) => {
     </View>
   );
 };
+
 export default NotificationView;

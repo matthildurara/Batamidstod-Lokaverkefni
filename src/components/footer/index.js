@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { AntDesign, MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import IconBadge from "react-native-icon-badge";
@@ -25,7 +25,6 @@ const Footer = (parameter) => {
           </View>
         </TouchableHighlight>
       </View>
-
       <View style={styles.footerAction}>
         <TouchableHighlight
           style={styles.button}
@@ -34,20 +33,13 @@ const Footer = (parameter) => {
           <View style={styles.buttonView}>
             <IconBadge
               MainElement={
-                // <Text style={styles.icon}>
                 <MaterialIcons
                   style={{
-                    //backgroundColor: "#489EFE",
-                    // borderBottomWidth: "black",
-                    // borderWidth: 2,
                     width: 44,
                     height: 30,
-                    //margin: 6,
-                    // paddingBottom: ,
                     alignContent: "center",
                     justifyContent: "center",
                   }}
-                  //style={styles.icon}
                   name="notifications"
                   size={28}
                   color="black"
@@ -61,13 +53,9 @@ const Footer = (parameter) => {
               IconBadgeStyle={{
                 width: 18,
                 height: 18,
-                // backgroundColor: "#FF00EE",
               }}
             />
-            <Text style={styles.footerText}>
-              Tilkynningar
-              {/* {parameter.numberOfNotifications} */}
-            </Text>
+            <Text style={styles.footerText}>Tilkynningar</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -79,7 +67,6 @@ const Footer = (parameter) => {
           <View style={styles.buttonView}>
             <Text style={styles.icon}>
               <Entypo name="graduation-cap" size={24} color="black" />
-              {/* <Ionicons name="menu" size={24} color="black" /> */}
             </Text>
             <Text style={styles.footerText}>Fræðsluefni</Text>
           </View>
@@ -98,7 +85,6 @@ const Footer = (parameter) => {
           </View>
         </TouchableHighlight>
       </View>
-      {/* </View> */}
     </View>
   );
 };

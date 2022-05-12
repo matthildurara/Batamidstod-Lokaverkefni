@@ -1,63 +1,34 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  TextInput,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
-import styles from "./styles";
-import Toolbar from "../../components/toolBar";
-import Footer from "../../components/footer";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import {
   AntDesign,
-  MaterialIcons,
   Ionicons,
   FontAwesome,
   Fontisto,
   Entypo,
 } from "@expo/vector-icons";
-//import CalendarPicker from "react-native-calendar-picker";
 import CalendarStrip from "react-native-calendar-strip";
-//import WeekSelector from "react-native-week-selector";
-
-//import { createDrawerNavigator } from "@react-navigation/drawer";
-//import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { dbFirestore } from "../../../firebase-config";
-import { getAuth } from "firebase/auth";
-import { useAuthValue } from "../../../authContext";
-import getAllNotifications from "../../services/notificationServices";
 import uuid from "react-native-uuid";
-import { Agenda } from "react-native-calendars";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  DataSnapshot,
-  remove,
-} from "firebase/database";
+import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import { useNavigation } from "@react-navigation/native";
-
 import moment from "moment";
-//import getAllNotifications from "../../services/notificationServices";
+
+import Toolbar from "../../components/toolBar";
+import Footer from "../../components/footer";
+import styles from "./styles";
 
 const HomeView = ({ navigation, route }) => {
-  const [notificationLength, setNotificationLength] = useState(0);
+  // const [notificationLength, setNotificationLength] = useState(0);
   const [allNotifications, setAllNotifications] = useState([]);
 
-  // console.log("nvjknavkjnvjkenvkjnrkjtnkrtnjvjrnbkjrnnrk");
-  // console.log(allNotifications.length);
   AsyncStorage.setItem(
     "NumberNotifications",
     JSON.stringify(allNotifications.length)
   );
   const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
-  const [reload, setReload] = useState(0);
+  // const [reload, setReload] = useState(0);
   const [thisuser, setUser] = useState("");
 
   useEffect(() => {
@@ -79,59 +50,44 @@ const HomeView = ({ navigation, route }) => {
   }, []);
 
   const [listOfEvents, setListEvents] = useState([]);
-
   const db = getDatabase();
   const dbRef = ref(db, "Users/Event");
 
-  const fetchEvents = async () => {
-    onValue(dbRef, (snapshot) => {
-      setListEvents([]);
-      snapshot.forEach((childSnapshot) => {
-        const childKey = childSnapshot.key;
-        //let listOfDay = [];
+  // const fetchEvents = async () => {
+  //   onValue(dbRef, (snapshot) => {
+  //     setListEvents([]);
+  //     snapshot.forEach((childSnapshot) => {
+  //       const childKey = childSnapshot.key;
 
-        childSnapshot.forEach((childChild) => {
-          const childchildKey = childChild.key;
-          const childValue = childChild.val();
-          const item = {
-            name: childValue.name,
-            startTime: childValue.startTime,
-            endTime: childValue.endTime,
-            date: childKey,
-            maxNumber: childValue.maxNumber,
-            attendees: childValue.attendees,
-            description: childValue.description,
-            eventId: childchildKey,
-            staffmember: childValue.staffmember,
-            color: childValue.color,
-            location: childValue.location,
-          };
-          setListEvents((listOfEvents) => [...listOfEvents, item]);
-          // listOfDay.push(item);
-          // setListEvents((prevState) => ({
-          //   ...prevState,
-          //   [childKey]: listOfDay,
-          // }));
-        });
-      });
-    });
-    return;
-  };
-  // const [items, setItems] = useState({
-  //   "2022-05-03": [{ name: "test #2" }, { name: "test $4" }],
-  //   "2022-04-25": [{ name: "test #3" }],
-  // });
+  //       childSnapshot.forEach((childChild) => {
+  //         const childchildKey = childChild.key;
+  //         const childValue = childChild.val();
+  //         const item = {
+  //           name: childValue.name,
+  //           startTime: childValue.startTime,
+  //           endTime: childValue.endTime,
+  //           date: childKey,
+  //           maxNumber: childValue.maxNumber,
+  //           attendees: childValue.attendees,
+  //           description: childValue.description,
+  //           eventId: childchildKey,
+  //           staffmember: childValue.staffmember,
+  //           color: childValue.color,
+  //           location: childValue.location,
+  //         };
+  //         setListEvents((listOfEvents) => [...listOfEvents, item]);
+  //       });
+  //     });
+  //   });
+  //   return;
+  // };
 
   useEffect(() => {
     async function getEvents() {
-      console.log("Getting new events from the database");
-
       onValue(dbRef, (snapshot) => {
         setListEvents([]);
         snapshot.forEach((childSnapshot) => {
           const childKey = childSnapshot.key;
-          //let listOfDay = [];
-
           childSnapshot.forEach((childChild) => {
             const childchildKey = childChild.key;
             const childValue = childChild.val();
@@ -149,11 +105,6 @@ const HomeView = ({ navigation, route }) => {
               location: childValue.location,
             };
             setListEvents((listOfEvents) => [...listOfEvents, item]);
-            // listOfDay.push(item);
-            // setListEvents((prevState) => ({
-            //   ...prevState,
-            //   [childKey]: listOfDay,
-            //}));
           });
         });
       });
@@ -170,9 +121,7 @@ const HomeView = ({ navigation, route }) => {
       onValue(dbRef, (snapshot) => {
         setAllNotifications([]);
         snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
           childSnapshot.forEach((childChild) => {
-            const childchildKey = childChild.key;
             const childValue = childChild.val();
 
             const item = {
@@ -188,7 +137,6 @@ const HomeView = ({ navigation, route }) => {
         });
       });
     }
-
     return getNotifications();
   }, []);
 
@@ -213,15 +161,12 @@ const HomeView = ({ navigation, route }) => {
       set(ref(db, urll), {
         name: thisuser?.name,
       })
-        .then(() => {
-          //fetchEvents();
-        })
+        .then(() => {})
         .catch((err) => {
           console.log(err);
         });
     }
     alert("þú hefur verið skráður á viðburð");
-    //await fetchEvents();
   };
 
   const checkForMax = (item) => {
@@ -256,13 +201,10 @@ const HomeView = ({ navigation, route }) => {
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
 
     remove(ref(db, urls))
-      .then(() => {
-        // fetchEvents();
-      })
+      .then(() => {})
       .catch((err) => {
         console.log(err);
       });
-
     alert("þú hefur verið afskráður á viðburð");
   };
 
@@ -280,8 +222,8 @@ const HomeView = ({ navigation, route }) => {
             Object.values(item.attendees)[i].name.toLowerCase() ===
             thisuser.name?.toLowerCase()
           ) {
-            const obj = Object.values(item.attendees)[i].name.toLowerCase();
-            const us = thisuser.name?.toLowerCase();
+            // const obj = Object.values(item.attendees)[i].name.toLowerCase();
+            // const us = thisuser.name?.toLowerCase();
             return true;
           }
         }
@@ -297,7 +239,6 @@ const HomeView = ({ navigation, route }) => {
     if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
       return true;
     }
-
     return false;
   };
 
@@ -320,18 +261,11 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const today = moment().format("YYYY-MM-DD");
-
-  // const [listOfDay, setListOfDay] = useState(today);
-  // console.log("LIST OF ALL EVENTS: ", listOfEvents);
   const [selectedDay, setSelectedDay] = useState(today);
 
   const dayPress = async (day) => {
-    // console.log("Day Pressed: ", day);
-    let listDay = [];
-    //await fetchEvents();
     const select = moment(day).format("YYYY-MM-DD");
     setSelectedDay(select);
-
     return;
   };
 
@@ -342,30 +276,6 @@ const HomeView = ({ navigation, route }) => {
     parseInt(a.startTime) > parseInt(b.startTime) ? 1 : -1
   );
 
-  console.log("LIST OF DAY ITEMS : ", listOfDay);
-  // const checkDate = (item) => {
-  //   // Object.values(listOfEvents).map((item, index) => {
-  //   //   console.log(item.date);
-  //   // });
-  //   // dayItems = [];
-  //   // // //console.log("ITEM DATE IS : ", item.date);
-  //   // for (let i = 0; i < Object.keys(listOfEvents).length; i++) {
-  //   //   if (Object.values(listOfEvents)[i].date == selectedDay) {
-  //   //     console.log(Object.values(listOfEvents)[i]);
-  //   //     dayItems.push(Object.values(listOfEvents)[i]);
-  //   //   }
-  //   // }
-  //   // console.log(dayItems);
-
-  //   //setListOfDay(dayItems);
-  //   //console.log("ITEM DATE IS : ", item.date);
-  //   // console.log("SELECTED DATE: ", selectedDay);
-  //   if (item.date == selectedDay) {
-  //     //console.log("INSIDE IF : ", item.date);
-  //     return true;
-  //   }
-  // };
-  //const [dateFormat, setDateFormat] = useState("");
   const getDate = (date) => {
     console.log("DATE IS :", date);
     var months = [
@@ -385,13 +295,8 @@ const HomeView = ({ navigation, route }) => {
     let d = new Date(date);
     let monthName = months[d.getMonth()];
     let res = date.substring(8, 10);
-    //return monthName;
     return res + ". " + monthName;
-    // setDateFormat(monthName);
   };
-
-  console.log("list of day");
-  console.log(listOfDay);
 
   return (
     <View style={styles.container}>
@@ -399,7 +304,6 @@ const HomeView = ({ navigation, route }) => {
       <View style={styles.homeViewContainer}>
         <View style={styles.calander}>
           <CalendarStrip
-            //scrollable={true}
             style={{
               height: 120,
               paddingTop: 8,
@@ -408,23 +312,14 @@ const HomeView = ({ navigation, route }) => {
               paddingRight: 8,
             }}
             selectedDate={selectedDay}
-            // name={"dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi".split(
-            //   "_"
-            // )}
-            // dateNameStyle={"dim._lun._mar._mer._jeu._ven._sam.".split("_")}
-            // name'fr',
             daySelectionAnimation={{
               type: "background",
               duration: 200,
-              //calendarHeaderStyle
               highlightColor: "#C6DDEC",
-              // borderWidth: 1,
-              // borderHighlightColor: "blue",
             }}
             onDateSelected={(day) => {
               dayPress(moment(day).format("YYYY-MM-DD"));
             }}
-            //calendarColor={"#3343CE"}
           />
         </View>
 
@@ -433,7 +328,6 @@ const HomeView = ({ navigation, route }) => {
             <View>
               {Object.values(listOfDay).map((item, index) => (
                 <View key={index} item={item}>
-                  {/* {checkDate(item) ? ( */}
                   <View
                     style={[
                       styles.eventContainer,
@@ -444,7 +338,6 @@ const HomeView = ({ navigation, route }) => {
                       <TouchableOpacity onPress={() => handlePressEvent(item)}>
                         <View style={styles.eventItemContainer}>
                           <View>
-                            {/* <Text> {JSON.stringify(item)}</Text> */}
                             <Text style={styles.itemTitle}>{item.name}</Text>
                             <Text>
                               <Fontisto name="date" size={24} color="black" />

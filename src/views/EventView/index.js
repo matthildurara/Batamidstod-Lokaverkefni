@@ -1,16 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  Button,
   TouchableHighlight,
   ScrollView,
 } from "react-native";
-import styles from "./styles";
-import { useState } from "react";
-import Toolbar from "../../components/toolBar";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   AntDesign,
@@ -21,26 +16,19 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  DataSnapshot,
-  remove,
-} from "firebase/database";
+import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import uuid from "react-native-uuid";
 
-const Event = ({ navigation, route }) => {
-  //const [listOfEvents, setListEvents] = useState({});
+import Toolbar from "../../components/toolBar";
+import styles from "./styles";
 
+const Event = ({ navigation, route }) => {
   const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
-  const [thisEvent, setEvent] = useState({});
+  // const [thisEvent, setEvent] = useState({});
   const [event, setRightEvent] = useState({});
 
   useEffect(() => {
-    //setRightEvent({});
     const db = getDatabase();
     const dbRef = ref(db, "Users/Event");
     async function isEvent() {
@@ -83,52 +71,50 @@ const Event = ({ navigation, route }) => {
         // Error retrieving data
       }
     }
-    console.log("EVENT DATE IS : ", event.date);
     isEvent();
-
     return;
   }, []);
 
-  const fetchEvent = async () => {
-    const db = getDatabase();
-    const dbRef = ref(db, "Users/Event");
-    try {
-      const value = await AsyncStorage.getItem("Event");
-      if (value !== null) {
-        // We have data!!
-        const parsed = JSON.parse(value);
-        onValue(dbRef, (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            const childKey = childSnapshot.key;
-            childSnapshot.forEach((childChild) => {
-              const childchildKey = childChild.key;
-              const childValue = childChild.val();
+  // const fetchEvent = async () => {
+  //   const db = getDatabase();
+  //   const dbRef = ref(db, "Users/Event");
+  //   try {
+  //     const value = await AsyncStorage.getItem("Event");
+  //     if (value !== null) {
+  //       // We have data!!
+  //       const parsed = JSON.parse(value);
+  //       onValue(dbRef, (snapshot) => {
+  //         snapshot.forEach((childSnapshot) => {
+  //           const childKey = childSnapshot.key;
+  //           childSnapshot.forEach((childChild) => {
+  //             const childchildKey = childChild.key;
+  //             const childValue = childChild.val();
 
-              if (childchildKey == thisEvent.eventId) {
-                const item = {
-                  name: childValue.name,
-                  startTime: childValue.startTime,
-                  endTime: childValue.endTime,
-                  date: childKey,
-                  maxNumber: childValue.maxNumber,
-                  attendees: childValue.attendees,
-                  description: childValue.description,
-                  eventId: childchildKey,
-                  staffmember: childValue.staffmember,
-                  color: childValue.color,
-                  location: childValue.location,
-                };
-                setRightEvent(item);
-              }
-            });
-          });
-        });
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-    return;
-  };
+  //             if (childchildKey == thisEvent.eventId) {
+  //               const item = {
+  //                 name: childValue.name,
+  //                 startTime: childValue.startTime,
+  //                 endTime: childValue.endTime,
+  //                 date: childKey,
+  //                 maxNumber: childValue.maxNumber,
+  //                 attendees: childValue.attendees,
+  //                 description: childValue.description,
+  //                 eventId: childchildKey,
+  //                 staffmember: childValue.staffmember,
+  //                 color: childValue.color,
+  //                 location: childValue.location,
+  //               };
+  //               setRightEvent(item);
+  //             }
+  //           });
+  //         });
+  //       });
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  //   return;
+  // };
 
   const [thisuser, setUser] = useState("");
 
@@ -287,19 +273,12 @@ const Event = ({ navigation, route }) => {
         "nóvember",
         "desember",
       ];
-      //let dateStr = toString(event.date);
       let d = new Date(evedate);
-      // var datePosted = new Date(post.publish_date).toString();
       let monthName = months[d.getMonth()];
-
       let res = evedate.slice(8, 10);
       return res + ". " + monthName;
     }
-    //return res + ". " + monthName;
-    // setDateFormat(monthName);
   };
-  // console.log("event date");
-  // console.log(event.date);
 
   return (
     <View>
@@ -375,17 +354,6 @@ const Event = ({ navigation, route }) => {
           <View
             style={[styles.eventContainer, { backgroundColor: event.color }]}
           >
-            {/* <Text style={styles.eventTitle}> {event.name}</Text>
-            <Text style={styles.eventText}> Dagsetning: {event.date}</Text>
-            <Text style={styles.eventText}>
-              {" "}
-              Byrjar klukkan: {event.startTime}
-            </Text>
-            <Text style={styles.eventText}>
-              {" "}
-              Endar klukkan: {event.endTime}
-            </Text>
-            <Text style={styles.eventText}> Staðsetning: {event.location}</Text> */}
             <Text style={styles.eventTitle}>{event.name}</Text>
             <Text>
               <Text style={styles.eventText}>

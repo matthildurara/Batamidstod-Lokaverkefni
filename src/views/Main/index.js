@@ -7,16 +7,9 @@ import {
   TextInput,
   Image,
 } from "react-native";
-// import { TextInput } from 'react-native-web';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigate } from "react-router-dom";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  DataSnapshot,
-} from "firebase/database";
+// import { useNavigate } from "react-router-dom";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 
 import styles from "./styles";
 import bata from "../../resources/Bata.png";
@@ -34,16 +27,11 @@ const Main = ({ navigation: { navigate } }) => {
     setErrorm("");
     onValue(dbRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        //console.log(childSnapshot);
         const childKey = childSnapshot.key;
         const childVal = childSnapshot.val();
         allUsers[childKey] = [];
         const itemUser = { name: childKey, email: childVal.email };
         setAllUsers((prevstate) => [...prevstate, itemUser]);
-        // allUsers[childKey].push({
-        //   name: childKey,
-        //   email: childVal.email,
-        // });
       });
     });
 
@@ -54,7 +42,6 @@ const Main = ({ navigation: { navigate } }) => {
     setEmail("");
     setErrorm("");
     getUsers();
-
     return;
   }, []);
 
@@ -68,24 +55,16 @@ const Main = ({ navigation: { navigate } }) => {
           name: user.name,
           email: user.email,
         };
-        //try {
         setEmail("");
         setErrorm("");
         AsyncStorage.setItem("User", JSON.stringify(userLogin));
 
         navigate("Home", { toolbarText: "Dagatal" });
         return;
-        // } catch (error) {
-        //   console.log(error);
-        // }
       } else {
-        console.log(false);
-        console.log("TempUSer:", tempUserString);
-        console.log("newEmail:", newEmail);
       }
     }
     setErrorm("This email is invalid");
-    //await getUsers();
   };
 
   return (

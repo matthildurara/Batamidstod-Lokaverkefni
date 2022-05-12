@@ -1,16 +1,15 @@
 import { StyleSheet } from "react-native";
-import { gray } from "../../styles/colors";
+import { blueBackground } from "../../styles/colors";
 
 export default StyleSheet.create({
   toolbar: {
-    // display:grid,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     height: 90,
-    // backgroundColor:'#b0c4de',
     borderBottomColor: "#C6DDEC",
-    backgroundColor: "#C6DDEC",
+    // backgroundColor: "#C6DDEC",
+    backgroundColor: blueBackground,
     borderBottomWidth: 1,
     top: 0,
     paddingLeft: 10,

@@ -1,29 +1,18 @@
 import { StyleSheet } from "react-native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
-import { withOrientation } from "react-navigation";
-import { grey, greyBrown } from "../../styles/colors";
 
 export default StyleSheet.create({
   eventContainer: {
-    //padding: 20,
     marginLeft: 8,
     marginRight: 8,
     paddingLeft: 8,
     paddingRight: 8,
-    //alignItems: "center",
-    // justifyContent: "space-around",
   },
   buttonEventView: {
     justifyContent: "space-between",
     flexDirection: "row",
     marginBottom: 5,
     alignItems: "center",
-    // alignSelf: "center",
     height: 40,
-    //alignContent: "center",
-
-    //justifyContent: "center",
-
     width: 370,
     borderBottomColor: "black",
     borderBottomWidth: 2,
@@ -40,9 +29,6 @@ export default StyleSheet.create({
     borderRadius: 4,
     height: 27,
     justifyContent: "center",
-
-    //marginTop: 5,
-    //marginBottom: 3,
     paddingRight: 7,
     marginRight: 19,
     fontSize: 16,
@@ -66,17 +52,11 @@ export default StyleSheet.create({
     marginLeft: 15,
   },
   buttonView: {
-    //marginBottom: 8,
-    //marginTop: 8,
     marginLeft: 35,
   },
   eventTitle: {
     paddingTop: 10,
     paddingBottom: 10,
-
-    //padding: 20,
-    //alignItems: "center",
-    // justifyContent: "space-around",
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -88,16 +68,13 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
   },
-  eventIcon: {
-    // marginBottom: 5,
-    //  marginTop: 5,
-    // paddingTop: 5,
-  },
+  // eventIcon: {
+
+  // },
   eventText: {
     paddingBottom: 10,
     fontSize: 18,
     marginBottom: 5,
-    //marginLeft: 5,
   },
   eventText2: {
     paddingBottom: 10,
@@ -116,14 +93,8 @@ export default StyleSheet.create({
     marginLeft: 8,
     marginBottom: 1,
     borderRadius: 4,
-
-    // flex: 1,
   },
   backButtonContainer: {
-    // borderColor: "red",
-    // borderWidth: 2,
-    // flex: 1,
-
     flexDirection: "row",
     justifyContent: "center",
   },
@@ -136,13 +107,4 @@ export default StyleSheet.create({
     top: 2,
     fontSize: 16,
   },
-  // eventbutton: {
-  //   borderColor: "black",
-  //   borderWidth: 2,
-  //   marginBottom: 5,
-  //   width: 65,
-  //   paddingLeft: 5,
-  //   marginRight: 10,
-  //   marginLeft: 4,
-  // },
 });

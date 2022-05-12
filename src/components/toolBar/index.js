@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import styles from "./styles";
-import { AntDesign, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Toolbar = (parameter) => {
@@ -22,13 +21,10 @@ const Toolbar = (parameter) => {
     isUser();
     return;
   }, []);
+
   return (
     <View styleName="horizontal" style={styles.toolbar}>
-      <View style={styles.toolbarActionMenu}>
-        {/* <Text>
-          <Ionicons name="menu" size={24} color="black" />
-        </Text> */}
-      </View>
+      <View style={styles.toolbarActionMenu}></View>
       <View style={styles.toolbarActionName}>
         <Text style={styles.toolbarText}>{parameter.toolbarText}</Text>
         <Text>{user.name}</Text>
@@ -36,4 +32,5 @@ const Toolbar = (parameter) => {
     </View>
   );
 };
+
 export default Toolbar;
