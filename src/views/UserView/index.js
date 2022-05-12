@@ -173,22 +173,23 @@ const UserView = ({ navigation, route }) => {
       return false;
     } else {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
-        for (var j = 0; j < Object.values(item.attendees).length; j++) {
-          if (
-            Object.values(item.attendees)[i].name.toLowerCase() ===
-            user.name?.toLowerCase()
-          ) {
-            const obj = Object.values(item.attendees)[i].name.toLowerCase();
-            const us = user.name?.toLowerCase();
-            return true;
-          }
+        // for (var j = 0; j < Object.values(item.attendees).length; j++) {
+        if (
+          Object.values(item.attendees)[i].name.toLowerCase() ===
+          user.name?.toLowerCase()
+        ) {
+          const obj = Object.values(item.attendees)[i].name.toLowerCase();
+          const us = user.name?.toLowerCase();
+          return true;
         }
+        // }
       }
       return false;
     }
   };
 
   const isEventOver = (eventDate) => {
+    //checking if event is over
     const today = new Date();
     const date = new Date(eventDate);
     if (today.setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0)) {
@@ -197,6 +198,7 @@ const UserView = ({ navigation, route }) => {
     return false;
   };
   const getDate = (date) => {
+    //changing the format of the date
     var months = [
       "janúar",
       "febrúar",
@@ -218,7 +220,7 @@ const UserView = ({ navigation, route }) => {
   };
 
   const handlePressEvent = async (item) => {
-    console.log("attendees: ", item.attendees);
+    // handling when event is pressed
     const pressedEvent = {
       name: item.name,
       date: item.date,
@@ -231,7 +233,7 @@ const UserView = ({ navigation, route }) => {
       staffmember: item.staffmember,
       location: item.location,
     };
-    await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
+    await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent)); // saving the pressed event to asyncstorage
     navigate("Event");
   };
 
@@ -243,10 +245,7 @@ const UserView = ({ navigation, route }) => {
           <Text style={styles.username}>{user.name}</Text>
         </View>
         <View style={styles.logoutbutton}>
-          <TouchableHighlight
-            onPress={handleLogOut}
-            // style={styles.logoutbutton}
-          >
+          <TouchableHighlight onPress={handleLogOut}>
             <Text>Skrá út</Text>
           </TouchableHighlight>
         </View>
@@ -257,14 +256,11 @@ const UserView = ({ navigation, route }) => {
             {Object.values(listOfEvents).map((item, index) => (
               <View key={index} item={item}>
                 {isUserOnEvent(item) && isEventOver(item.date) ? (
-                  // {if(item[0].)}
-
                   <View
                     style={[
                       styles.eventUserItem,
                       { backgroundColor: item.color },
                     ]}
-                    //style={styles.eventUserItem}
                   >
                     <TouchableOpacity onPress={() => handlePressEvent(item)}>
                       <View style={styles.eventtextContainer}>
