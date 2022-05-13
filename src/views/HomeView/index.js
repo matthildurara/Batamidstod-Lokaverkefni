@@ -19,7 +19,6 @@ import Footer from "../../components/footer";
 import styles from "./styles";
 
 const HomeView = ({ navigation, route }) => {
-  // const [notificationLength, setNotificationLength] = useState(0);
   const [allNotifications, setAllNotifications] = useState([]);
 
   AsyncStorage.setItem(
@@ -28,7 +27,6 @@ const HomeView = ({ navigation, route }) => {
   );
   const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
-  // const [reload, setReload] = useState(0);
   const [thisuser, setUser] = useState("");
 
   useEffect(() => {
@@ -123,7 +121,6 @@ const HomeView = ({ navigation, route }) => {
         snapshot.forEach((childSnapshot) => {
           childSnapshot.forEach((childChild) => {
             const childValue = childChild.val();
-
             const item = {
               notification: childValue.notification,
               notificationTitle: childValue.notificationTitle,
@@ -174,7 +171,6 @@ const HomeView = ({ navigation, route }) => {
       if (item.attendees == "") {
         return true;
       }
-
       if (Object.keys(item.attendees).length >= item.maxNumber) {
         return false;
       } else {
@@ -222,8 +218,6 @@ const HomeView = ({ navigation, route }) => {
             Object.values(item.attendees)[i].name.toLowerCase() ===
             thisuser.name?.toLowerCase()
           ) {
-            // const obj = Object.values(item.attendees)[i].name.toLowerCase();
-            // const us = thisuser.name?.toLowerCase();
             return true;
           }
         }
@@ -322,7 +316,6 @@ const HomeView = ({ navigation, route }) => {
             }}
           />
         </View>
-
         <ScrollView style={styles.itemcont}>
           {listOfDay.length != 0 ? (
             <View>

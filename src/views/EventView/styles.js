@@ -68,9 +68,6 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
   },
-  // eventIcon: {
-
-  // },
   eventText: {
     paddingBottom: 10,
     fontSize: 18,

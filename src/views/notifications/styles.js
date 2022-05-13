@@ -13,7 +13,6 @@ export default StyleSheet.create({
     color: "black",
     backgroundColor: "#b0c4de",
   },
-
   footer: {
     flex: 1,
     alignSelf: "flex-end",

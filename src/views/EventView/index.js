@@ -25,7 +25,6 @@ import styles from "./styles";
 const Event = ({ navigation, route }) => {
   const { navigate } = useNavigation();
   const parameter = route.params.toolbarText;
-  // const [thisEvent, setEvent] = useState({});
   const [event, setRightEvent] = useState({});
 
   useEffect(() => {
@@ -41,7 +40,6 @@ const Event = ({ navigation, route }) => {
           onValue(dbRef, (snapshot) => {
             snapshot.forEach((childSnapshot) => {
               const childKey = childSnapshot.key;
-              console.log("CHILDKEY DATE IA : ", childKey);
               childSnapshot.forEach((childChild) => {
                 const childchildKey = childChild.key;
                 const childValue = childChild.val();
@@ -60,7 +58,6 @@ const Event = ({ navigation, route }) => {
                     color: childValue.color,
                     location: childValue.location,
                   };
-                  console.log("ITEM DATE IS : ", item.date);
                   setRightEvent(item);
                 }
               });
@@ -178,7 +175,6 @@ const Event = ({ navigation, route }) => {
   };
 
   const isEventOver = (eventDate) => {
-    console.log(eventDate);
     const today = new Date();
     const date = new Date(eventDate);
 
@@ -187,6 +183,7 @@ const Event = ({ navigation, route }) => {
     }
     return false;
   };
+
   const checkItem = (item) => {
     if (!item || item == null || item == "null") {
       return false;
@@ -200,7 +197,6 @@ const Event = ({ navigation, route }) => {
       if (item.attendees == "") {
         return true;
       }
-
       if (Object.keys(item.attendees).length >= item.maxNumber) {
         return false;
       } else {
@@ -209,6 +205,7 @@ const Event = ({ navigation, route }) => {
     }
     return true;
   };
+
   const handleOnEvent = async (item) => {
     const db = getDatabase();
     const userId = uuid.v4();
@@ -246,15 +243,14 @@ const Event = ({ navigation, route }) => {
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
 
     remove(ref(db, urls))
-      .then(() => {
-        //fetchEvent();
-      })
+      .then(() => {})
       .catch((err) => {
         console.log(err);
       });
 
     alert("þú hefur verið afskráður á viðburð");
   };
+
   const getDate = (evedate) => {
     if (evedate) {
       console.log("EVENT IS : ", event);

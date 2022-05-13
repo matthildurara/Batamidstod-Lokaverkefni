@@ -34,7 +34,6 @@ const Main = ({ navigation: { navigate } }) => {
         setAllUsers((prevstate) => [...prevstate, itemUser]);
       });
     });
-
     return;
   };
 
@@ -58,7 +57,6 @@ const Main = ({ navigation: { navigate } }) => {
         setEmail("");
         setErrorm("");
         AsyncStorage.setItem("User", JSON.stringify(userLogin));
-
         navigate("Home", { toolbarText: "Dagatal" });
         return;
       } else {
@@ -79,7 +77,6 @@ const Main = ({ navigation: { navigate } }) => {
             setEmail={setEmail}
             onChangeText={setEmail}
           />
-
           <TouchableHighlight
             onPress={() => handleLogin()}
             style={styles.signButton}

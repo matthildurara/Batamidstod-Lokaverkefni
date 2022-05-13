@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import styles from "./styles";
 
 const Toolbar = (parameter) => {
   const [user, setUser] = useState("");

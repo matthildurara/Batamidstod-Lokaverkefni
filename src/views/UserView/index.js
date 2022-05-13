@@ -83,7 +83,6 @@ const UserView = ({ navigation, route }) => {
     }
     getNotificationLength();
     isUser();
-
     return;
   }, []);
 
@@ -123,6 +122,7 @@ const UserView = ({ navigation, route }) => {
     }
     return 0;
   };
+
   const handleOnRemove = (item) => {
     //handling when user unsubscribes from event
     const db = getDatabase();
@@ -168,6 +168,7 @@ const UserView = ({ navigation, route }) => {
     }
     return false;
   };
+
   const getDate = (date) => {
     //changing the format of the date
     var months = [

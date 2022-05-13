@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { greyBrown } from "../../styles/colors";
 
 export default StyleSheet.create({
   container: {
@@ -10,7 +9,6 @@ export default StyleSheet.create({
   homeViewContainer: {
     flex: 1,
   },
-
   toolbarAction: {
     textAlign: "center",
     color: "black",
@@ -22,7 +20,6 @@ export default StyleSheet.create({
   eventItemContainer: {
     flexDirection: "row",
     marginLeft: 20,
-
     justifyContent: "space-between",
   },
   arrowRight: {

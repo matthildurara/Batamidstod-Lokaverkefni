@@ -9,20 +9,16 @@ export default StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#C6DDEC",
   },
-
   container: {
     flex: 1,
-
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#C6DDEC",
   },
-
   sign: {
     color: "grey",
     fontSize: 22,
   },
-
   signButton: {
     borderRadius: 7,
     width: 185,
@@ -33,7 +29,6 @@ export default StyleSheet.create({
     alignItems: "center",
     margin: 10,
   },
-
   textInput: {
     fontSize: 18,
     margin: 10,
@@ -42,7 +37,6 @@ export default StyleSheet.create({
     borderRadius: 1,
     backgroundColor: "white",
   },
-
   image: {
     width: 280,
     height: 140,

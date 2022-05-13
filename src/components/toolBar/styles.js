@@ -8,7 +8,6 @@ export default StyleSheet.create({
     justifyContent: "center",
     height: 90,
     borderBottomColor: "#C6DDEC",
-    // backgroundColor: "#C6DDEC",
     backgroundColor: blueBackground,
     borderBottomWidth: 1,
     top: 0,

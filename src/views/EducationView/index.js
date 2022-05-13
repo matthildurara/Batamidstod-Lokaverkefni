@@ -16,6 +16,7 @@ const EducationView = ({ navigation, route }) => {
   useEffect(() => {
     const db = getDatabase();
     const dbRef = ref(db, "Users/EducationMaterial");
+
     async function getMaterial() {
       onValue(dbRef, (snapshot) => {
         setMaterial([]);
