@@ -14,10 +14,11 @@ const EducationView = ({ navigation, route }) => {
   const [allMaterial, setMaterial] = useState([]);
 
   useEffect(() => {
-    const db = getDatabase();
-    const dbRef = ref(db, "Users/EducationMaterial");
+    const db = getDatabase(); //Getting the database 
+    const dbRef = ref(db, "Users/EducationMaterial"); //Accessing the correct location in the database 
 
     async function getMaterial() {
+      //Getting all the education material
       onValue(dbRef, (snapshot) => {
         setMaterial([]);
         snapshot.forEach((childSnapshot) => {
@@ -41,6 +42,7 @@ const EducationView = ({ navigation, route }) => {
   const [notificationLength, setNotificationLength] = useState(0);
 
   const getNotificationLength = async () => {
+    //Getting the number of notification to be able to display it in the footer 
     try {
       const value = await AsyncStorage.getItem("NumberNotifications");
       if (value !== null) {

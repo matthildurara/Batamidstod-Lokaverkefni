@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import {
-  AntDesign,
-  Ionicons,
-  FontAwesome,
-  Fontisto,
-  Entypo,
-} from "@expo/vector-icons";
+import { AntDesign, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
 import CalendarStrip from "react-native-calendar-strip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
@@ -48,40 +42,14 @@ const HomeView = ({ navigation, route }) => {
   }, []);
 
   const [listOfEvents, setListEvents] = useState([]);
-  const db = getDatabase();
-  const dbRef = ref(db, "Users/Event");
+  const db = getDatabase(); //Getting the database
+  const dbRef = ref(db, "Users/Event"); //Accessing the correct location in the database 
 
-  // const fetchEvents = async () => {
-  //   onValue(dbRef, (snapshot) => {
-  //     setListEvents([]);
-  //     snapshot.forEach((childSnapshot) => {
-  //       const childKey = childSnapshot.key;
-
-  //       childSnapshot.forEach((childChild) => {
-  //         const childchildKey = childChild.key;
-  //         const childValue = childChild.val();
-  //         const item = {
-  //           name: childValue.name,
-  //           startTime: childValue.startTime,
-  //           endTime: childValue.endTime,
-  //           date: childKey,
-  //           maxNumber: childValue.maxNumber,
-  //           attendees: childValue.attendees,
-  //           description: childValue.description,
-  //           eventId: childchildKey,
-  //           staffmember: childValue.staffmember,
-  //           color: childValue.color,
-  //           location: childValue.location,
-  //         };
-  //         setListEvents((listOfEvents) => [...listOfEvents, item]);
-  //       });
-  //     });
-  //   });
-  //   return;
-  // };
 
   useEffect(() => {
+    //Getting all the events 
     async function getEvents() {
+      //Getting all the events 
       onValue(dbRef, (snapshot) => {
         setListEvents([]);
         snapshot.forEach((childSnapshot) => {
@@ -112,10 +80,11 @@ const HomeView = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    const db = getDatabase();
-    const dbRef = ref(db, "Users/Notifications");
+    const db = getDatabase(); //Getting the database 
+    const dbRef = ref(db, "Users/Notifications"); //Accessing the correct location in the database 
 
     async function getNotifications() {
+      //getting all notifications to able to display number of notification on the footer
       onValue(dbRef, (snapshot) => {
         setAllNotifications([]);
         snapshot.forEach((childSnapshot) => {
@@ -138,6 +107,7 @@ const HomeView = ({ navigation, route }) => {
   }, []);
 
   const handleOnEvent = async (item) => {
+    //Handling when user subscribes to an event
     const db = getDatabase();
     const userId = uuid.v4();
     if (item.attendees) {
@@ -167,6 +137,7 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const checkForMax = (item) => {
+    //Checking if the event is full or not 
     if (item.attendees) {
       if (item.attendees == "") {
         return true;
@@ -192,6 +163,7 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const handleOnRemove = (item) => {
+    //Handling when user unsubscribes from an event
     const db = getDatabase();
     const id = findId(item);
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
@@ -227,6 +199,7 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const isEventOver = (eventDate) => {
+    //Checking if the event is over
     const today = new Date();
     const date = new Date(eventDate);
 
@@ -237,6 +210,7 @@ const HomeView = ({ navigation, route }) => {
   };
 
   const handlePressEvent = async (item) => {
+    //Handling pressed events 
     console.log("attendees: ", item.attendees);
     const pressedEvent = {
       name: item.name,
@@ -250,11 +224,11 @@ const HomeView = ({ navigation, route }) => {
       staffmember: item.staffmember,
       location: item.location,
     };
-    await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent));
+    await AsyncStorage.setItem("Event", JSON.stringify(pressedEvent)); // saving the pressed event to asyncstorage
     navigate("Event");
   };
 
-  const today = moment().format("YYYY-MM-DD");
+  const today = moment().format("YYYY-MM-DD"); //getting the current day
   const [selectedDay, setSelectedDay] = useState(today);
 
   const dayPress = async (day) => {
@@ -271,7 +245,7 @@ const HomeView = ({ navigation, route }) => {
   );
 
   const getDate = (date) => {
-    console.log("DATE IS :", date);
+    //Putting the date on a different format when displaying it 
     var months = [
       "janúar",
       "febrúar",

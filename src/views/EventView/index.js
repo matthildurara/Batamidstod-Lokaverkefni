@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableHighlight,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, TouchableHighlight, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  AntDesign,
-  MaterialIcons,
-  Ionicons,
-  FontAwesome,
-  Fontisto,
-  Entypo,
-} from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Ionicons, FontAwesome, Fontisto, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import uuid from "react-native-uuid";
@@ -28,8 +15,8 @@ const Event = ({ navigation, route }) => {
   const [event, setRightEvent] = useState({});
 
   useEffect(() => {
-    const db = getDatabase();
-    const dbRef = ref(db, "Users/Event");
+    const db = getDatabase(); //Getting the database 
+    const dbRef = ref(db, "Users/Event"); //Accessing the correct location in the database 
     async function isEvent() {
       try {
         const value = await AsyncStorage.getItem("Event");
@@ -72,46 +59,6 @@ const Event = ({ navigation, route }) => {
     return;
   }, []);
 
-  // const fetchEvent = async () => {
-  //   const db = getDatabase();
-  //   const dbRef = ref(db, "Users/Event");
-  //   try {
-  //     const value = await AsyncStorage.getItem("Event");
-  //     if (value !== null) {
-  //       // We have data!!
-  //       const parsed = JSON.parse(value);
-  //       onValue(dbRef, (snapshot) => {
-  //         snapshot.forEach((childSnapshot) => {
-  //           const childKey = childSnapshot.key;
-  //           childSnapshot.forEach((childChild) => {
-  //             const childchildKey = childChild.key;
-  //             const childValue = childChild.val();
-
-  //             if (childchildKey == thisEvent.eventId) {
-  //               const item = {
-  //                 name: childValue.name,
-  //                 startTime: childValue.startTime,
-  //                 endTime: childValue.endTime,
-  //                 date: childKey,
-  //                 maxNumber: childValue.maxNumber,
-  //                 attendees: childValue.attendees,
-  //                 description: childValue.description,
-  //                 eventId: childchildKey,
-  //                 staffmember: childValue.staffmember,
-  //                 color: childValue.color,
-  //                 location: childValue.location,
-  //               };
-  //               setRightEvent(item);
-  //             }
-  //           });
-  //         });
-  //       });
-  //     }
-  //   } catch (error) {
-  //     // Error retrieving data
-  //   }
-  //   return;
-  // };
 
   const [thisuser, setUser] = useState("");
 
@@ -134,6 +81,7 @@ const Event = ({ navigation, route }) => {
   }, []);
 
   const findId = (item) => {
+    //Finding the event's ID
     if (item.attendees) {
       for (var i = 0; i < Object.keys(item.attendees).length; i++) {
         if (Object.values(item.attendees)[i].name === thisuser.name) {
@@ -175,6 +123,7 @@ const Event = ({ navigation, route }) => {
   };
 
   const isEventOver = (eventDate) => {
+    //Checking if the event is over
     const today = new Date();
     const date = new Date(eventDate);
 
@@ -193,6 +142,7 @@ const Event = ({ navigation, route }) => {
   };
 
   const checkForMax = (item) => {
+    //Checking if the event is full or not 
     if (item.attendees) {
       if (item.attendees == "") {
         return true;
@@ -207,6 +157,7 @@ const Event = ({ navigation, route }) => {
   };
 
   const handleOnEvent = async (item) => {
+    //Handling when a user subscribes to the event 
     const db = getDatabase();
     const userId = uuid.v4();
     if (item.attendees) {
@@ -238,6 +189,7 @@ const Event = ({ navigation, route }) => {
   };
 
   const handleOnRemove = (item) => {
+    //Handling when a user unsubscribes an event
     const db = getDatabase();
     const id = findId(item);
     const urls = `Users/Event/${item.date}/${item.eventId}/attendees/${id}/name`;
@@ -252,6 +204,7 @@ const Event = ({ navigation, route }) => {
   };
 
   const getDate = (evedate) => {
+    //Putting the date on a different format when displaying it 
     if (evedate) {
       console.log("EVENT IS : ", event);
       console.log("EVEDATE IS : ", evedate);
