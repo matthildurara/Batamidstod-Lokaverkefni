@@ -25,7 +25,6 @@ const UserView = ({ navigation, route }) => {
   const { navigate } = useNavigation();
 
   const parameter = route.params.toolbarText;
-
   const [listOfEvents, setListEvents] = useState([]);
 
   const db = getDatabase();
