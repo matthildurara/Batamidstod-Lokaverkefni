@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import {
-  AntDesign,
-  Ionicons,
-  FontAwesome,
-  Fontisto,
-  Entypo,
-} from "@expo/vector-icons";
+import {View, Text, TouchableHighlight, TouchableOpacity, ScrollView} from "react-native";
+import {AntDesign, Ionicons, FontAwesome, Fontisto, Entypo} from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
@@ -27,8 +15,8 @@ const UserView = ({ navigation, route }) => {
   const parameter = route.params.toolbarText;
   const [listOfEvents, setListEvents] = useState([]);
 
-  const db = getDatabase();
-  const dbRef = ref(db, "Users/Event");
+  const db = getDatabase(); //Getting the database 
+  const dbRef = ref(db, "Users/Event"); //Accessing the correct location in the database 
 
   const fetchEvents = () => {
     onValue(dbRef, (snapshot) => {
@@ -224,6 +212,7 @@ const UserView = ({ navigation, route }) => {
       <ScrollView>
         <View style={styles.list}>
           <View>
+            {/* Mapping through the list if the events to be able to display them */}
             {Object.values(listOfEvents).map((item, index) => (
               <View key={index} item={item}>
                 {isUserOnEvent(item) && isEventOver(item.date) ? (

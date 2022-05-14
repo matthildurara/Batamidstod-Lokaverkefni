@@ -11,13 +11,13 @@ const NotificationView = ({ navigation, route }) => {
   const { navigate } = useNavigation();
 
   const parameter = route.params.toolbarText;
-  const db = getDatabase();
-  const dbRef = ref(db, "Users/Notifications");
+  const db = getDatabase(); //Getting the database 
+  const dbRef = ref(db, "Users/Notifications"); 
   const [allNotifications, setAllNotifications] = useState([]);
 
   useEffect(() => {
-    const db = getDatabase();
-    const dbRef = ref(db, "Users/Notifications");
+    const db = getDatabase(); //Getting the database 
+    const dbRef = ref(db, "Users/Notifications"); //Accessing the correct location in the database 
     async function getNotifications() {
       onValue(dbRef, (snapshot) => {
         setAllNotifications([]);

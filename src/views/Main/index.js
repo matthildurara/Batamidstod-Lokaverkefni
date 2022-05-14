@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  KeyboardAvoidingView,
-  Text,
-  TouchableHighlight,
-  TextInput,
-  Image,
-} from "react-native";
+import {View, KeyboardAvoidingView, Text, TouchableHighlight, TextInput,Image} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 
 import styles from "./styles";
 import bata from "../../resources/Bata.png";
 
 const Main = ({ navigation: { navigate } }) => {
-  const db = getDatabase();
-  const dbRef = ref(db, "Users/User");
+  const db = getDatabase(); //Geting the database
+  const dbRef = ref(db, "Users/User"); //Accessing the correct location in the database 
 
   const [allUsers, setAllUsers] = useState([]);
   const [email, setEmail] = useState("");
   const [errorm, setErrorm] = useState("");
 
   const getUsers = async () => {
+    //Getting the users 
     setEmail("");
     setErrorm("");
     onValue(dbRef, (snapshot) => {
@@ -45,6 +38,7 @@ const Main = ({ navigation: { navigate } }) => {
   }, []);
 
   const handleLogin = () => {
+    //Handling when user logs in
     for (var i = 0; i < Object.keys(allUsers).length; i++) {
       const user = Object.values(allUsers)[i];
       const newEmail = JSON.stringify(email.toLowerCase());
