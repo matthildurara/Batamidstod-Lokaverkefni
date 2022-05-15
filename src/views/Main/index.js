@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {View, KeyboardAvoidingView, Text, TouchableHighlight, TextInput,Image} from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  Image,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 
@@ -8,14 +15,14 @@ import bata from "../../resources/Bata.png";
 
 const Main = ({ navigation: { navigate } }) => {
   const db = getDatabase(); //Geting the database
-  const dbRef = ref(db, "Users/User"); //Accessing the correct location in the database 
+  const dbRef = ref(db, "Users/User"); //Accessing the correct location in the database
 
   const [allUsers, setAllUsers] = useState([]);
   const [email, setEmail] = useState("");
   const [errorm, setErrorm] = useState("");
 
   const getUsers = async () => {
-    //Getting the users 
+    //Getting the users
     setEmail("");
     setErrorm("");
     onValue(dbRef, (snapshot) => {
@@ -67,6 +74,7 @@ const Main = ({ navigation: { navigate } }) => {
           <TextInput
             style={styles.textInput}
             placeholder="Netfang"
+            placeholderTextColor="#7a7a78"
             value={email}
             setEmail={setEmail}
             onChangeText={setEmail}
