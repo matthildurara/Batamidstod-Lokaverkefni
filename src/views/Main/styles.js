@@ -36,7 +36,7 @@ export default StyleSheet.create({
     height: 40,
     borderRadius: 1,
     backgroundColor: "white",
-    color: "grey",
+    color: "black",
   },
   image: {
     width: 280,
