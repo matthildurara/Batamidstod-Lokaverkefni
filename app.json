@@ -17,16 +17,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.matthildura19.Batamidstodin"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.matthildura19.Batamidstodin"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Batamidstodin app "
   }
 }
